@@ -1,0 +1,30 @@
+- name: Get libvirt storage pools
+  community.libvirt.virt_pool:
+    command: facts
+
+- name: Download and import Fedora CoreOS image to libvirt storage pool
+  ansible.builtin.import_tasks: download_image.yaml
+  when: "not (ansible_libvirt_pools.default.volumes|select('contains', 'fcos.qcow2'))"
+
+- name: Create image for VM
+  ansible.builtin.command: virsh -c qemu:///system vol-create-as default {{ item }}.qcow2 10G --format qcow2 --backing-vol fcos.qcow2 --backing-vol-format qcow2
+  args:
+    creates: '{{ ansible_libvirt_pools.default.path }}/{{ item }}.qcow2'
+  loop: '{{ nodes }}'
+
+- name: Create VM
+  community.libvirt.virt:
+    command: define
+    xml: "{{ lookup('ansible.builtin.template', './domain.xml.j2') }}"
+    mutate_flags:
+      - ADD_UUID
+      - ADD_MAC_ADDRESSES
+    uri: qemu:///system
+  loop: '{{ nodes }}'
+
+- name: Start VM
+  community.libvirt.virt:
+    name: '{{ item }}'
+    state: running
+    uri: qemu:///system
+  loop: '{{ nodes }}'

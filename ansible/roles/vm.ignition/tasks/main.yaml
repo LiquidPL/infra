@@ -1,0 +1,52 @@
+- name: Download Butane binary (amd64)
+  ansible.builtin.get_url:
+    url: '{{ butane_url_amd64 }}'
+    dest: /tmp/butane
+    mode: '0755'
+  when: ansible_architecture == "x86_64"
+
+- name: Download Butane binary (aarch64)
+  ansible.builtin.get_url:
+    url: '{{ butane_url_aarch64 }}'
+    dest: /tmp/butane
+    mode: '0755'
+  when:
+    - ( ansible_facts.architecture is search("arm") and
+        ansible_facts.userspace_bits == "64" ) or
+      ansible_facts.architecture is search("aarch64")
+
+- name: Create Butane config directory
+  ansible.builtin.file:
+    path: /var/lib/libvirt/butane
+    state: directory
+    owner: root
+    group: kvm
+    mode: '0770'
+  become: true
+
+- name: Generate Butane config
+  ansible.builtin.template:
+    src: templates/fcos.bu.j2
+    dest: '/var/lib/libvirt/butane/{{ item }}.bu'
+    mode: '0660'
+    owner: root
+    group: kvm
+  loop: '{{ nodes }}'
+  become: true
+
+- name: Generate Ignition config
+  ansible.builtin.shell: /tmp/butane < {{ item }}.bu > {{ item }}.ign
+  args:
+    chdir: /var/lib/libvirt/butane
+    creates: /var/lib/libvirt/butane/{{ item }}.ign
+  loop: '{{ nodes }}'
+  become: true
+
+- name: Change Ignition config owner and permissions
+  ansible.builtin.file:
+    path: /var/lib/libvirt/butane/{{ item }}.ign
+    owner: root
+    group: kvm
+    mode: '0660'
+  loop: '{{ nodes }}'
+  become: true

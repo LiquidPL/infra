@@ -1,0 +1,13 @@
+variant: fcos
+version: 1.5.0
+passwd:
+  users:
+    - name: liquid
+      ssh_authorized_keys:
+        - {{ node_ssh_key }}
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: {{ item }}

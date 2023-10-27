@@ -1,0 +1,9 @@
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json": [
+            "file:///home/liquid/Documents/projects/other/homelab/ansible/local.yaml"
+        ],
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook": "file:///home/liquid/Documents/projects/other/homelab/ansible/deploy-vms.yaml"
+    },
+    "ansible.python.interpreterPath": "/bin/python"
+}

@@ -1,0 +1,12 @@
+hypervisors:
+  hosts:
+    localhost:
+      ansible_host: 127.0.0.1
+      ansible_connection: local
+      nodes:
+        - control01
+        - control02
+        - control03
+        - worker01
+        - worker02
+        - worker03

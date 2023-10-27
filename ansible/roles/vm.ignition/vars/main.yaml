@@ -1,0 +1,2 @@
+butane_url_amd64: https://github.com/coreos/butane/releases/download/v0.19.0/butane-x86_64-unknown-linux-gnu
+butane_url_aarch64: https://github.com/coreos/butane/releases/download/v0.19.0/butane-aarch64-unknown-linux-gnu

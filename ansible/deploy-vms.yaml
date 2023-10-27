@@ -1,0 +1,5 @@
+- name: Deploy virtual machines
+  hosts: hypervisors
+  roles:
+    - role: vm.ignition
+    - role: vm.create
