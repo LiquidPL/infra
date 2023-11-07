@@ -1,0 +1,4 @@
+- name: Stop virtual machines
+  hosts: hypervisors
+  roles:
+    - vm.stop

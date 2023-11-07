@@ -1,0 +1,4 @@
+- name: Start virtual machines
+  hosts: hypervisors
+  roles:
+    - vm.start

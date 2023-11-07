@@ -1,0 +1,5 @@
+- name: Destroy virtual machines
+  hosts: hypervisors
+  roles:
+    - vm.stop
+    - vm.undefine
