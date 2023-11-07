@@ -1,5 +1,14 @@
 - name: Deploy virtual machines
   hosts: hypervisors
+  vars_prompt:
+    - name: tailscale_auth_key
+      prompt: |-
+        Please go to https://login.tailscale.com/admin/settings/keys and generate a reusable
+        auth key, which is going to be used to provision Tailscale on the virtual machines.
+        For security, it is recommended to set the expiry date to one day, and optionally
+        revoke the key after running this playbook.
+
+        Enter the tailscale auth key
   roles:
     - role: vm.ignition
     - role: vm.create

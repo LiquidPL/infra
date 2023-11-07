@@ -5,9 +5,43 @@ passwd:
     - name: liquid
       ssh_authorized_keys:
         - {{ node_ssh_key }}
+systemd:
+  units:
+    - name: install-tailscale.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install Tailscale
+        Wants=network-online-target
+        After=network-online-target
+        Before=zincati.service
+        ConditionPathExists=!/var/lib/%N.done
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/bin/rpm-ostree install --idempotent --apply-live tailscale
+        ExecStart=/usr/bin/systemctl enable --now tailscaled
+        ExecStart=/usr/bin/tailscale up --authkey {{ tailscale_auth_key }} --ssh
+        ExecStart=/bin/touch /var/lib/%N.done
+
+        [Install]
+        WantedBy=multi-user.target
+
 storage:
   files:
     - path: /etc/hostname
       mode: 0644
       contents:
         inline: {{ item }}
+    - path: /etc/yum.repos.d/tailscale.repo
+      contents:
+        inline: |
+          [tailscale-stable]
+          name=Tailscale stable
+          baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
+          enabled=1
+          type=rpm
+          repo_gpgcheck=1
+          gpgcheck=0
+          gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
