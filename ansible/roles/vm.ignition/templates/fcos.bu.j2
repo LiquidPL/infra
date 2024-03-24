@@ -37,6 +37,11 @@ storage:
       mode: 0644
       contents:
         inline: {{ item }}
+    - path: /etc/NetworkManager/conf.d/99-calico.conf
+      contents:
+        inline: |
+          [keyfile]
+          unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:vxlan-v6.calico;interface-name:wireguard.cali;interface-name:wg-v6.cali
     - path: /etc/yum.repos.d/tailscale.repo
       contents:
         inline: |
