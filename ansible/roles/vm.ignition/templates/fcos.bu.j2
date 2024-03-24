@@ -53,3 +53,7 @@ storage:
           repo_gpgcheck=1
           gpgcheck=0
           gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+  links:
+    # some k8s apps break when there is no /etc/localtime symlink set
+    - path: /etc/localtime
+      target: ../usr/share/zoneinfo/UTC
