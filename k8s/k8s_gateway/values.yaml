@@ -1,0 +1,16 @@
+affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 10
+          preference:
+            matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+domain: hs.liquid.sh
+service:
+  type: ClusterIP
+  clusterIP: 10.43.0.50
