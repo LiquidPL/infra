@@ -1,0 +1,18 @@
+deployment:
+  replicas: 2
+
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+providers:
+  kubernetesIngress:
+    enabled: true
+    publishedService:
+      enabled: true
+
+ports:
+  web:
+    redirectTo:
+      port: websecure
