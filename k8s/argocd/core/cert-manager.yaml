@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+  labels:
+    name: cert-manager
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  sources:
+    - chart: cert-manager
+      repoURL: https://charts.jetstack.io
+      targetRevision: v1.14.5
+      helm:
+        valueFiles:
+          - $values/k8s/apps/cert-manager/values.yaml
+    - repoURL: https://github.com/LiquidPL/homelab.git
+      targetRevision: master
+      path: k8s/apps/cert-manager/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

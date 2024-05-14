@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: core
+  namespace: argocd
+spec:
+  description: Core resources and services
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: 'kube-system'
+      server: '*'
+    - namespace: 'tigera-operator'
+      server: '*'
+    - namespace: 'calico-system'
+      server: '*'
+    - namespace: 'calico-apiserver'
+      server: '*'
+    - namespace: 'argocd'
+      server: '*'
+    - namespace: 'cert-manager'
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: core
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: core
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: core
+  source:
+    path: k8s/argocd/core
+    repoURL: https://github.com/LiquidPL/homelab.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m

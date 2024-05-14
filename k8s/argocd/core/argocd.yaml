@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  labels:
+    name: argocd
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  sources:
+    - chart: argo-cd
+      repoURL: https://argoproj.github.io/argo-helm
+      targetRevision: 6.9.2
+      helm:
+        valueFiles:
+          - $values/k8s/apps/argocd/values.yaml
+    - repoURL: https://github.com/LiquidPL/homelab.git
+      targetRevision: master
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3

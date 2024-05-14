@@ -1,0 +1,16 @@
+global:
+  domain: argocd.hs.liquid.sh
+
+configs:
+  params:
+    server.insecure: true
+
+server:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    extraTls:
+      - hosts:
+          - argocd.hs.liquid.sh
+        secretName: tls-argocd

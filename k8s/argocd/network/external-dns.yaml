@@ -1,12 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: exdns
+  name: external-dns
   namespace: argocd
   labels:
-    name: exdns
+    name: external-dns
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: network
   destination:
     server: https://kubernetes.default.svc
     namespace: network
@@ -16,7 +18,17 @@ spec:
       targetRevision: 2.4.0
       helm:
         valueFiles:
-          - $values/k8s/k8s_gateway/values.yaml
+          - $values/k8s/apps/external-dns/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
       ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

@@ -5,8 +5,10 @@ metadata:
   namespace: argocd
   labels:
     name: metallb
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: network
   destination:
     server: https://kubernetes.default.svc
     namespace: metallb-system
@@ -16,12 +18,10 @@ spec:
       targetRevision: 0.14.3
       helm:
         valueFiles:
-          - $values/k8s/metallb/values.yaml
+          - $values/k8s/apps/metallb/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
-      path: k8s/metallb
-      directory:
-        exclude: values.yaml
+      path: k8s/apps/metallb/resources
       ref: values
   ignoreDifferences:
     - group: "apiextensions.k8s.io"
@@ -35,5 +35,12 @@ spec:
       jsonPointers:
         - /spec/conversion/webhook/clientConfig/caBundle
   syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
     syncOptions:
       - CreateNamespace=true
