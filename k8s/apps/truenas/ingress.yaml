@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.frontend.passHostHeader: 'false'
+  name: truenas
+spec:
+  rules:
+    - host: truenas.hs.liquid.sh
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: truenas
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - truenas.hs.liquid.sh
+      secretName: tls-truenas
