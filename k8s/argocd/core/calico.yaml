@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: calico
+  namespace: argocd
+  labels:
+    name: calico
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tigera-operator
+  sources:
+    - chart: tigera-operator
+      repoURL: https://docs.tigera.io/calico/charts
+      targetRevision: v3.28.0
+      helm:
+        valueFiles:
+          - $values/k8s/apps/calico/values.yaml
+    - repoURL: https://github.com/LiquidPL/homelab.git
+      targetRevision: master
+      path: k8s/apps/calico/resources
+      ref: values
+  ignoreDifferences:
+    - group: "operator.tigera.io"
+      kind: Installation
+      name: default
+      jsonPointers:
+        - /spec/calicoNetwork/ipPools
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
