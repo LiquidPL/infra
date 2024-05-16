@@ -20,6 +20,8 @@ spec:
       server: '*'
     - namespace: 'cert-manager'
       server: '*'
+    - namespace: 'democratic-csi'
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

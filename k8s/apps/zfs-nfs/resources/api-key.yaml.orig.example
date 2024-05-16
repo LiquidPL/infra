@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truenas-api-key
+  namespace: democratic-csi
+type: Opaque
+stringData:
+  apiKey: <api key goes here>
