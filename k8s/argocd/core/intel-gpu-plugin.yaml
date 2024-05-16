@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: intel-gpu-plugin
+  namespace: argocd
+  labels:
+    name: intel-gpu-plugin
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: node-feature-discovery
+  sources:
+    - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
+      targetRevision: v0.30.0
+      path: deployments/nfd
+    - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
+      targetRevision: v0.30.0
+      path: deployments/nfd/overlays/node-feature-rules
+    - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
+      targetRevision: v0.30.0
+      path: deployments/gpu_plugin/overlays/fractional_resources
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3

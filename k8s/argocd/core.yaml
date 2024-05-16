@@ -22,6 +22,8 @@ spec:
       server: '*'
     - namespace: 'democratic-csi'
       server: '*'
+    - namespace: 'node-feature-discovery'
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
