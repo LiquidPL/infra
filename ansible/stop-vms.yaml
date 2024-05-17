@@ -1,4 +1,5 @@
 - name: Stop virtual machines
   hosts: hypervisors
   roles:
+    - hypervisor.detect
     - vm.stop

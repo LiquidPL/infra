@@ -1,6 +1,6 @@
 - name: Check if the image is downloaded
   ansible.builtin.stat:
-    path: /tmp/fcos.qcow2
+    path: '{{ image_tmp_path }}'
   register: image
 
 - name: Download Fedora CoreOS image
@@ -9,7 +9,7 @@
     - name: Download image (amd64)
       ansible.builtin.get_url:
         url: '{{ fcos_downloads.amd64.url }}'
-        dest: /tmp/fcos.qcow2.xz
+        dest: '{{ image_tmp_path }}.xz'
         checksum: '{{ fcos_downloads.amd64.checksum }}'
         mode: '0664'
       when: ansible_architecture == "x86_64"
@@ -17,7 +17,7 @@
     - name: Download image (aarch64)
       ansible.builtin.get_url:
         url: '{{ fcos_downloads.aarch64.url }}'
-        dest: /tmp/fcos.qcow2.xz
+        dest: '{{ image_tmp_path }}.xz'
         checksum: '{{ fcos_downloads.aarch64.checksum }}'
         mode: '0664'
       when:
@@ -26,13 +26,6 @@
           ansible_facts.architecture is search("aarch64")
 
     - name: Extract image
-      ansible.builtin.command: xz --decompress /tmp/fcos.qcow2.xz
+      ansible.builtin.command: 'xz --decompress {{ image_tmp_path }}.xz'
       args:
-        creates: /tmp/fcos.qcow2
-
-- name: Import image to the libvirt storage pool
-  ansible.builtin.shell: |
-    virsh -c qemu:///system vol-create-as default fcos.qcow2 0
-    virsh -c qemu:///system vol-upload --pool default fcos.qcow2 /tmp/fcos.qcow2
-  args:
-    creates: '{{ ansible_libvirt_pools.default.path }}/fcos.qcow2'
+        creates: '{{ image_tmp_path }}'

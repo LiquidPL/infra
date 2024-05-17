@@ -1,0 +1,14 @@
+hypervisors:
+  hosts:
+    proxmox.hs.liquid.sh:
+      ansible_host: 192.168.1.50
+      ansible_user: root
+      nodes:
+        - homelab-agent-1
+        - homelab-agent-2
+
+nodes:
+  hosts:
+    homelab-control-plane-1:
+    homelab-agent-1:
+    homelab-agent-2:

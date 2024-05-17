@@ -15,9 +15,13 @@
         ansible_facts.userspace_bits == "64" ) or
       ansible_facts.architecture is search("aarch64")
 
+- name: Get Butane/Ignition file path
+  ansible.builtin.set_fact:
+    butane_path: '{{ (hypervisor == "libvirt") | ansible.builtin.ternary("/var/lib/libvirt/butane", "/var/lib/vz/snippets/butane") }}'
+
 - name: Create Butane config directory
   ansible.builtin.file:
-    path: /var/lib/libvirt/butane
+    path: '{{ butane_path }}'
     state: directory
     owner: root
     group: kvm
@@ -27,7 +31,7 @@
 - name: Generate Butane config
   ansible.builtin.template:
     src: templates/fcos.bu.j2
-    dest: '/var/lib/libvirt/butane/{{ item }}.bu'
+    dest: '{{ butane_path }}/{{ item }}.bu'
     mode: '0660'
     owner: root
     group: kvm
@@ -36,15 +40,15 @@
 
 - name: Generate Ignition config
   ansible.builtin.shell: /tmp/butane < {{ item }}.bu > {{ item }}.ign
+  changed_when: true
   args:
-    chdir: /var/lib/libvirt/butane
-    creates: /var/lib/libvirt/butane/{{ item }}.ign
+    chdir: '{{ butane_path }}'
   loop: '{{ nodes }}'
   become: true
 
 - name: Change Ignition config owner and permissions
   ansible.builtin.file:
-    path: /var/lib/libvirt/butane/{{ item }}.ign
+    path: '{{ butane_path }}/{{ item }}.ign'
     owner: root
     group: kvm
     mode: '0660'

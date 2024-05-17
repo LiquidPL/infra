@@ -4,9 +4,24 @@ hypervisors:
       ansible_host: 127.0.0.1
       ansible_connection: local
       nodes:
-        - control01
-        - control02
-        - control03
-        - worker01
-        - worker02
-        - worker03
+        - dev_control01
+        - dev_control02
+        - dev_control03
+        - dev_worker01
+        - dev_worker02
+        - dev_worker03
+
+nodes:
+  hosts:
+    control01:
+      ansible_host: 192.168.1.111
+    control02:
+      ansible_host: 192.168.1.112
+    control03:
+      ansible_host: 192.168.1.113
+    worker01:
+      ansible_host: 192.168.1.114
+    worker02:
+      ansible_host: 192.168.1.115
+    worker03:
+      ansible_host: 192.168.1.116

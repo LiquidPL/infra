@@ -1,5 +1,6 @@
 - name: Destroy virtual machines
   hosts: hypervisors
   roles:
+    - hypervisor.detect
     - vm.stop
-    - vm.undefine
+    - vm.destroy

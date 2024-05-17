@@ -1,4 +1,5 @@
 - name: Start virtual machines
   hosts: hypervisors
   roles:
+    - hypervisor.detect
     - vm.start

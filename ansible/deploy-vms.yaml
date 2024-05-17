@@ -10,5 +10,11 @@
 
         Enter the tailscale auth key
   roles:
-    - role: vm.ignition
-    - role: vm.create
+    - hypervisor.detect
+    - vm.generate_ignition_files
+
+    - role: vm.create.libvirt
+      when: hypervisor == 'libvirt'
+
+    - role: vm.create.proxmox
+      when: hypervisor == 'proxmox'

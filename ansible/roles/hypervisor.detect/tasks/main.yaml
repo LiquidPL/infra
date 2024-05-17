@@ -1,0 +1,20 @@
+- name: Determine is hypervisor is Proxmox
+  ansible.builtin.stat:
+    path: /etc/pve
+  register: pve
+
+- name: Determine if hypervisor is libvirt
+  ansible.builtin.command: libvirtd --version
+  register: libvirt
+  changed_when: false
+  failed_when: libvirt.rc != 0 and libvirt.rc != 2
+
+- name: Set hypervisor to Proxmox
+  ansible.builtin.set_fact:
+    hypervisor: 'proxmox'
+  when: pve.stat.exists
+
+- name: Set hypervisor to libvirt
+  ansible.builtin.set_fact:
+    hypervisor: 'libvirt'
+  when: libvirt.rc == 0

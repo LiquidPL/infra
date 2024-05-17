@@ -2,8 +2,10 @@ node_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGyDxmy1/0RfNrOVDeYjL6VypWhDU3
 
 fcos_downloads:
   amd64:
-    url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/38.20231002.3.1/x86_64/fedora-coreos-38.20231002.3.1-qemu.x86_64.qcow2.xz
-    checksum: sha256:bd34a9becc532bdc5d80e2a03378c24334302cd0e6626ca98a771a00695770bb
+    url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/40.20240416.3.1/x86_64/fedora-coreos-40.20240416.3.1-qemu.x86_64.qcow2.xz
+    checksum: sha256:e617931594d6902cd9f9e215037f2d69ae05590295e3247a488d3080f103a86d
   aarch64:
-    url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/38.20231002.3.1/aarch64/fedora-coreos-38.20231002.3.1-qemu.aarch64.qcow2.xz
-    checksum: sha256:6051c5c2332d7a51f014a77b7804a9d01e0ef8792dc68c130484976107481e11
+    url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/40.20240416.3.1/aarch64/fedora-coreos-40.20240416.3.1-qemu.aarch64.qcow2.xz
+    checksum: sha256:7f725a7d49440039ae34505012f639b71a7a19b14c90dcd8a35772c3dcde42a9
+
+image_tmp_path: /root/fcos.qcow2

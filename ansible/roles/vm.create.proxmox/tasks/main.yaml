@@ -1,0 +1,86 @@
+- name: Download Fedora CoreOS image
+  ansible.builtin.include_role:
+    name: vm.download_image
+
+- name: Create VM
+  community.general.proxmox_kvm:
+    api_host: '{{ ansible_host }}'
+    api_user: '{{ proxmox_username }}'
+    api_password: '{{ proxmox_password }}'
+    node: proxmox
+    name: '{{ item }}'
+    machine: q35
+    bios: ovmf
+    ostype: l26
+    kvm: true
+    args: '-fw_cfg name=opt/com.coreos/config,file={{ butane_path }}/{{ item }}.ign'
+    cpu: host
+    sockets: 1
+    cores: 2
+    memory: 6144
+    net:
+      net0: 'virtio,bridge=vmbr0,firewall=1'
+    serial:
+      serial0: socket
+    scsihw: virtio-scsi-single
+    efidisk0:
+      efitype: 4m
+      format: raw
+      pre_enrolled_keys: true
+      storage: local-zfs
+    onboot: true
+    state: present
+  loop: '{{ nodes }}'
+  delegate_to: localhost
+
+- name: Import downloaded image into VM
+  community.general.proxmox_disk:
+    api_host: '{{ ansible_host }}'
+    api_user: '{{ proxmox_username }}'
+    api_password: '{{ proxmox_password }}'
+    name: '{{ item }}'
+    storage: local-zfs
+    media: disk
+    disk: scsi0
+    import_from: '{{ image_tmp_path }}'
+    ssd: true
+    format: raw
+    discard: true
+    iothread: true
+    replicate: true
+  loop: '{{ nodes }}'
+  delegate_to: localhost
+
+- name: Resize image
+  community.general.proxmox_disk:
+    api_host: '{{ ansible_host }}'
+    api_user: '{{ proxmox_username }}'
+    api_password: '{{ proxmox_password }}'
+    name: '{{ item }}'
+    disk: scsi0
+    state: resized
+    size: 32G
+  loop: '{{ nodes }}'
+  delegate_to: localhost
+
+- name: Change VM boot order to boot from the image
+  community.general.proxmox_kvm:
+    api_host: '{{ ansible_host }}'
+    api_user: '{{ proxmox_username }}'
+    api_password: '{{ proxmox_password }}'
+    node: proxmox
+    name: '{{ item }}'
+    boot: 'order=scsi0'
+    update: true
+  loop: '{{ nodes }}'
+  delegate_to: localhost
+
+- name: Start VM
+  community.general.proxmox_kvm:
+    api_host: '{{ ansible_host }}'
+    api_user: '{{ proxmox_username }}'
+    api_password: '{{ proxmox_password }}'
+    name: '{{ item }}'
+    state: started
+  loop: '{{ nodes }}'
+  delegate_to: localhost
