@@ -1,0 +1,47 @@
+hypervisors:
+  hosts:
+    localhost:
+      ansible_host: 127.0.0.1
+      ansible_connection: local
+      nodes:
+        - cluster-dev-control-plane-1
+        - cluster-dev-control-plane-2
+        - cluster-dev-control-plane-3
+        - cluster-dev-agent-1
+        - cluster-dev-agent-2
+        - cluster-dev-agent-3
+
+control_planes:
+  vars:
+    k3s_control_node: true
+    k3s_server:
+      secrets-encryption: true
+      disable-network-policy: true
+      flannel-backend: 'none'
+      disable:
+        - traefik
+        - servicelb
+      kubelet-arg:
+        - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+  hosts:
+    cluster-dev-control-plane-1:
+    cluster-dev-control-plane-2:
+    cluster-dev-control-plane-3:
+
+agents:
+  vars:
+    k3s_agent:
+      kubelet-arg:
+        - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+  hosts:
+    cluster-dev-agent-1:
+    cluster-dev-agent-2:
+    cluster-dev-agent-3:
+
+nodes:
+  vars:
+    k3s_registration_address: cluster-dev-control-plane-1
+    k3s_etcd_datastore: true
+  children:
+    control_planes:
+    agents:

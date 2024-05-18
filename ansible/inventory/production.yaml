@@ -1,0 +1,46 @@
+hypervisors:
+  hosts:
+    proxmox.hs.liquid.sh:
+      ansible_host: 192.168.1.50
+      ansible_user: root
+      nodes:
+        - homelab-agent-1
+        - homelab-agent-2
+
+control_planes:
+  vars:
+    k3s_control_node: true
+    k3s_server:
+      node-taint: node-role.kubernetes.io/control-plane:NoSchedule
+      secrets-encryption: true
+      disable-network-policy: true
+      flannel-backend: 'none'
+      disable:
+        - traefik
+        - servicelb
+      kubelet-arg:
+        - 'kube-reserved=cpu=250m,memory=1500Mi,ephemeral-storage=1Gi'
+        - 'system-reserved=cpu=250m,memory=1500Mi'
+        - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+  hosts:
+    homelab-control-plane-1:
+
+agents:
+  vars:
+    k3s_agent:
+      kubelet-arg:
+        - 'kube_reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi'
+        - 'system_reserved=cpu=250m,memory=300Mi'
+        - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+  hosts:
+    homelab-agent-1:
+    homelab-agent-2:
+
+nodes:
+  vars:
+    k3s_use_unsupported_config: true
+    k3s_etcd_datastore: true
+    k3s_registration_address: homelab-control-plane-1
+  children:
+    control_planes:
+    agents:
