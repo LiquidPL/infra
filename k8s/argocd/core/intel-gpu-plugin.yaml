@@ -30,3 +30,5 @@ spec:
       backoff:
         duration: 10s
         factor: 3
+    syncOptions:
+      - CreateNamespace=true
