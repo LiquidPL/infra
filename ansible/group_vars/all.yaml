@@ -7,5 +7,3 @@ fcos_downloads:
   aarch64:
     url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/40.20240416.3.1/aarch64/fedora-coreos-40.20240416.3.1-qemu.aarch64.qcow2.xz
     checksum: sha256:7f725a7d49440039ae34505012f639b71a7a19b14c90dcd8a35772c3dcde42a9
-
-image_tmp_path: /root/fcos.qcow2

@@ -1,3 +1,9 @@
+- name: Get path for image download
+  ansible.builtin.set_fact:
+    # downloading the image to /root instead of /tmp on Proxmox
+    # to avoid accidentally triggering the OOM killer
+    image_tmp_path: '{{ (hypervisor == "libvirt") | ansible.builtin.ternary("/tmp/", "/root") }}/fcos.img'
+
 - name: Check if the image is downloaded
   ansible.builtin.stat:
     path: '{{ image_tmp_path }}'
