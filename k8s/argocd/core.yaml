@@ -22,6 +22,8 @@ spec:
       server: '*'
     - namespace: 'democratic-csi'
       server: '*'
+    - namespace: 'longhorn-system'
+      server: '*'
     - namespace: 'node-feature-discovery'
       server: '*'
   clusterResourceWhitelist:

@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+  labels:
+    name: longhorn
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  sources:
+    - chart: longhorn
+      repoURL: https://charts.longhorn.io/
+      targetRevision: 1.6.1
+      helm:
+        valueFiles:
+          - $values/k8s/apps/longhorn/values.yaml
+        valuesObject:
+          preUpgradeChecker:
+            jobEnabled: false
+    - repoURL: https://github.com/LiquidPL/homelab.git
+      targetRevision: master
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: false
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
