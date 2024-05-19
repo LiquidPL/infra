@@ -1,0 +1,45 @@
+immich:
+  persistence:
+    library:
+      existingClaim: immich-upload
+
+image:
+  tag: v1.99.0
+
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      size: 8Gi
+      storageClass: longhorn
+
+redis:
+  enabled: true
+
+server:
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      tls:
+        - hosts:
+            - immich.hs.liquid.sh
+          secretName: tls-immich-ingress
+      hosts:
+        - host: immich.hs.liquid.sh
+          paths:
+            - path: /
+
+microservices:
+  resources:
+    limits:
+      cpu: 500m
+
+machine-learning:
+  resources:
+    limits:
+      cpu: 1000m
+  persistence:
+    cache:
+      type: pvc

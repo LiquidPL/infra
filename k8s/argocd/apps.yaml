@@ -10,6 +10,8 @@ spec:
   destinations:
     - namespace: 'apps'
       server: '*'
+    - namespace: 'immich'
+      server: '*'
     - namespace: 'argocd'
       server: '*'
   clusterResourceWhitelist:

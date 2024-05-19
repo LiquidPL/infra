@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich
+  namespace: argocd
+  labels:
+    name: immich
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: immich
+  project: apps
+  sources:
+    - chart: immich
+      repoURL: https://immich-app.github.io/immich-charts
+      targetRevision: 0.6.0
+      helm:
+        valueFiles:
+          - $values/k8s/apps/immich/values.yaml
+    - repoURL: https://github.com/LiquidPL/homelab.git
+      targetRevision: master
+      path: k8s/apps/immich/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
