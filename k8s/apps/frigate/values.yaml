@@ -122,6 +122,10 @@ persistence:
     size: 650Gi
     storageClass: nfs-csi
     skipuninstall: true
+  config:
+    enabled: true
+    storageClass: longhorn
+    skipuninstall: true
 securityContext:
   capabilities:
     add:
