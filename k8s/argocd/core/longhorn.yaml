@@ -27,7 +27,7 @@ spec:
       ref: values
   syncPolicy:
     automated:
-      selfHeal: false
+      selfHeal: true
     retry:
       limit: 3
       backoff:
