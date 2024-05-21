@@ -26,6 +26,8 @@ spec:
       server: '*'
     - namespace: 'node-feature-discovery'
       server: '*'
+    - namespace: 'core'
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

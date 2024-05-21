@@ -10,8 +10,8 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: apps
-  project: apps
+    namespace: core
+  project: core
   source:
     repoURL: https://github.com/LiquidPL/homelab.git
     targetRevision: master
