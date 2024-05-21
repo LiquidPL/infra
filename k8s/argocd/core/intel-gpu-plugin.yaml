@@ -22,6 +22,15 @@ spec:
     - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
       targetRevision: v0.30.0
       path: deployments/gpu_plugin/overlays/fractional_resources
+      kustomize:
+        patches:
+          - target:
+              kind: DaemonSet
+              name: intel-gpu-plugin
+            patch: |-
+              - op: replace
+                path: /spec/template/spec/volumes/0/hostPath/path
+                value: /var/lib/rancher/k3s/agent/serving-kubelet.crt
   syncPolicy:
     automated:
       selfHeal: true
