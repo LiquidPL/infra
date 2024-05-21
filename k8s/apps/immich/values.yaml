@@ -43,3 +43,4 @@ machine-learning:
   persistence:
     cache:
       type: pvc
+      storageClass: nfs-csi
