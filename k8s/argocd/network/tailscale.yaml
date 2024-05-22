@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tailscale
+  namespace: argocd
+  labels:
+    name: tailscale
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: network
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tailscale
+  sources:
+    - chart: tailscale-operator
+      repoURL: https://pkgs.tailscale.com/helmcharts
+      targetRevision: 1.66.3
+    - repoURL: https://github.com/LiquidPL/homelab.git
+      targetRevision: master
+      path: k8s/apps/tailscale
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
