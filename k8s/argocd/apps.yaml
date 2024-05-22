@@ -8,11 +8,7 @@ spec:
   sourceRepos:
     - '*'
   destinations:
-    - namespace: 'apps'
-      server: '*'
-    - namespace: 'immich'
-      server: '*'
-    - namespace: 'argocd'
+    - namespace: '*'
       server: '*'
   clusterResourceWhitelist:
     - group: '*'

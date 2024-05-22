@@ -8,11 +8,7 @@ spec:
   sourceRepos:
     - '*'
   destinations:
-    - namespace: 'network'
-      server: '*'
-    - namespace: 'metallb-system'
-      server: '*'
-    - namespace: 'argocd'
+    - namespace: '*'
       server: '*'
   clusterResourceWhitelist:
     - group: '*'
