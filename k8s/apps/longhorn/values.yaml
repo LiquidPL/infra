@@ -10,3 +10,11 @@ longhornDriver:
       effect: NoSchedule
 defaultSettings:
   taintToleration: node-role.kubernetes.io/control-plane:NoSchedule
+  defaultReplicaCount: 2
+persistence:
+  defaultClassReplicaCount: 2
+csi:
+  attacherReplicaCount: 2
+  provisionerReplicaCount: 2
+  resizerReplicaCount: 2
+  snapshotterReplicaCount: 2
