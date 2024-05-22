@@ -16,7 +16,6 @@ spec:
     repoURL: https://github.com/LiquidPL/homelab.git
     targetRevision: master
     path: k8s/apps/jellyfin
-    ref: values
   syncPolicy:
     automated:
       selfHeal: true
