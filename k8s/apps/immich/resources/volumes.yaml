@@ -3,6 +3,8 @@ kind: PersistentVolume
 metadata:
   name: immich-upload
   labels:
+    app.kubernetes.io/name: immich
+    app.kubernetes.io/instance: immich
     immich-volume: upload
 spec:
   accessModes:
@@ -24,6 +26,8 @@ spec:
   selector:
     matchLabels:
       immich-volume: upload
+      app.kubernetes.io/name: immich
+      app.kubernetes.io/instance: immich
   accessModes:
     - ReadWriteOnce
   resources:
@@ -35,6 +39,8 @@ kind: PersistentVolume
 metadata:
   name: immich-external
   labels:
+    app.kubernetes.io/name: immich
+    app.kubernetes.io/instance: immich
     immich-volume: external
 spec:
   accessModes:
@@ -56,6 +62,8 @@ spec:
   selector:
     matchLabels:
       immich-volume: external
+      app.kubernetes.io/name: immich
+      app.kubernetes.io/instance: immich
   accessModes:
     - ReadWriteOnce
   resources:
