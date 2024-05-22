@@ -3,18 +3,30 @@ longhornManager:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
+
 longhornDriver:
   tolerations:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
+
 defaultSettings:
   taintToleration: node-role.kubernetes.io/control-plane:NoSchedule
   defaultReplicaCount: 2
+
 persistence:
   defaultClassReplicaCount: 2
+
 csi:
   attacherReplicaCount: 2
   provisionerReplicaCount: 2
   resizerReplicaCount: 2
   snapshotterReplicaCount: 2
+
+ingress:
+  enabled: true
+  host: longhorn.hs.liquid.sh
+  tls: true
+  tlsSecret: tls-longhorn
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
