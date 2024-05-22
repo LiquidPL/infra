@@ -27,6 +27,8 @@ kind: PersistentVolume
 metadata:
   name: jellyfin-media
   labels:
+    app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/instance: jellyfin
     jellyfin-volume: media
 spec:
   accessModes:
@@ -51,6 +53,8 @@ spec:
   selector:
     matchLabels:
       jellyfin-volume: media
+      app.kubernetes.io/name: jellyfin
+      app.kubernetes.io/instance: jellyfin
   accessModes:
     - ReadWriteOnce
   resources:
