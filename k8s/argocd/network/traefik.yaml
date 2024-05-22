@@ -8,7 +8,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: network
   destination:
     server: https://kubernetes.default.svc
     namespace: network
