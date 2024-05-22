@@ -15,6 +15,10 @@ postgresql:
 
 redis:
   enabled: true
+  master:
+    persistence:
+      size: 2Gi
+      storageClass: longhorn
 
 server:
   ingress:
