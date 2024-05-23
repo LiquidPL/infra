@@ -16,3 +16,13 @@ ports:
   web:
     redirectTo:
       port: websecure
+  websecure:
+    transport:
+      respondingTimeouts:
+        # warning: be careful about disabling these timeouts on servers exposed
+        # to the internet, as it can cause a denial of service attack
+        #
+        # further reading:
+        # * https://github.com/traefik/traefik/wiki/respondingTimeouts-for-applications
+        # * https://github.com/traefik/traefik/security/advisories/GHSA-4vwx-54mw-vqfw
+        readTimeout: 0
