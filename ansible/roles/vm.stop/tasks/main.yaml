@@ -1,6 +1,6 @@
 - name: Stop VM
   community.libvirt.virt:
-    name: '{{ item }}'
+    name: '{{ item.hostname }}'
     state: shutdown
     uri: qemu:///system
   loop: '{{ nodes }}'

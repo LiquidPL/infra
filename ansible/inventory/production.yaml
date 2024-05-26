@@ -4,8 +4,10 @@ hypervisors:
       ansible_host: 192.168.1.50
       ansible_user: root
       nodes:
-        - homelab-agent-1
-        - homelab-agent-2
+        - hostname: homelab-agent-1
+          cores: 4
+          memory: 8192
+          disk_size: 80G
 
 control_planes:
   vars:
@@ -34,7 +36,6 @@ agents:
         - 'resolv-conf=/run/systemd/resolve/resolv.conf'
   hosts:
     homelab-agent-1:
-    homelab-agent-2:
 
 nodes:
   vars:

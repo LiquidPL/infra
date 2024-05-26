@@ -1,7 +1,7 @@
 - name: Undefine VM
   community.libvirt.virt:
     command: undefine
-    name: '{{ item }}'
+    name: '{{ item.hostname }}'
     force: true
     uri: qemu:///system
   loop: '{{ nodes }}'
@@ -11,9 +11,9 @@
     command: facts
 
 - name: Remove VM image
-  ansible.builtin.command: virsh -c qemu:///system vol-delete --pool default {{ item }}.qcow2
+  ansible.builtin.command: virsh -c qemu:///system vol-delete --pool default {{ item.hostname }}.qcow2
   args:
-    removes: '{{ ansible_libvirt_pools.default.path }}/{{ item }}.qcow2'
+    removes: '{{ ansible_libvirt_pools.default.path }}/{{ item.hostname }}.qcow2'
   loop: '{{ nodes }}'
   become: true
 

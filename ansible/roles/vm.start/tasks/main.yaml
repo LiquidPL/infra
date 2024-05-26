@@ -1,6 +1,6 @@
 - name: Start VM
   community.libvirt.virt:
-    name: '{{ item }}'
+    name: '{{ item.hostname }}'
     state: running
     uri: qemu:///system
   loop: '{{ nodes }}'

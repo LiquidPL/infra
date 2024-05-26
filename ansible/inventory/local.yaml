@@ -4,12 +4,20 @@ hypervisors:
       ansible_host: 127.0.0.1
       ansible_connection: local
       nodes:
-        - cluster-dev-control-plane-1
-        - cluster-dev-control-plane-2
-        - cluster-dev-control-plane-3
-        - cluster-dev-agent-1
-        - cluster-dev-agent-2
-        - cluster-dev-agent-3
+        # - hostname: cluster-dev-control-plane-1
+        #   cores: 2
+        #   memory: 4096
+        #   disk_size: 80G
+        # - hostname: cluster-dev-agent-1
+        #   cores: 4
+        #   memory: 8192
+        #   disk_size: 80G
+        - hostname: cluster-dev-control-plane-1
+        - hostname: cluster-dev-control-plane-2
+        - hostname: cluster-dev-control-plane-3
+        - hostname: cluster-dev-agent-1
+        - hostname: cluster-dev-agent-2
+        - hostname: cluster-dev-agent-3
 
 control_planes:
   vars:
@@ -40,8 +48,9 @@ agents:
 
 nodes:
   vars:
-    k3s_registration_address: cluster-dev-control-plane-1
+    k3s_use_unsupported_config: true
     k3s_etcd_datastore: true
+    k3s_registration_address: cluster-dev-control-plane-1
   children:
     control_planes:
     agents:

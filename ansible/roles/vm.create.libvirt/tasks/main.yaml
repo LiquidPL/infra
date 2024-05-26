@@ -14,9 +14,9 @@
     creates: '{{ ansible_libvirt_pools.default.path }}/fcos.qcow2'
 
 - name: Create image for VM
-  ansible.builtin.command: virsh -c qemu:///system vol-create-as default {{ item }}.qcow2 10G --format qcow2 --backing-vol fcos.qcow2 --backing-vol-format qcow2
+  ansible.builtin.command: virsh -c qemu:///system vol-create-as default {{ item.hostname }}.qcow2 {{ item.disk_size | default('20G') }} --format qcow2 --backing-vol fcos.qcow2 --backing-vol-format qcow2
   args:
-    creates: '{{ ansible_libvirt_pools.default.path }}/{{ item }}.qcow2'
+    creates: '{{ ansible_libvirt_pools.default.path }}/{{ item.hostname }}.qcow2'
   loop: '{{ nodes }}'
 
 - name: Create VM
@@ -31,7 +31,7 @@
 
 - name: Start VM
   community.libvirt.virt:
-    name: '{{ item }}'
+    name: '{{ item.hostname }}'
     state: running
     uri: qemu:///system
   loop: '{{ nodes }}'

@@ -1,13 +1,13 @@
 <domain type="kvm" xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
-  <name>{{ item }}</name>
+  <name>{{ item.hostname }}</name>
   <metadata>
     <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
       <libosinfo:os id="http://fedoraproject.org/coreos/stable"/>
     </libosinfo:libosinfo>
   </metadata>
-  <memory>2097152</memory>
-  <currentMemory>2097152</currentMemory>
-  <vcpu>2</vcpu>
+  <memory>{{ (item.memory | default(2048)) * 1024 }}</memory>
+  <currentMemory>{{ (item.memory | default(2048) * 1024 }}</currentMemory>
+  <vcpu>{{ item.cores }}</vcpu>
   <os>
     <type arch="x86_64" machine="q35">hvm</type>
     <loader readonly="yes" type="pflash">/usr/share/edk2/x64/OVMF_CODE.fd</loader>
@@ -31,7 +31,7 @@
   <devices>
     <disk type="file" device="disk">
       <driver name="qemu" type="qcow2"/>
-      <source file="{{ ansible_libvirt_pools.default.path }}/{{ item }}.qcow2"/>
+      <source file="{{ ansible_libvirt_pools.default.path }}/{{ item.hostname }}.qcow2"/>
       <target dev="vda" bus="virtio"/>
     </disk>
     <controller type="usb" model="qemu-xhci" ports="15"/>
@@ -67,6 +67,6 @@
   </devices>
   <qemu:commandline>
     <qemu:arg value="-fw_cfg"/>
-    <qemu:arg value="name=opt/com.coreos/config,file=/var/lib/libvirt/butane/{{ item }}.ign"/>
+    <qemu:arg value="name=opt/com.coreos/config,file=/var/lib/libvirt/butane/{{ item.hostname }}.ign"/>
   </qemu:commandline>
 </domain>

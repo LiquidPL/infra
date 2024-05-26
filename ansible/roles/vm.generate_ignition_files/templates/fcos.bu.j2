@@ -36,7 +36,7 @@ storage:
     - path: /etc/hostname
       mode: 0644
       contents:
-        inline: {{ item }}
+        inline: {{ item.hostname }}
     - path: /etc/NetworkManager/conf.d/99-calico.conf
       contents:
         inline: |

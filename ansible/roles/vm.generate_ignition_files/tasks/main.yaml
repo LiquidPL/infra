@@ -31,7 +31,7 @@
 - name: Generate Butane config
   ansible.builtin.template:
     src: templates/fcos.bu.j2
-    dest: '{{ butane_path }}/{{ item }}.bu'
+    dest: '{{ butane_path }}/{{ item.hostname }}.bu'
     mode: '0660'
     owner: root
     group: kvm
@@ -39,7 +39,7 @@
   become: true
 
 - name: Generate Ignition config
-  ansible.builtin.shell: /tmp/butane < {{ item }}.bu > {{ item }}.ign
+  ansible.builtin.shell: /tmp/butane < {{ item.hostname }}.bu > {{ item.hostname }}.ign
   changed_when: true
   args:
     chdir: '{{ butane_path }}'
@@ -48,7 +48,7 @@
 
 - name: Change Ignition config owner and permissions
   ansible.builtin.file:
-    path: '{{ butane_path }}/{{ item }}.ign'
+    path: '{{ butane_path }}/{{ item.hostname }}.ign'
     owner: root
     group: kvm
     mode: '0660'
