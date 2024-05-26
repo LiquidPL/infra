@@ -11,10 +11,14 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - name: webrtc
+    - name: webrtc-udp
       port: 8555
-      targetPort: webrtc
+      targetPort: webrtc-udp
       protocol: UDP
+    - name: webrtc-tcp
+      port: 8555
+      targetPort: webrtc-tcp
+      protocol: TCP
   selector:
     app.kubernetes.io/name: frigate
     app.kubernetes.io/instance: frigate
