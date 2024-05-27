@@ -52,7 +52,6 @@ config: |
         width: 1280
         height: 720
       motion:
-        improve_contrast: true
         mask:
           - 1240,30,1238,54,960,56,961,27
           - 0,581,93,441,0,353
@@ -97,7 +96,6 @@ config: |
         width: 1280
         height: 720
       motion:
-        improve_contrast: true
         mask:
           - 963,54,1236,55,1237,32,963,30
           - 928,0,1280,0,1280,117
@@ -117,7 +115,7 @@ config: |
             default: 14
             mode: active_objects
 image:
-  tag: 0.12.0
+  tag: 0.13.2
 persistence:
   media:
     enabled: true
