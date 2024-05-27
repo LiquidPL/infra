@@ -42,6 +42,11 @@ storage:
         inline: |
           [keyfile]
           unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:vxlan-v6.calico;interface-name:wireguard.cali;interface-name:wg-v6.cali
+    - path: /etc/sysctl.d/99-inotify.conf
+      contents:
+        inline: |
+          fs.inotify.max_user_instances=512
+          fs.inotify.max_user_watches=262144
     - path: /etc/yum.repos.d/tailscale.repo
       contents:
         inline: |
