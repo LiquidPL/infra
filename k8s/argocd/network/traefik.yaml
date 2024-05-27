@@ -18,10 +18,10 @@ spec:
       targetRevision: 28.0.0
       helm:
         valueFiles:
-          - $values/k8s/apps/traefik/values.yaml
+          - $values/k8s/manifests/traefik/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
-      path: k8s/apps/traefik/resources
+      path: k8s/manifests/traefik/resources
       ref: values
   syncPolicy:
     automated:

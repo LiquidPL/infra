@@ -18,10 +18,10 @@ spec:
       targetRevision: v1.14.5
       helm:
         valueFiles:
-          - $values/k8s/apps/cert-manager/values.yaml
+          - $values/k8s/manifests/cert-manager/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
-      path: k8s/apps/cert-manager/resources
+      path: k8s/manifests/cert-manager/resources
       ref: values
   syncPolicy:
     automated:

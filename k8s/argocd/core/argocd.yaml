@@ -16,7 +16,7 @@ spec:
       targetRevision: 6.9.2
       helm:
         valueFiles:
-          - $values/k8s/apps/argocd/values.yaml
+          - $values/k8s/manifests/argocd/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
       ref: values

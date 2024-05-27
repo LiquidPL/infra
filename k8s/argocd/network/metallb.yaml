@@ -18,10 +18,10 @@ spec:
       targetRevision: 0.14.3
       helm:
         valueFiles:
-          - $values/k8s/apps/metallb/values.yaml
+          - $values/k8s/manifests/metallb/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
-      path: k8s/apps/metallb/resources
+      path: k8s/manifests/metallb/resources
       ref: values
   ignoreDifferences:
     - group: "apiextensions.k8s.io"

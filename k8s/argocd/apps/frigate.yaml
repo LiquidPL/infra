@@ -18,10 +18,10 @@ spec:
       path: charts/frigate
       helm:
         valueFiles:
-           - $values/k8s/apps/frigate/values.yaml
+           - $values/k8s/manifests/frigate/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
-      path: k8s/apps/frigate/resources
+      path: k8s/manifests/frigate/resources
       ref: values
   syncPolicy:
     automated:

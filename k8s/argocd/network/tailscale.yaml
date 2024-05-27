@@ -18,7 +18,7 @@ spec:
       targetRevision: 1.66.3
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
-      path: k8s/apps/tailscale
+      path: k8s/manifests/tailscale
   syncPolicy:
     automated:
       selfHeal: true
