@@ -6,7 +6,7 @@
     </libosinfo:libosinfo>
   </metadata>
   <memory>{{ (item.memory | default(2048)) * 1024 }}</memory>
-  <currentMemory>{{ (item.memory | default(2048) * 1024 }}</currentMemory>
+  <currentMemory>{{ (item.memory | default(2048)) * 1024 }}</currentMemory>
   <vcpu>{{ item.cores }}</vcpu>
   <os>
     <type arch="x86_64" machine="q35">hvm</type>
