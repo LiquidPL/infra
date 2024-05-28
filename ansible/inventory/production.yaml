@@ -24,6 +24,8 @@ control_planes:
         - 'kube-reserved=cpu=250m,memory=1500Mi,ephemeral-storage=1Gi'
         - 'system-reserved=cpu=250m,memory=1500Mi'
         - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+        - 'authentication-token-webhook=true'
+        - 'authorization-mode=Webhook'
   hosts:
     homelab-control-plane-1:
 
@@ -34,6 +36,8 @@ agents:
         - 'kube_reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi'
         - 'system_reserved=cpu=250m,memory=300Mi'
         - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+        - 'authentication-token-webhook=true'
+        - 'authorization-mode=Webhook'
   hosts:
     homelab-agent-1:
 
