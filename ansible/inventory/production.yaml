@@ -20,6 +20,7 @@ control_planes:
       disable:
         - traefik
         - servicelb
+        - metrics-server
       kubelet-arg:
         - 'kube-reserved=cpu=250m,memory=1500Mi,ephemeral-storage=1Gi'
         - 'system-reserved=cpu=250m,memory=1500Mi'
