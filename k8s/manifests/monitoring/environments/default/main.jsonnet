@@ -2,6 +2,7 @@ local kp =
   (import 'kube-prometheus/main.libsonnet') +
   (import 'addons/tolerations.libsonnet') +
   (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
+  (import 'addons/ingress.libsonnet') +
   {
     values+:: {
       common+: {
@@ -32,7 +33,8 @@ local manifests =
   [kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane)] +
   [kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter)] +
   [kp.prometheus[name] for name in std.objectFields(kp.prometheus)] +
-  [kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter)];
+  [kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter)] +
+  [kp.ingress[name] for name in std.objectFields(kp.ingress)];
 
 local argoAnnotations(manifest) =
   manifest {
