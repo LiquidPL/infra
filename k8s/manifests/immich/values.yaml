@@ -4,7 +4,7 @@ immich:
       existingClaim: immich-upload
 
 image:
-  tag: v1.105.1
+  tag: v1.106.4
 
 postgresql:
   enabled: true
@@ -21,6 +21,9 @@ redis:
       storageClass: longhorn
 
 server:
+  resources:
+    limits:
+      cpu: 1250m
   ingress:
     main:
       enabled: true
@@ -34,11 +37,6 @@ server:
         - host: immich.hs.liquid.sh
           paths:
             - path: /
-
-microservices:
-  resources:
-    limits:
-      cpu: 1000m
 
 machine-learning:
   resources:
