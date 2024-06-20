@@ -11,3 +11,7 @@ installation:
       - cidr: 10.42.0.0/16
         encapsulation: None
   flexVolumePath: /var/lib/rancher/k3s/agent/libexec/kubernetes
+
+resources:
+  requests:
+    cpu: 50m
