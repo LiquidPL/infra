@@ -124,7 +124,7 @@ persistence:
     skipuninstall: true
   config:
     enabled: true
-    size: 256Mi
+    size: 512Mi
     storageClass: longhorn
     skipuninstall: true
 securityContext:
