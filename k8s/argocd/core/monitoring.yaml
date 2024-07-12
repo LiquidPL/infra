@@ -1,32 +1,32 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: monitoring
-  namespace: argocd
-  labels:
-    name: monitoring
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: core
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-  source:
-    repoURL: https://github.com/LiquidPL/homelab.git
-    targetRevision: master
-    path: k8s/manifests/monitoring
-    plugin:
-      env:
-        - name: TK_ENV
-          value: default
-  syncPolicy:
-    automated:
-      selfHeal: true
-    retry:
-      limit: 3
-      backoff:
-        duration: 10s
-        factor: 3
-    syncOptions:
-      - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: monitoring
+#   namespace: argocd
+#   labels:
+#     name: monitoring
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: core
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: monitoring
+#   source:
+#     repoURL: https://github.com/LiquidPL/homelab.git
+#     targetRevision: master
+#     path: k8s/manifests/monitoring
+#     plugin:
+#       env:
+#         - name: TK_ENV
+#           value: default
+#   syncPolicy:
+#     automated:
+#       selfHeal: true
+#     retry:
+#       limit: 3
+#       backoff:
+#         duration: 10s
+#         factor: 3
+#     syncOptions:
+#       - CreateNamespace=true
