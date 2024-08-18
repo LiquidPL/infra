@@ -1,13 +1,13 @@
 hypervisors:
   hosts:
     proxmox.hs.liquid.sh:
-      ansible_host: 192.168.1.50
+      ansible_host: 10.10.0.50
       ansible_user: root
       nodes:
         - hostname: homelab-agent-1
           cores: 4
-          memory: 8192
-          disk_size: 80G
+          memory: 10240
+          disk_size: 100G
 
 control_planes:
   vars:

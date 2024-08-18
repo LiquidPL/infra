@@ -29,6 +29,6 @@ ports:
 
 service:
   annotations:
-    metallb.universe.tf/allow-shared-ip: 'key-to-share-192.168.1.20'
+    metallb.universe.tf/allow-shared-ip: 'key-to-share-10.10.100.10'
   spec:
-    loadBalancerIP: 192.168.1.20
+    loadBalancerIP: 10.10.100.10

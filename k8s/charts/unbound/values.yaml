@@ -31,7 +31,7 @@ securityContext: {}
 service:
   enabled: true
   type: LoadBalancer
-  loadBalancerIP: 192.168.1.25
+  loadBalancerIP: 10.10.100.1
   port: 53
 
 resources: {}
@@ -77,11 +77,10 @@ config: |
     interface: ::0@53
 
     access-control: 127.0.0.0/32 allow
-    access-control: 192.168.1.0/24 allow
     access-control: 172.18.0.0/12 allow
     access-control: 10.0.0.0/8 allow
 
-    private-address: 192.168.1.0/24
+    private-address: 10.0.0.0/8
 
     # Tailscale CIDR range
     private-address: 100.64.0.0/10
@@ -89,7 +88,7 @@ config: |
     private-domain: "hs.liquid.sh"
     domain-insecure: "hs.liquid.sh"
 
-    local-zone: "192.in-addr.arpa." nodefault
+    local-zone: "10.10.in-addr.arpa." nodefault
     local-zone: "hs.liquid.sh." nodefault
 
     access-control-view: 100.64.0.0/10 tailscale
@@ -99,7 +98,7 @@ config: |
     stub-addr: 10.43.0.50
 
   stub-zone:
-    name: "192.in-addr.arpa."
+    name: "100.10.10.in-addr.arpa."
     stub-addr: 10.43.0.50
 
   view:

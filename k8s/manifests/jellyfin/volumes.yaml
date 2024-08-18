@@ -36,7 +36,7 @@ spec:
   capacity:
     storage: 512Gi
   nfs:
-    server: 192.168.1.51
+    server: 10.10.0.51
     path: "/mnt/pool/jellyfin"
   mountOptions:
     - nfsvers=4.2

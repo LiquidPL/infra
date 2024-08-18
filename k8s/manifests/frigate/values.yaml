@@ -1,7 +1,7 @@
 config: |
   mqtt:
     enabled: true
-    host: 192.168.1.200
+    host: 10.10.0.200
     user: '{FRIGATE_MQTT_USER}'
     password: '{FRIGATE_MQTT_PASSWORD}'
   detectors:
@@ -19,16 +19,16 @@ config: |
   go2rtc:
     streams:
       driveway:
-        - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.211:554/cam/realmonitor?channel=1&subtype=0
+        - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.11:554/cam/realmonitor?channel=1&subtype=0
       driveway_sub:
         - 'ffmpeg:driveway#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
       backyard:
-        - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@192.168.1.210:554/cam/realmonitor?channel=1&subtype=0
+        - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.10:554/cam/realmonitor?channel=1&subtype=0
       backyard_sub:
         - 'ffmpeg:backyard#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
     webrtc:
       candidates:
-        - 192.168.1.21:8555
+        - 10.10.100.254:8555
         - 100.118.30.9:8555
         - stun:8555
       ice_servers:
