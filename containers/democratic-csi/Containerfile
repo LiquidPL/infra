@@ -1,0 +1,19 @@
+ARG tag
+
+FROM docker.io/democraticcsi/democratic-csi:${tag} AS base
+
+ARG BUILDPLATFORM
+
+FROM --platform=${BUILDPLATFORM} docker.io/alpine:latest AS work
+
+COPY --from=base /home/csi/app /tmp/app/
+ADD ./01-env-vars.patch /tmp/app
+WORKDIR /tmp/app
+
+RUN apk add patch
+RUN patch -p1 < 01-env-vars.patch
+RUN rm 01-env-vars.patch
+
+FROM docker.io/democraticcsi/democratic-csi:${tag} AS final
+
+COPY --from=work --chown=csi:csi /tmp/app /home/csi/app/
