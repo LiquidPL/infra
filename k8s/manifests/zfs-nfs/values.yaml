@@ -1,7 +1,6 @@
 controller:
   driver:
-    image: democratic-csi:yaml-env-tags
-    imagePullPolicy: Never
+    image: ghcr.io/liquidpl/democratic-csi:v1.9.3-liquid
     extraEnv:
       - name: TRUENAS_API_KEY
         valueFrom:
@@ -23,8 +22,7 @@ controller:
 
 node:
   driver:
-    image: democratic-csi:yaml-env-tags
-    imagePullPolicy: Never
+    image: ghcr.io/liquidpl/democratic-csi:v1.9.3-liquid
     extraEnv:
       - name: TRUENAS_API_KEY
         valueFrom:
