@@ -30,7 +30,7 @@ jobs:
             ./containers/democratic-csi/Containerfile
           context: ./containers/democratic-csi
           build-args: |
-            tag=${{ inputs.tag }}
+            TAG=${{ inputs.tag }}
           extra-args: --pull=always
 
       - name: Push to GitHub Container Registry
