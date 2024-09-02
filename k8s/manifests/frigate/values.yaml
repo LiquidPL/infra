@@ -115,7 +115,7 @@ config: |
             default: 14
             mode: active_objects
 image:
-  tag: 0.13.2
+  tag: 0.14.1
 persistence:
   media:
     enabled: true
