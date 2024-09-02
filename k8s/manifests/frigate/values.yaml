@@ -75,8 +75,6 @@ config: |
           days: 7
           mode: all
         events:
-          required_zones:
-            - actual_driveway
           retain:
             default: 14
             mode: active_objects
