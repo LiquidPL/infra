@@ -1,4 +1,9 @@
 config: |
+  # TODO: configure auth and tls once the helm chart is updated to support 0.14
+  auth:
+    enabled: false
+  tls:
+    enabled: false
   mqtt:
     enabled: true
     host: 10.10.0.200
@@ -7,14 +12,13 @@ config: |
   detectors:
     ov:
       type: openvino
-      device: AUTO
-      model:
-        path: /openvino-model/ssdlite_mobilenet_v2.xml
+      device: GPU
   model:
     width: 300
     height: 300
     input_tensor: nhwc
     input_pixel_format: bgr
+    path: /openvino-model/ssdlite_mobilenet_v2.xml
     labelmap_path: /openvino-model/coco_91cl_bkgr.txt
   go2rtc:
     streams:
@@ -51,20 +55,6 @@ config: |
         enabled: true
         width: 1280
         height: 720
-      motion:
-        mask:
-          - 1240,30,1238,54,960,56,961,27
-          - 0,581,93,441,0,353
-          - 1280,359,1280,0,1108,0,1053,21,994,60,1005,117,1003,180
-          - 605,336,560,282,516,327,538,436
-          - 478,257,512,197,462,195,458,256,455,301
-      zones:
-        actual_driveway:
-          coordinates: 753,141,726,159,763,181,804,199,704,197,580,197,483,192,439,151,399,137
-          objects:
-            - car
-        road:
-          coordinates: 462,127,620,129,827,136,1058,162,1280,187,1280,152,1128,119,987,89,869,68,639,41,533,40,451,38,303,45,127,60,130,152,307,139
       objects:
         track:
           - person
@@ -93,16 +83,6 @@ config: |
         enabled: true
         width: 1280
         height: 720
-      motion:
-        mask:
-          - 963,54,1236,55,1237,32,963,30
-          - 928,0,1280,0,1280,117
-          - 377,231,377,304,333,304,331,229
-          - 270,188,395,190,382,224,244,229
-          - 0,362,36,343,56,301,81,278,110,292,149,280,139,247,97,195,67,155,86,134,108,104,156,118,165,96,153,68,182,54,165,0,0,0
-          - 0,452,0,613,70,601
-          - 410,61,388,0,454,0,446,33,435,74,414,105
-          - 1280,197,1152,174,773,143,390,129,0,127,0,157,99,160,408,165,611,171,1081,204,1280,225
       record:
         enabled: true
         retain:
