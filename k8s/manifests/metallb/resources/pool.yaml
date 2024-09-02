@@ -3,8 +3,6 @@ kind: IPAddressPool
 metadata:
   name: pool
   namespace: metallb-system
-  annotations:
-    argocd.argoproj.io/sync-wave: '200'
 spec:
   addresses:
     - 10.10.100.1-10.10.100.255
