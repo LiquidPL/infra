@@ -22,6 +22,8 @@ redis:
 
 server:
   resources:
+    requests:
+      cpu: 250m
     limits:
       cpu: 1250m
   ingress:
@@ -40,6 +42,8 @@ server:
 
 machine-learning:
   resources:
+    requests:
+      cpu: 250m
     limits:
       cpu: 1000m
   persistence:
