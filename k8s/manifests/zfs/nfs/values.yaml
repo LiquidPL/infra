@@ -35,7 +35,7 @@ storageClasses:
 
 # if your cluster supports snapshots you may enable below
 volumeSnapshotClasses: []
-#- name: freenas-nfs-csi
+#- name: nfs-csi
 #  parameters:
 #  # if true, snapshots will be created with zfs send/receive
 #  # detachedSnapshots: "false"
