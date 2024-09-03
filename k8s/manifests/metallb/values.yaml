@@ -11,3 +11,7 @@ controller:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
+
+speaker:
+  # disabled since calico is broadcasting routes via BGP in its place
+  enabled: false
