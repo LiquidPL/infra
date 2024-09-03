@@ -4,7 +4,7 @@ immich:
       existingClaim: immich-upload
 
 image:
-  tag: v1.107.2
+  tag: v1.113.0
 
 postgresql:
   enabled: true
