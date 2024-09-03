@@ -1,0 +1,32 @@
+# pod-specific values that are shared between the nfs and iscsi drivers
+controller:
+  driver:
+    image: ghcr.io/liquidpl/democratic-csi:v1.9.3-liquid
+    extraEnv:
+      - name: TRUENAS_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: truenas-api-key
+            key: apiKey
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 10
+          preference:
+            matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+node:
+  driver:
+    image: ghcr.io/liquidpl/democratic-csi:v1.9.3-liquid
+    extraEnv:
+      - name: TRUENAS_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: truenas-api-key
+            key: apiKey

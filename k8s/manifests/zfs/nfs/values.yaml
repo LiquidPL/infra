@@ -1,35 +1,3 @@
-controller:
-  driver:
-    image: ghcr.io/liquidpl/democratic-csi:v1.9.3-liquid
-    extraEnv:
-      - name: TRUENAS_API_KEY
-        valueFrom:
-          secretKeyRef:
-            name: truenas-api-key
-            key: apiKey
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 10
-          preference:
-            matchExpressions:
-              - key: node-role.kubernetes.io/control-plane
-                operator: Exists
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
-
-node:
-  driver:
-    image: ghcr.io/liquidpl/democratic-csi:v1.9.3-liquid
-    extraEnv:
-      - name: TRUENAS_API_KEY
-        valueFrom:
-          secretKeyRef:
-            name: truenas-api-key
-            key: apiKey
-
 csiDriver:
   # should be globally unique for a given cluster
   name: "org.democratic-csi.nfs"
@@ -76,9 +44,7 @@ volumeSnapshotClasses: []
 
 driver:
   config:
-    # please see the most up-to-date example of the corresponding config here:
-    # https://github.com/democratic-csi/democratic-csi/tree/master/examples
-    # YOU MUST COPY THE DATA HERE INLINE!
+    # sourced from https://github.com/democratic-csi/democratic-csi/blob/master/examples/freenas-api-nfs.yaml
     driver: freenas-api-nfs
     instance_id:
     httpConnection:
