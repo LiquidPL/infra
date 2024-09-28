@@ -4,6 +4,10 @@ hypervisors:
       ansible_host: 10.10.0.50
       ansible_user: root
       nodes:
+        - hostname: homelab-control-plane-2
+          cores: 2
+          memory: 4096
+          disk_size: 50G
         - hostname: homelab-agent-1
           cores: 4
           memory: 10240
@@ -29,6 +33,10 @@ control_planes:
         - 'authorization-mode=Webhook'
   hosts:
     homelab-control-plane-1:
+      k3s_agent:
+        node-label:
+          - "node.longhorn.io/create-default-disk=true"
+    homelab-control-plane-2:
 
 agents:
   vars:
@@ -41,6 +49,9 @@ agents:
         - 'authorization-mode=Webhook'
   hosts:
     homelab-agent-1:
+      k3s_agent:
+        node-label:
+          - "node.longhorn.io/create-default-disk=true"
 
 nodes:
   vars:

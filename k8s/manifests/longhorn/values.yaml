@@ -12,6 +12,7 @@ longhornDriver:
 
 defaultSettings:
   taintToleration: node-role.kubernetes.io/control-plane:NoSchedule
+  createDefaultDiskLabeledNodes: true
   defaultReplicaCount: 2
 
 persistence:
