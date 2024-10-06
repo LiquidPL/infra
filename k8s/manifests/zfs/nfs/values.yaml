@@ -49,7 +49,7 @@ driver:
     instance_id:
     httpConnection:
       protocol: http
-      host: truenas.core.svc.cluster.local
+      host: truenas.hs.liquid.sh
       port: 80
       # use only 1 of apiKey or username/password
       # if both are present, apiKey is preferred
@@ -97,7 +97,7 @@ driver:
 
     nfs:
       #shareCommentTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
-      shareHost: 10.10.0.51
+      shareHost: truenas.hs.liquid.sh
       shareAlldirs: false
       shareAllowedHosts: []
       shareAllowedNetworks: []

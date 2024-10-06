@@ -55,7 +55,7 @@ driver:
     instance_id:
     httpConnection:
       protocol: http
-      host: truenas.core.svc.cluster.local
+      host: truenas.hs.liquid.sh
       port: 80
       # use only 1 of apiKey or username/password
       # if both are present, apiKey is preferred
@@ -103,7 +103,7 @@ driver:
       # 512, 1K, 2K, 4K, 8K, 16K, 64K, 128K default is 16K
       zvolBlocksize:
     iscsi:
-      targetPortal: "10.10.0.51:3260"
+      targetPortal: "truenas.hs.liquid.sh:3260"
       # for multipath
       targetPortals: [] # [ "server[:port]", "server[:port]", ... ]
       # leave empty to omit usage of -I with iscsiadm
