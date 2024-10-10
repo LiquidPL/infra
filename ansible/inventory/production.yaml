@@ -74,6 +74,8 @@ agents:
   hosts:
     homelab-agent-1:
     homelab-agent-2:
+      k3s_agent:
+        node-taint: 'cpu-class=low-performance:NoSchedule' # raspberry pi node is considerably slower than the x86_64 node
 
 nodes:
   vars:

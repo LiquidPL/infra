@@ -48,7 +48,12 @@ resources: {}
 
 nodeSelector: {}
 
-tolerations: {}
+tolerations:
+  - key: cpu-class
+    operator: Equal
+    value: low-performance
+    effect: NoSchedule
+
 
 affinity: {}
 
