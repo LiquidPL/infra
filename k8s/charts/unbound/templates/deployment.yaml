@@ -41,11 +41,16 @@ spec:
               name: dnstcp
               protocol: TCP
           livenessProbe:
-            exec:
-              command: ['drill', '@127.0.0.1', '-p', {{ .Values.service.port | squote }}, 'google.com']
+            tcpSocket:
+              port: 53
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
           readinessProbe:
-            exec:
-              command: ['drill', '@127.0.0.1', '-p', {{ .Values.service.port | squote }}, 'google.com']
+            tcpSocket:
+              port: 53
+            initialDelaySeconds: 5
+            periodSeconds: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
