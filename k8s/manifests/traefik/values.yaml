@@ -19,6 +19,15 @@ ports:
         # * https://github.com/traefik/traefik/security/advisories/GHSA-4vwx-54mw-vqfw
         readTimeout: 0
 
+deployment:
+  replicas: 2
+
+tolerations:
+  - key: cpu-class
+    operator: Equal
+    value: low-performance
+    effect: NoSchedule
+
 service:
   annotations:
     metallb.universe.tf/allow-shared-ip: 'key-to-share-10.10.100.10'
