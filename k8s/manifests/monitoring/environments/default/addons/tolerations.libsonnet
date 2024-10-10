@@ -5,13 +5,6 @@ local controlPlaneToleration() = {
 };
 
 {
-  prometheus+:: {
-    prometheus+: {
-      spec+: {
-        tolerations: [controlPlaneToleration()],
-      },
-    },
-  },
   alertmanager+:: {
     alertmanager+: {
       spec+: {
