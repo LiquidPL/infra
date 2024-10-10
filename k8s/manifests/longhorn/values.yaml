@@ -1,5 +1,4 @@
 defaultSettings:
-  taintToleration: node-role.kubernetes.io/control-plane:NoSchedule
   defaultReplicaCount: 2
 
 persistence:
