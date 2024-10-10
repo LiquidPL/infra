@@ -1,3 +1,10 @@
 speaker:
   # disabled since calico is broadcasting routes via BGP in its place
   enabled: false
+
+controller:
+  tolerations:
+    - key: cpu-class
+      operator: Equal
+      value: low-performance
+      effect: NoSchedule
