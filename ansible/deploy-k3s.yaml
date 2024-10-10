@@ -1,12 +1,3 @@
-- name: Pre-flight checks
-  hosts: nodes
-  gather_facts: false
-  tasks:
-    - name: Ensure Python is installed
-      ansible.builtin.raw: rpm-ostree install --idempotent --apply-live --assumeyes python3
-      become: true
-      changed_when: false
-
 - name: Deploy K3s
   hosts: nodes
   vars:

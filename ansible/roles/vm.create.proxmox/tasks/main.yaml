@@ -7,7 +7,7 @@
     api_host: '{{ ansible_host }}'
     api_user: '{{ proxmox_username }}'
     api_password: '{{ proxmox_password }}'
-    node: proxmox
+    node: '{{ node_name }}'
     name: '{{ item.hostname }}'
     machine: q35
     bios: ovmf
@@ -19,15 +19,16 @@
     cores: '{{ item.cores | default(2) }}'
     memory: '{{ item.memory | default(4096) }}'
     net:
-      net0: 'virtio,bridge=vmbr0,firewall=1'
+      net0: 'virtio={{ item.mac }},bridge=vmbr0,firewall=1'
     serial:
       serial0: socket
     scsihw: virtio-scsi-single
     efidisk0:
       efitype: 4m
       format: raw
-      pre_enrolled_keys: true
-      storage: local-zfs
+      # disabling secure boot on aarch64 VMs since there's some issues with it
+      pre_enrolled_keys: '{{ (ansible_architecture == "x86_64") | ansible.builtin.ternary(true, false) }}'
+      storage: '{{ storage }}'
     onboot: true
     state: present
   loop: '{{ nodes }}'
@@ -39,7 +40,7 @@
     api_user: '{{ proxmox_username }}'
     api_password: '{{ proxmox_password }}'
     name: '{{ item.hostname }}'
-    storage: local-zfs
+    storage: '{{ storage }}'
     media: disk
     disk: scsi0
     import_from: '{{ image_tmp_path }}'
@@ -68,7 +69,7 @@
     api_host: '{{ ansible_host }}'
     api_user: '{{ proxmox_username }}'
     api_password: '{{ proxmox_password }}'
-    node: proxmox
+    node: '{{ node_name }}'
     name: '{{ item.hostname }}'
     boot: 'order=scsi0'
     update: true
