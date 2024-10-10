@@ -8,7 +8,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: apps
+  project: core
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
