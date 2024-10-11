@@ -83,6 +83,9 @@ local kp =
           },
         },
       },
+      prometheus+: {
+        replicas: 1,
+      },
       grafana+: {
         sections+: {
           server+: {
