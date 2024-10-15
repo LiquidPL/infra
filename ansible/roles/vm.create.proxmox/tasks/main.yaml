@@ -19,7 +19,7 @@
     cores: '{{ item.cores | default(2) }}'
     memory: '{{ item.memory | default(4096) }}'
     net:
-      net0: 'virtio,bridge=vmbr0,firewall=1'
+      net0: 'virtio={{ item.mac }},bridge=vmbr0,firewall=1'
     serial:
       serial0: socket
     scsihw: virtio-scsi-single
