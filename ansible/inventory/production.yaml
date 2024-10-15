@@ -3,41 +3,15 @@ hypervisors:
     proxmox.hs.liquid.sh:
       ansible_host: 10.10.0.50
       ansible_user: root
-      node_name: proxmox
-      storage: local-zfs
       nodes:
-        - hostname: homelab-control-plane-1
+        - hostname: homelab-control-plane-2
           cores: 2
           memory: 4096
-          disk_size: 15G
-          mac: 'bc:24:11:62:c3:81'
-        - hostname: homelab-control-plane-3
-          cores: 2
-          memory: 4096
-          disk_size: 15G
-          mac: 'bc:24:11:66:26:e6'
+          disk_size: 50G
         - hostname: homelab-agent-1
           cores: 4
           memory: 10240
-          disk_size: 80G
-          mac: 'bc:24:11:e1:29:cf'
-    proxmox2.hs.liquid.sh:
-      ansible_host: 10.10.0.51
-      ansible_user: root
-      node_name: proxmox2
-      storage: local
-      nodes:
-        - hostname: homelab-control-plane-2
-          cores: 3
-          memory: 2560
-          disk_size: 20G
-          mac: 'bc:24:11:1d:73:27'
-        - hostname: homelab-agent-2
-          cores: 3
-          memory: 3584
-          disk_size: 80G
-          mac: 'bc:24:11:ac:f7:57'
-
+          disk_size: 100G
 
 control_planes:
   vars:
@@ -53,14 +27,16 @@ control_planes:
         - metrics-server
       kubelet-arg:
         - 'kube-reserved=cpu=250m,memory=1500Mi,ephemeral-storage=1Gi'
-        - 'system-reserved=cpu=250m,memory=300Mi'
+        - 'system-reserved=cpu=250m,memory=1500Mi'
         - 'resolv-conf=/run/systemd/resolve/resolv.conf'
         - 'authentication-token-webhook=true'
         - 'authorization-mode=Webhook'
   hosts:
     homelab-control-plane-1:
+      k3s_agent:
+        node-label:
+          - "node.longhorn.io/create-default-disk=true"
     homelab-control-plane-2:
-    homelab-control-plane-3:
 
 agents:
   vars:
@@ -73,12 +49,13 @@ agents:
         - 'authorization-mode=Webhook'
   hosts:
     homelab-agent-1:
-    homelab-agent-2:
       k3s_agent:
-        node-taint: 'cpu-class=low-performance:NoSchedule' # raspberry pi node is considerably slower than the x86_64 node
+        node-label:
+          - "node.longhorn.io/create-default-disk=true"
 
 nodes:
   vars:
+    k3s_use_unsupported_config: true
     k3s_etcd_datastore: true
     k3s_registration_address: homelab-control-plane-1
   children:
