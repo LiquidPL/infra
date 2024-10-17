@@ -3,15 +3,12 @@ longhornManager:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
-
-longhornDriver:
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
+  nodeSelector:
+    node.longhorn.io/create-default-disk: "true"
 
 defaultSettings:
   taintToleration: node-role.kubernetes.io/control-plane:NoSchedule
+  systemManagedComponentsNodeSelector: node.longhorn.io/create-default-disk:true
   createDefaultDiskLabeledNodes: true
   defaultReplicaCount: 2
   backupTarget: nfs://truenas.hs.liquid.sh:/mnt/pool/longhorn
