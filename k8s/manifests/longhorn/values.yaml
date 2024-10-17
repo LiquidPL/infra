@@ -1,4 +1,5 @@
 defaultSettings:
+  taintToleration: node-role.kubernetes.io/control-plane:NoSchedule
   defaultReplicaCount: 2
   backupTarget: nfs://truenas.hs.liquid.sh:/mnt/pool/longhorn
 
