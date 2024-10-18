@@ -14,7 +14,7 @@ spec:
     namespace: network
   sources:
     - repoURL: https://github.com/LiquidPL/homelab.git
-      path: k8s/charts/unbound
+      path: charts/unbound
       targetRevision: master
   syncPolicy:
     automated:
