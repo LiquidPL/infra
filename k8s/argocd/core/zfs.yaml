@@ -8,7 +8,7 @@ spec:
   goTemplateOptions: ['missingkey=error']
   generators:
     - git:
-        repoURL: https://github.com/LiquidPL/homelab.git
+        repoURL: https://github.com/LiquidPL/infra.git
         revision: master
         directories:
           - path: k8s/manifests/zfs/*
@@ -28,7 +28,7 @@ spec:
         server: https://kubernetes.default.svc
         namespace: democratic-csi
       sources:
-        - repoURL: https://github.com/LiquidPL/homelab.git
+        - repoURL: https://github.com/LiquidPL/infra.git
           targetRevision: master
           ref: values
         - chart: democratic-csi
@@ -64,7 +64,7 @@ spec:
     namespace: democratic-csi
   project: core
   source:
-    repoURL: https://github.com/LiquidPL/homelab.git
+    repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
     path: k8s/manifests/zfs/resources
   syncPolicy:

@@ -22,7 +22,7 @@ spec:
         valuesObject:
           preUpgradeChecker:
             jobEnabled: false
-    - repoURL: https://github.com/LiquidPL/homelab.git
+    - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
       ref: values
   syncPolicy:

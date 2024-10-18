@@ -19,7 +19,7 @@ spec:
       helm:
         valueFiles:
            - $values/k8s/manifests/frigate/values.yaml
-    - repoURL: https://github.com/LiquidPL/homelab.git
+    - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
       path: k8s/manifests/frigate/resources
       ref: values

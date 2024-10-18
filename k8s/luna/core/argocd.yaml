@@ -17,7 +17,7 @@ spec:
       helm:
         valueFiles:
           - $values/k8s/luna/core/argocd/values.yaml
-    - repoURL: https://github.com/LiquidPL/homelab.git
+    - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
       path: k8s/luna/core/argocd/resources
       ref: values

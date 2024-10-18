@@ -13,7 +13,7 @@ spec:
     namespace: apps
   project: apps
   source:
-    repoURL: https://github.com/LiquidPL/homelab.git
+    repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
     path: k8s/manifests/jellyfin
   syncPolicy:

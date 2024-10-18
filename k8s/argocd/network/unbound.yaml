@@ -13,7 +13,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: network
   sources:
-    - repoURL: https://github.com/LiquidPL/homelab.git
+    - repoURL: https://github.com/LiquidPL/infra.git
       path: charts/unbound
       targetRevision: master
   syncPolicy:

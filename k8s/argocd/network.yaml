@@ -30,7 +30,7 @@ spec:
   project: network
   source:
     path: k8s/argocd/network
-    repoURL: https://github.com/LiquidPL/homelab.git
+    repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
   syncPolicy:
     automated:
