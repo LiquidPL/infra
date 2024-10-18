@@ -5,20 +5,6 @@ local controlPlaneToleration() = {
 };
 
 {
-  prometheus+:: {
-    prometheus+: {
-      spec+: {
-        tolerations: [
-          {
-            key: 'cpu-class',
-            operator: 'Equal',
-            value: 'low-performance',
-            effect: 'NoSchedule',
-          }
-        ],
-      },
-    },
-  },
   alertmanager+:: {
     alertmanager+: {
       spec+: {
