@@ -16,9 +16,10 @@ spec:
       targetRevision: 7.6.8
       helm:
         valueFiles:
-          - $values/k8s/manifests/argocd/values.yaml
+          - $values/k8s/luna/core/argocd/values.yaml
     - repoURL: https://github.com/LiquidPL/homelab.git
       targetRevision: master
+      path: k8s/luna/core/argocd/resources
       ref: values
   syncPolicy:
     automated:

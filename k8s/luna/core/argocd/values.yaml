@@ -1,5 +1,5 @@
 global:
-  domain: argocd.hs.liquid.sh
+  domain: argocd.luna.liquid.sh
 
 configs:
   params:
@@ -25,7 +25,7 @@ server:
       cert-manager.io/cluster-issuer: letsencrypt
     extraTls:
       - hosts:
-          - argocd.hs.liquid.sh
+          - argocd.luna.liquid.sh
         secretName: tls-argocd
 
 repoServer:
