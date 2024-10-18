@@ -1,3 +1,3 @@
-# homelab
+# infra
 
-Configuration files and scripts for my homelab.
+Configuration files and scripts for my homelab and various other services.
