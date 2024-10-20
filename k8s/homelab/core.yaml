@@ -1,35 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: core
-  namespace: argocd
-spec:
-  description: Core resources and services
-  sourceRepos:
-    - '*'
-  destinations:
-    - namespace: '*'
-      server: '*'
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
----
-apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: core
-  namespace: argocd
+  namespace: apps-homelab
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     name: core
 spec:
   destination:
-    namespace: argocd
+    namespace: apps-homelab
     server: https://kubernetes.default.svc
-  project: core
+  project: homelab
   source:
-    path: k8s/argocd/core
+    path: k8s/homelab/core
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
   syncPolicy:

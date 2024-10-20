@@ -2,15 +2,15 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: intel-gpu-plugin
-  namespace: argocd
+  namespace: apps-homelab
   labels:
     name: intel-gpu-plugin
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: core
+  project: homelab
   destination:
-    server: https://kubernetes.default.svc
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
     namespace: node-feature-discovery
   sources:
     - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git

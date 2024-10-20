@@ -2,15 +2,15 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: longhorn
-  namespace: argocd
+  namespace: apps-homelab
   labels:
     name: longhorn
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: core
+  project: homelab
   destination:
-    server: https://kubernetes.default.svc
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
     namespace: longhorn-system
   sources:
     - chart: longhorn
@@ -18,8 +18,11 @@ spec:
       targetRevision: 1.6.2
       helm:
         valueFiles:
-          - $values/k8s/manifests/longhorn/values.yaml
+          - $values/k8s/homelab/core/longhorn/values.yaml
         valuesObject:
+          # this one is kept here instead of the values.yaml file
+          # because it's specific to argocd deployments
+          # see: https://github.com/longhorn/charts/tree/v1.7.x/charts/longhorn#other-settings
           preUpgradeChecker:
             jobEnabled: false
     - repoURL: https://github.com/LiquidPL/infra.git

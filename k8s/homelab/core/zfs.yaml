@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: zfs
-  namespace: argocd
+  namespace: apps-homelab
 spec:
   goTemplate: true
   goTemplateOptions: ['missingkey=error']
@@ -11,21 +11,21 @@ spec:
         repoURL: https://github.com/LiquidPL/infra.git
         revision: master
         directories:
-          - path: k8s/manifests/zfs/*
-          - path: k8s/manifests/zfs/resources
+          - path: k8s/homelab/core/zfs/*
+          - path: k8s/homelab/core/zfs/resources
             exclude: true
   template:
     metadata:
       name: zfs-{{ .path.basename }}
-      namespace: argocd
+      namespace: apps-homelab
       labels:
         name: zfs-{{ .path.basename }}
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
-      project: core
+      project: homelab
       destination:
-        server: https://kubernetes.default.svc
+        server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
         namespace: democratic-csi
       sources:
         - repoURL: https://github.com/LiquidPL/infra.git
@@ -36,8 +36,8 @@ spec:
           targetRevision: 0.14.6
           helm:
             valueFiles:
-              - $values/k8s/manifests/zfs/values.yaml
-              - $values/k8s/manifests/zfs/{{ .path.basename }}/values.yaml
+              - $values/k8s/homelab/core/zfs/values.yaml
+              - $values/k8s/homelab/core/zfs/{{ .path.basename }}/values.yaml
       syncPolicy:
         automated:
           selfHeal: true
@@ -53,20 +53,20 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: zfs-resources
-  namespace: argocd
+  namespace: apps-homelab
   labels:
     name: zfs-resources
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    server: https://kubernetes.default.svc
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
     namespace: democratic-csi
-  project: core
+  project: homelab
   source:
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
-    path: k8s/manifests/zfs/resources
+    path: k8s/homelab/core/zfs/resources
   syncPolicy:
     automated:
       selfHeal: true
