@@ -8,6 +8,8 @@ configs:
     applicationsetcontroller.namespaces: apps-luna, apps-homelab
     applicationsetcontroller.enable.scm.providers: false
     applicationsetcontroller.enable.new.git.file.globbing: true
+    controller.status.processors: 10
+    controller.operation.processors: 5
   cm:
     application.resourceTrackingMethod: annotation+label
   cmp:
