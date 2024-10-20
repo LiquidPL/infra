@@ -8,7 +8,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: core
+  project: luna-core
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

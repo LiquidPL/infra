@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: core
+  name: luna-core
   namespace: argocd
 spec:
   description: Core resources and services
@@ -9,7 +9,7 @@ spec:
     - '*'
   destinations:
     - namespace: '*'
-      server: '*'
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
@@ -17,17 +17,17 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: core
+  name: luna-core
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    name: core
+    name: luna-core
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: core
+  project: luna-core
   source:
     path: k8s/luna/core
     repoURL: https://github.com/LiquidPL/infra.git

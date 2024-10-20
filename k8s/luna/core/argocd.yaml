@@ -6,7 +6,7 @@ metadata:
   labels:
     name: argocd
 spec:
-  project: core
+  project: luna-core
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
