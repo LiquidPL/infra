@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: apps-luna
+  labels:
+    name: longhorn
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: luna
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  sources:
+    - chart: longhorn
+      repoURL: https://charts.longhorn.io/
+      targetRevision: 1.7.2
+      helm:
+        valueFiles:
+          - $values/k8s/luna/core/longhorn/values.yaml
+        valuesObject:
+          # this one is kept here instead of the values.yaml file
+          # because it's specific to argocd deployments
+          # see: https://github.com/longhorn/charts/tree/v1.7.x/charts/longhorn#other-settings
+          preUpgradeChecker:
+            jobEnabled: false
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

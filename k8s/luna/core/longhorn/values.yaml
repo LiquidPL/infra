@@ -1,0 +1,28 @@
+longhornManager:
+  tolerations:
+    - key: node-role.kubernetes.io/storage
+      operator: Exists
+      effect: NoSchedule
+  nodeSelector:
+    node-role.kubernetes.io/storage: "true"
+
+longhornDriver:
+  tolerations:
+    - key: node-role.kubernetes.io/storage
+      operator: Exists
+      effect: NoSchedule
+
+defaultSettings:
+  taintToleration: node-role.kubernetes.io/storage:NoSchedule
+  createDefaultDiskLabeledNodes: true
+  defaultReplicaCount: 2
+
+persistence:
+  defaultClassReplicaCount: 2
+  defaultClass: true
+
+csi:
+  attacherReplicaCount: 2
+  provisionerReplicaCount: 2
+  resizerReplicaCount: 2
+  snapshotterReplicaCount: 2
