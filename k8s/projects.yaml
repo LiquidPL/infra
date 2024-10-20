@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: luna
+  namespace: argocd
+spec:
+  sourceRepos:
+    - '*'
+  sourceNamespaces:
+    - apps-luna
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: homelab
+  namespace: argocd
+spec:
+  sourceRepos:
+    - '*'
+  sourceNamespaces:
+    - apps-homelab
+  destinations:
+    - namespace: '*'
+      server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'

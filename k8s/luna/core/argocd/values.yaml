@@ -4,7 +4,12 @@ global:
 configs:
   params:
     server.insecure: true
+    application.namespaces: apps-luna, apps-homelab
+    applicationsetcontroller.namespaces: apps-luna, apps-homelab
+    applicationsetcontroller.enable.scm.providers: false
     applicationsetcontroller.enable.new.git.file.globbing: true
+  cm:
+    application.resourceTrackingMethod: annotation+label
   cmp:
     create: true
     plugins:
@@ -17,6 +22,8 @@ configs:
         discover:
           fileName: './environments/*/main.jsonnet'
 
+applicationSet:
+  allowAnyNamespace: true
 
 server:
   ingress:

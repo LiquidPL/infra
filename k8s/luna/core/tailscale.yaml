@@ -2,13 +2,13 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: tailscale
-  namespace: argocd
+  namespace: apps-luna
   labels:
     name: tailscale
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: luna-core
+  project: luna
   destination:
     server: https://kubernetes.default.svc
     namespace: tailscale

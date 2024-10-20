@@ -2,13 +2,13 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cert-manager
-  namespace: argocd
+  namespace: apps-luna
   labels:
     name: cert-manager
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: luna-core
+  project: luna
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

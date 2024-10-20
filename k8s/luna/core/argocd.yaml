@@ -2,11 +2,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argocd
-  namespace: argocd
+  namespace: apps-luna
   labels:
     name: argocd
 spec:
-  project: luna-core
+  project: luna
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
