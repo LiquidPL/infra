@@ -1,28 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: jellyfin
-  namespace: argocd
-  labels:
-    name: jellyfin
+  name: apps
+  namespace: apps-homelab
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: apps
 spec:
   destination:
+    namespace: apps-homelab
     server: https://kubernetes.default.svc
-    namespace: apps
-  project: apps
+  project: homelab
   source:
+    path: k8s/homelab/apps
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
-    path: k8s/manifests/jellyfin
   syncPolicy:
     automated:
       selfHeal: true
     retry:
       limit: 3
       backoff:
-        duration: 10s
-        factor: 3
-    syncOptions:
-      - CreateNamespace=true
+        duration: 30s
+        factor: 2
+        maxDuration: 5m
