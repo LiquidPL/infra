@@ -2,15 +2,15 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: lan-dns
-  namespace: argocd
+  namespace: apps-homelab
   labels:
     name: lan-dns
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: network
+  project: homelab
   destination:
-    server: https://kubernetes.default.svc
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
     namespace: network
   sources:
     - repoURL: https://github.com/LiquidPL/infra.git

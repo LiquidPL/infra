@@ -1,35 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: network
-  namespace: argocd
-spec:
-  description: Network services
-  sourceRepos:
-    - '*'
-  destinations:
-    - namespace: '*'
-      server: '*'
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
----
-apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: network
-  namespace: argocd
+  namespace: apps-homelab
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     name: network
 spec:
   destination:
-    namespace: argocd
+    namespace: apps-homelab
     server: https://kubernetes.default.svc
-  project: network
+  project: homelab
   source:
-    path: k8s/argocd/network
+    path: k8s/homelab/network
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
   syncPolicy:

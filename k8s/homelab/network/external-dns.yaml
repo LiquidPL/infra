@@ -1,24 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: tailscale
-  namespace: argocd
+  name: external-dns
+  namespace: apps-homelab
   labels:
-    name: tailscale
+    name: external-dns
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: network
+  project: homelab
   destination:
-    server: https://kubernetes.default.svc
-    namespace: tailscale
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    namespace: network
   sources:
-    - chart: tailscale-operator
-      repoURL: https://pkgs.tailscale.com/helmcharts
-      targetRevision: 1.66.3
+    - chart: k8s-gateway
+      repoURL: https://ori-edge.github.io/k8s_gateway
+      targetRevision: 2.4.0
+      helm:
+        valueFiles:
+          - $values/k8s/homelab/network/external-dns/values.yaml
     - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
-      path: k8s/manifests/tailscale
+      ref: values
   syncPolicy:
     automated:
       selfHeal: true

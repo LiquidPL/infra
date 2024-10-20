@@ -2,15 +2,15 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metallb
-  namespace: argocd
+  namespace: apps-homelab
   labels:
     name: metallb
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: network
+  project: homelab
   destination:
-    server: https://kubernetes.default.svc
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
     namespace: metallb-system
   sources:
     - chart: metallb
@@ -18,10 +18,10 @@ spec:
       targetRevision: 0.14.3
       helm:
         valueFiles:
-          - $values/k8s/manifests/metallb/values.yaml
+          - $values/k8s/homelab/network/metallb/values.yaml
     - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
-      path: k8s/manifests/metallb/resources
+      path: k8s/homelab/network/metallb/resources
       ref: values
   ignoreDifferences:
     - group: "apiextensions.k8s.io"
