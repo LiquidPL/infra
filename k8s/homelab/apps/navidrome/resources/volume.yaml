@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: navidrome-media
+  labels:
+    app.kubernetes.io/name: navidrome
+    app.kubernetes.io/instance: navidrome
+    navidrome-volume: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 100Gi
+  nfs:
+    server: truenas.hs.liquid.sh
+    path: "/mnt/pool/navidrome"
+  mountOptions:
+    - nfsvers=4.2
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: navidrome-media
+  labels:
+    app.kubernetes.io/name: navidrome
+    app.kubernetes.io/instance: navidrome
+spec:
+  storageClassName: ''
+  selector:
+    matchLabels:
+      navidrome-volume: media
+      app.kubernetes.io/name: navidrome
+      app.kubernetes.io/instance: navidrome
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi

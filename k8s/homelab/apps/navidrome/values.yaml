@@ -1,0 +1,38 @@
+image:
+  tag: 0.53.3
+
+env:
+  ND_BASEURL: https://navidrome.hs.liquid.sh
+  ND_PASSWORDENCRYPTIONKEY:
+    valueFrom:
+      secretKeyRef:
+        name: navidrome
+        key: passwordEncryptionKey
+
+service:
+  main:
+    monitor:
+      enabled: true
+
+ingress:
+  main:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - host: navidrome.hs.liquid.sh
+        paths:
+          - path: /
+    tls:
+      - hosts:
+          - navidrome.hs.liquid.sh
+        secretName: tls-navidrome-ingress
+
+persistence:
+  config:
+    enabled: true
+    storageClass: longhorn
+    size: 250Mi
+  music:
+    enabled: true
+    existingClaim: navidrome-media

@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: navidrome
+  namespace: apps-homelab
+  labels:
+    name: navidrome
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    namespace: navidrome
+  project: homelab
+  sources:
+    - chart: navidrome
+      repoURL: https://djjudas21.github.io/charts/
+      targetRevision: 6.6.16
+      helm:
+        valueFiles:
+          - $values/k8s/homelab/apps/navidrome/values.yaml
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      path: k8s/homelab/apps/navidrome/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
