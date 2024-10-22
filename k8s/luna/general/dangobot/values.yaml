@@ -1,0 +1,25 @@
+bot:
+  image:
+    tag: '357f8e0'
+  persistence:
+    enabled: true
+    size: 250Mi
+  secrets:
+    existingSecret: dangobot-secret
+  config:
+    description: '!kurwachudzik'
+    ownerId: '66174835352408064'
+    sendErrors: true
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 150m
+      memory: 256Mi
+
+postgresql:
+  global:
+    postgresql:
+      auth:
+        existingSecret: postgres-secret

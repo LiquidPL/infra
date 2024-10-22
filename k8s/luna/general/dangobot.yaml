@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dangobot
+  namespace: apps-luna
+  labels:
+    name: dangobot
+spec:
+  project: luna
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dangobot
+  sources:
+    - chart: dangobot
+      repoURL: ghcr.io/liquidpl/charts
+      targetRevision: 0.2.0
+      helm:
+        valueFiles:
+          - $values/k8s/luna/general/dangobot/values.yaml
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      path: k8s/luna/general/dangobot/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
