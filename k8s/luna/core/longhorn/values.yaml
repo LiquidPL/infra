@@ -3,8 +3,6 @@ longhornManager:
     - key: node-role.kubernetes.io/storage
       operator: Exists
       effect: NoSchedule
-  nodeSelector:
-    node-role.kubernetes.io/storage: "true"
 
 longhornDriver:
   tolerations:
