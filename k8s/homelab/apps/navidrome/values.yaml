@@ -9,6 +9,10 @@ env:
         name: navidrome
         key: passwordEncryptionKey
 
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+
 service:
   main:
     monitor:
