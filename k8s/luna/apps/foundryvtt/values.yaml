@@ -1,0 +1,31 @@
+nameOverride: foundryvtt
+
+image:
+  tag: &version '12.330'
+
+foundryvtt:
+  existingUserSecret: foundryvtt
+  existingLicenseType: account
+  proxySSL: true
+  hostname: vtt.liquid.sh
+  version: *version
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: 1500m
+    memory: 1024Mi
+
+persistence:
+  enabled: true
+  size: 15Gi
+  storageClass: longhorn
+
+ingress:
+  enabled: true
+  hostname: vtt.liquid.sh
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  tls: true
