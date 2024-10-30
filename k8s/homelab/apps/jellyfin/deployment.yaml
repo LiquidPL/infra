@@ -19,8 +19,10 @@ spec:
           imagePullPolicy: IfNotPresent
           name: jellyfin
           resources:
+            requests:
+              gpu.intel.com/i915: 100
             limits:
-              gpu.intel.com/i915: 200
+              gpu.intel.com/i915: 100
           ports:
             - containerPort: 8096
               name: http
