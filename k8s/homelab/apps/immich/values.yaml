@@ -9,6 +9,11 @@ image:
 postgresql:
   enabled: true
   primary:
+    resources:
+      requests:
+        cpu: 200m
+      limits:
+        cpu: 300m
     persistence:
       size: 8Gi
       storageClass: longhorn
