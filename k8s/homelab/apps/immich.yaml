@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: immich
       repoURL: https://immich-app.github.io/immich-charts
-      targetRevision: 0.8.2
+      targetRevision: 0.8.4
       helm:
         valueFiles:
           - $values/k8s/homelab/apps/immich/values.yaml
