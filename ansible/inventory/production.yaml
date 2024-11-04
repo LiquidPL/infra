@@ -6,12 +6,12 @@ hypervisors:
       nodes:
         - hostname: homelab-control-plane-1
           cores: 2
-          memory: 4096
+          memory: 3072
           disk_size: 15G
           mac: 'bc:24:11:62:c3:81'
         - hostname: homelab-control-plane-3
           cores: 2
-          memory: 4096
+          memory: 3072
           disk_size: 15G
           mac: 'bc:24:11:66:26:e6'
         - hostname: homelab-agent-1
