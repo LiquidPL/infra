@@ -32,8 +32,8 @@ config: |
         - 'ffmpeg:backyard#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
     webrtc:
       candidates:
-        - 10.10.100.254:8555
-        - 100.118.30.9:8555
+        - 10.10.100.2:8555
+        - 100.68.7.50:8555
         - stun:8555
       ice_servers:
         - urls: [stun:stun.l.google.com:19302]

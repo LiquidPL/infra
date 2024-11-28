@@ -19,6 +19,7 @@ spec:
       port: 8555
       targetPort: webrtc-tcp
       protocol: TCP
+  loadBalancerIP: 10.10.100.2
   selector:
     app.kubernetes.io/name: frigate
     app.kubernetes.io/instance: frigate
