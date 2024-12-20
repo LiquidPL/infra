@@ -1,7 +1,6 @@
 config: |
-  # TODO: configure auth and tls once the helm chart is updated to support 0.14
   auth:
-    enabled: false
+    enabled: true
   tls:
     enabled: false
   mqtt:
