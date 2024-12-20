@@ -146,7 +146,9 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt
   hosts:
     - host: frigate.hs.liquid.sh
-      paths: ["/"]
+      paths:
+        - path: "/"
+          portName: http-auth
   tls:
     - hosts:
         - frigate.hs.liquid.sh
