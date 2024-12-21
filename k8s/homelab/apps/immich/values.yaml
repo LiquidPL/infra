@@ -31,7 +31,7 @@ server:
       cpu: 250m
     limits:
       cpu: 1250m
-      gpu.intel.com/i915: 100
+      gpu.intel.com/i915: 1
   ingress:
     main:
       enabled: true

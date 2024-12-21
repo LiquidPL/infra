@@ -21,16 +21,19 @@ spec:
       path: deployments/nfd/overlays/node-feature-rules
     - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
       targetRevision: v0.30.0
-      path: deployments/gpu_plugin/overlays/fractional_resources
+      path: deployments/gpu_plugin/overlays/nfd_labeled_nodes
       kustomize:
         patches:
           - target:
               kind: DaemonSet
               name: intel-gpu-plugin
             patch: |-
-              - op: replace
-                path: /spec/template/spec/volumes/0/hostPath/path
-                value: /var/lib/rancher/k3s/agent/serving-kubelet.crt
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: '-shared-dev-num'
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: '10'
   syncPolicy:
     automated:
       selfHeal: true

@@ -136,7 +136,7 @@ securityContext:
       - PERFMON
 resources:
   limits:
-    gpu.intel.com/i915: 100
+    gpu.intel.com/i915: 1
 envFromSecrets:
   - frigate-secrets
 ingress:
