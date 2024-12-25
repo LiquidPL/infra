@@ -82,7 +82,7 @@ config: |
             - balcony
         detections:
           required_zones:
-            - driveway
+            - street
             - front_yard
             - balcony
       record:
