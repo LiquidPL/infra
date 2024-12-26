@@ -32,6 +32,11 @@ server:
     limits:
       cpu: 1250m
       gpu.intel.com/i915: 1
+  persistence:
+    external:
+      enabled: true
+      existingClaim: immich-external
+      readOnly: true
   ingress:
     main:
       enabled: true
