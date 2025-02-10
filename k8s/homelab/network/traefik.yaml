@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: traefik
       repoURL: https://traefik.github.io/charts
-      targetRevision: 33.0.0
+      targetRevision: 34.3.0
       helm:
         valueFiles:
           - $values/k8s/homelab/network/traefik/values.yaml
