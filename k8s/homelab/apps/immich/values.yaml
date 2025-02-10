@@ -4,6 +4,7 @@ immich:
       existingClaim: immich-upload
 
 image:
+  repository: ghcr.io/immich-app/immich-server
   tag: v1.123.0
 
 postgresql:
