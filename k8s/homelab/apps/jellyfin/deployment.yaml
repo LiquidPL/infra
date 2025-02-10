@@ -15,7 +15,7 @@ spec:
         app.kubernetes.io/instance: jellyfin
     spec:
       containers:
-        - image: jellyfin/jellyfin:10.9.2
+        - image: jellyfin/jellyfin:10.10.5
           imagePullPolicy: IfNotPresent
           name: jellyfin
           resources:
