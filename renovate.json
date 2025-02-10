@@ -4,6 +4,9 @@
     "config:recommended"
   ],
   "assignees": ["@LiquidPL"],
+  "kubernetes": {
+    "fileMatch": ["^k8s/.+/.+/.*(deployment|replicaset|daemonset|job|cronjob).*\\.ya?ml$"]
+  },
   "argocd": {
     "fileMatch": ["^k8s/.+/.+/.+\\.ya?ml$"]
   }
