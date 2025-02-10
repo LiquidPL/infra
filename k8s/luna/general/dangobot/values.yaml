@@ -1,5 +1,6 @@
 bot:
   image:
+    repository: ghcr.io/liquidpl/dangobot
     tag: '357f8e0'
   persistence:
     enabled: true

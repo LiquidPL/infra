@@ -4,6 +4,7 @@ immich:
       existingClaim: immich-upload
 
 image:
+  repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
   tag: v1.123.0
 
 postgresql:

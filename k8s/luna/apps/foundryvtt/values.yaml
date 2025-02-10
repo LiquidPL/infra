@@ -1,6 +1,7 @@
 nameOverride: foundryvtt
 
 image:
+  repository: felddy/foundryvtt
   tag: &version '12.330'
 
 foundryvtt:

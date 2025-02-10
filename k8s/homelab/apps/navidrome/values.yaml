@@ -1,4 +1,5 @@
 image:
+  repository: deluan/navidrome
   tag: 0.53.3
 
 env:
