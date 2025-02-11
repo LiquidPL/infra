@@ -13,9 +13,9 @@ spec:
     namespace: apps
   project: homelab
   sources:
-    - repoURL: https://github.com/LiquidPL/blakeshome-charts.git
-      targetRevision: webrtc-ports
-      path: charts/frigate
+    - chart: frigate
+      repoURL: https://blakeblackshear.github.io/blakeshome-charts/
+      targetRevision: 7.7.2
       helm:
         valueFiles:
            - $values/k8s/homelab/apps/frigate/values.yaml
