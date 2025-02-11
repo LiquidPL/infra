@@ -6,8 +6,11 @@ providers:
 
 ports:
   web:
-    redirectTo:
-      port: websecure
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
     forwardedHeaders:
       trustedIPs:
         - 127.0.0.1/32
