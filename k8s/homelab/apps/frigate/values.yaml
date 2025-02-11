@@ -146,6 +146,7 @@ securityContext:
 resources:
   limits:
     gpu.intel.com/i915: 1
+shmSize: 128Mi
 envFromSecrets:
   - frigate-secrets
 ingress:
