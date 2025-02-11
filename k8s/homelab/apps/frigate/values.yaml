@@ -24,11 +24,11 @@ config: |
       front:
         - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.11:554/cam/realmonitor?channel=1&subtype=0
       front_sub:
-        - 'ffmpeg:front#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
+        - '/usr/lib/ffmpeg/7.0/bin/ffmpeg:front#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
       back:
         - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.10:554/cam/realmonitor?channel=1&subtype=0
       back_sub:
-        - 'ffmpeg:back#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
+        - '/usr/lib/ffmpeg/7.0/bin/ffmpeg:back#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
     webrtc:
       candidates:
         - 10.10.100.2:8555
@@ -127,7 +127,7 @@ config: |
             mode: active_objects
 image:
   repository: ghcr.io/blakeblackshear/frigate
-  tag: 0.14.1
+  tag: 0.15.0
 persistence:
   media:
     enabled: true
@@ -139,6 +139,7 @@ persistence:
     size: 512Mi
     storageClass: longhorn
     skipuninstall: true
+    ephemeralWritableConfigYaml: true
 securityContext:
   capabilities:
     add:
@@ -146,6 +147,7 @@ securityContext:
 resources:
   limits:
     gpu.intel.com/i915: 1
+shmSize: 128Mi
 envFromSecrets:
   - frigate-secrets
 ingress:
