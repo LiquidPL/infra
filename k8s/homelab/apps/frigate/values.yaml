@@ -139,6 +139,7 @@ persistence:
     size: 512Mi
     storageClass: longhorn
     skipuninstall: true
+    ephemeralWritableConfigYaml: true
 securityContext:
   capabilities:
     add:
