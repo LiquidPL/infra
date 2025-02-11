@@ -24,11 +24,11 @@ config: |
       front:
         - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.11:554/cam/realmonitor?channel=1&subtype=0
       front_sub:
-        - '/usr/lib/ffmpeg/7.0/bin/ffmpeg:front#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
+        - 'ffmpeg:front#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
       back:
         - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.10:554/cam/realmonitor?channel=1&subtype=0
       back_sub:
-        - '/usr/lib/ffmpeg/7.0/bin/ffmpeg:back#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
+        - 'ffmpeg:back#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
     webrtc:
       candidates:
         - 10.10.100.2:8555
