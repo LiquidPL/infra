@@ -13,7 +13,7 @@ spec:
   sources:
     - chart: tigera-operator
       repoURL: https://docs.tigera.io/calico/charts
-      targetRevision: v3.28.2
+      targetRevision: v3.29.2
       helm:
         valueFiles:
           - $values/k8s/homelab/core/calico/values.yaml
