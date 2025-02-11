@@ -24,11 +24,11 @@ config: |
       front:
         - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.11:554/cam/realmonitor?channel=1&subtype=0
       front_sub:
-        - 'ffmpeg:front#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
+        - ffmpeg:front#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi
       back:
         - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.10:554/cam/realmonitor?channel=1&subtype=0
       back_sub:
-        - 'ffmpeg:back#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi'
+        - ffmpeg:back#video=h264#width=1280#height=720#raw=-fpsmax 5#hardware=vaapi
     webrtc:
       candidates:
         - 10.10.100.2:8555
@@ -69,7 +69,7 @@ config: |
         balcony:
           coordinates: 0.717,0.997,0.245,0.02,0.143,0.036,0.143,0.152,0.144,0.37,0.153,0.566,0.179,0.779,0.209,1
           objects:
-             - person
+            - person
       objects:
         track:
           - person
@@ -90,9 +90,13 @@ config: |
         retain:
           days: 7
           mode: all
-        events:
+        alerts:
           retain:
-            default: 14
+            days: 30
+            mode: active_objects
+        detections:
+          retain:
+            days: 14
             mode: active_objects
     back:
       ffmpeg:
@@ -121,9 +125,13 @@ config: |
         retain:
           days: 7
           mode: all
-        events:
+        alerts:
           retain:
-            default: 14
+            days: 30
+            mode: active_objects
+        detections:
+          retain:
+            days: 14
             mode: active_objects
 image:
   repository: ghcr.io/blakeblackshear/frigate
