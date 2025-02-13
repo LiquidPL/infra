@@ -12,7 +12,7 @@ spec:
     server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
     namespace: cnpg-system
   sources:
-    - chart: cnpg
+    - chart: cloudnative-pg
       repoURL: https://cloudnative-pg.github.io/charts
       targetRevision: v0.23.0
   syncPolicy:
@@ -24,4 +24,5 @@ spec:
         duration: 10s
         factor: 3
     syncOptions:
+      - ServerSideApply=true
       - CreateNamespace=true
