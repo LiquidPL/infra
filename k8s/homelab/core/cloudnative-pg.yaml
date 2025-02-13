@@ -1,0 +1,27 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cnpg
+  namespace: apps-homelab
+  labels:
+    name: cnpg
+spec:
+  project: homelab
+  destination:
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    namespace: cnpg-system
+  sources:
+    - chart: cnpg
+      repoURL: https://cloudnative-pg.github.io/charts
+      targetRevision: v0.23.0
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
