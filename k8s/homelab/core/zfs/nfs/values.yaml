@@ -48,9 +48,9 @@ driver:
     driver: freenas-api-nfs
     instance_id:
     httpConnection:
-      protocol: http
+      protocol: https
       host: truenas.hs.liquid.sh
-      port: 80
+      port: 443
       # use only 1 of apiKey or username/password
       # if both are present, apiKey is preferred
       # apiKey is only available starting in TrueNAS-12
