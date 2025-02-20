@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prowlarr
+  namespace: apps-homelab
+  labels:
+    name: prowlarr
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    namespace: media
+  project: homelab
+  sources:
+    - chart: app-template
+      repoURL: https://bjw-s.github.io/helm-charts
+      targetRevision: 3.7.1
+      helm:
+        valueFiles:
+          - $values/k8s/homelab/media/prowlarr/values.yaml
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      path: k8s/homelab/media/prowlarr/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

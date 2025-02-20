@@ -1,0 +1,105 @@
+controllers:
+  main:
+    type: deployment
+
+    pod:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/prowlarr
+          tag: 1.30.2.4939@sha256:4917f6ce056b71e6333d14cb2591d679e782ad148bb18f267c80ef5840a6dccb
+          pullPolicy: IfNotPresent
+        env:
+          PROWLARR__POSTGRES__HOST:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: host
+          PROWLARR__POSTGRES__PORT:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: port
+          PROWLARR__POSTGRES__USER:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: user
+          PROWLARR__POSTGRES__PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: password
+          PROWLARR__POSTGRES__MAINDB: prowlarr-main
+          PROWLARR__POSTGRES__LOGDB: prowlarr-log
+          PROWLARR__AUTH__APIKEY:
+            valueFrom:
+              secretKeyRef:
+                name: prowlarr-api-key
+                key: apiKey
+          PROWLARR__SERVER__PORT: &port 9696
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /ping
+                port: *port
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 20m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+
+ingress:
+  main:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - host: prowlarr.hs.liquid.sh
+        paths:
+          - path: /
+            service:
+              identifier: main
+              port: http
+    tls:
+      - hosts:
+          - prowlarr.hs.liquid.sh
+        secretName: tls-prowlarr-ingress
+
+persistence:
+  config:
+    storageClass: longhorn
+    size: 64Mi
+    accessMode: ReadWriteOnce
+  add-ons:
+    type: emptyDir
+  tmp:
+    type: emptyDir

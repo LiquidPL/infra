@@ -1,0 +1,25 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: prowlarr-main
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+spec:
+  name: prowlarr-main
+  owner: app
+  cluster:
+    name: postgres-media
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: prowlarr-log
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+spec:
+  name: prowlarr-log
+  owner: app
+  cluster:
+    name: postgres-media

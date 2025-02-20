@@ -1,0 +1,20 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: prowlarr-api-key
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: "-100"
+spec:
+  encryptedData:
+    apiKey: AgC88rTWJDciiLH9SGz4aeHsY7Jd70mFtXGzYeajm+fPEeFYa4k7l3csg0sDjlVkN4dYTIo490+59EqVAnzI4AEplG4vg8FJxuSHGGCiJpr3Jd8tl3PU54aLcHvrebXfoddsJ9QJbW9I6GgyudPKae/TSBbMev79C79qDZHeIqwXFylP1hoUQmW7zWJDINhPQv0WpzZodJLgU1OKJmsMVSfnflajluIFYvB3FYXoNV3+eeUAKVOwq+lDBImCnPCDpwyQwjPF/2vv3XClg4c2PXvJTM6CjJCR98kY3fK1mH74SIhp5kaWlUURsQIkb2a3D9wx2LhWmnutQz/O3otcI+OGcLRyjYxaKsFLTuI2MFLrcME/vaungV7pmbOvYBayHXo7sJ1HT1goJP+GB10NVwiVcwlUFVlA5CqYLAn3XMR/SE+kngpJVO0j98LBBLFEHi6D7SFM0SkDI3mMw6L0VfN1A0ksOriEnl+XvmkBA3P+PxIVPPr14ZaUWcITDFf5uzYbVo6qbp5OoRBDex+ZeMd3Bc/UwyMbUKLR2JFKNHG6s/JFUSj8AY13YRNKfUwhVRucSqLaMFXuI/HW/vWoFVCP+LPUap6bf0rRJuSLy9FSQH9RbmnKUWKbyv/VuINqyI8RzPSSvgYnja5DKw0PrvP0nRCWMAoJLkbfEH9Cjgd7MVRLVLI9PwoEjnWw+nikWbFuVzRDemmWvKOTMnPtFQpxdwtRL4F8Lc/yrGAVSyNuTy9KI6EuXZqzwrLd
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+      creationTimestamp: null
+      name: prowlarr-api-key
+      namespace: media
+    type: Opaque
