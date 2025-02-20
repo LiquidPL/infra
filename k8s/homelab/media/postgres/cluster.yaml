@@ -1,0 +1,40 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-media
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: '-50'
+spec:
+  instances: 1
+  storage:
+    storageClass: local-path
+    size: 1Gi
+  postgresql:
+    parameters:
+      shared_buffers: '64MB'
+      min_wal_size: '10MB' # scaled down from the default of 80 (80 / 8 = 10)
+      max_wal_size: '128MB' # scaled down from the default of 1024 (1024 / 8 = 128)
+      wal_keep_size: '0' # TODO: set this to a proper value (default: 32 segments * 16MB size = 512MB) when setting up replication
+  bootstrap:
+    initdb:
+      walSegmentSize: 2 # default is 16
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 256Mi
+      cpu: 150m
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://postgres-media
+      endpointURL: https://minio.hs.liquid.sh
+      s3Credentials:
+        accessKeyId:
+          name: s3-secret
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-secret
+          key: SECRET_ACCESS_KEY
+    retentionPolicy: '1d'

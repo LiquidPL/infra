@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: media
+  namespace: apps-homelab
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: media
+spec:
+  destination:
+    namespace: apps-homelab
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    path: k8s/homelab/media
+    repoURL: https://github.com/LiquidPL/infra.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m

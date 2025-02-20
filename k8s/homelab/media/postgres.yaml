@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-media
+  namespace: apps-homelab
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+  labels:
+    name: postgres-media
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    namespace: media
+  project: homelab
+  source:
+    repoURL: https://github.com/LiquidPL/infra.git
+    targetRevision: master
+    path: k8s/homelab/media/postgres
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
