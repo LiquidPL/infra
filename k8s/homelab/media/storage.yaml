@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: storage
+  namespace: apps-homelab
+  labels:
+    name: storage
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    namespace: media
+  project: homelab
+  source:
+    repoURL: https://github.com/LiquidPL/infra.git
+    targetRevision: master
+    path: k8s/homelab/media/storage
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

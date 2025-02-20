@@ -1,0 +1,25 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sonarr-main
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+spec:
+  name: sonarr-main
+  owner: app
+  cluster:
+    name: postgres-media
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sonarr-log
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+spec:
+  name: sonarr-log
+  owner: app
+  cluster:
+    name: postgres-media

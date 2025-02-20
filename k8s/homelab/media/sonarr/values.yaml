@@ -1,0 +1,110 @@
+controllers:
+  main:
+    type: deployment
+
+    pod:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/sonarr
+          tag: 4.0.13.2932@sha256:b9f76d8f542f9783c24cec4d26dc5fffcb2fca8eae1bc3170eadc0cf9d74120e
+          pullPolicy: IfNotPresent
+        env:
+          SONARR__POSTGRES__HOST:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: host
+          SONARR__POSTGRES__PORT:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: port
+          SONARR__POSTGRES__USER:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: user
+          SONARR__POSTGRES__PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: password
+          SONARR__POSTGRES__MAINDB: sonarr-main
+          SONARR__POSTGRES__LOGDB: sonarr-log
+          SONARR__AUTH__APIKEY:
+            valueFrom:
+              secretKeyRef:
+                name: sonarr-api-key
+                key: apiKey
+          SONARR__SERVER__PORT: &port 8989
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /ping
+                port: *port
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 20m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+
+ingress:
+  main:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - host: sonarr.hs.liquid.sh
+        paths:
+          - path: /
+            service:
+              identifier: main
+              port: http
+    tls:
+      - hosts:
+          - sonarr.hs.liquid.sh
+        secretName: tls-sonarr-ingress
+
+persistence:
+  config:
+    storageClass: longhorn
+    size: 64Mi
+    accessMode: ReadWriteOnce
+  add-ons:
+    type: emptyDir
+  tmp:
+    type: emptyDir
+  media:
+    type: persistentVolumeClaim
+    existingClaim: media-storage
+    globalMounts:
+      - path: /data

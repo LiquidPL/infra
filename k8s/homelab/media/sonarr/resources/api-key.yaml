@@ -1,0 +1,20 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: sonarr-api-key
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: "-100"
+spec:
+  encryptedData:
+    apiKey: AgC2lZ3dGblJCubAFFZ10xDXkrkscshnIteOb+xnkWtXsCWTXIUCM2aA0NDNDw8nLHsOvb/8ffGw2D2HbWMtWx5SQ43jJc/8+5GdCU/2Rl0WJH4dqjPxs+5re3PTe5V/g9eL5veXSJe5YVXL+jUxcxt3XEu8y9piajkm6qN0f+/GK+e9VIqVb57uttPrvuJupqiNxuQcWh/tluu3E1A1ToB7kh1xz+mLIz9Jg2Hkm/3C56ieIljurShZ/Zeuci3r3kUW98lBKjinW7Mhhr9WhvJqyQahaR1ZT1Hhx/GqCnRypjuIxzOXjY4tmyFMQATIeGzX8+T1f7G9THOh8w5clIyGAKkumkqy97zNU1EYkxtrhkgu61UqqejGmj+qK0bydOwCEL4QXGqXK/MO4hfoc5jG/yVSqZFV988WBFnEOlC8mzNXCFRRAMmFH6wl/SJf4YurEIBBg2bSzZAQnib0ho+nDRkolvaKym4K/NjqNMKbAXUH88U/jPf2ohFK5+10QawkGK/KDlmXjugxHCxkEc4TqnNHqg+ZSJyDgWMdf6sqwVU9YNKQINCOX6qnhvpozFe3MGawHNjGC4/hAR59zeyCZ18K/7+bP3FRuaMzNaN7iOXbh5MbMXpUgwmugyhddcxTDZVxFTIq8Lfsrgbecg2iHRGUxhshNzRek56Rxa9d1fF41ZqQQbf+ZZvqqzK9/4l3oVUGRHRlZzgl//Jlp7t2AcFK+xeLSBxsjZcnkWcUz7J2TDuu84oAoat9
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+      creationTimestamp: null
+      name: sonarr-api-key
+      namespace: media
+    type: Opaque
