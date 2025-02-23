@@ -24,8 +24,8 @@ spec:
       memory: 256Mi
       cpu: 100m
     limits:
-      memory: 256Mi
-      cpu: 150m
+      memory: 512Mi
+      cpu: 200m
   backup:
     barmanObjectStore:
       destinationPath: s3://postgres-media
