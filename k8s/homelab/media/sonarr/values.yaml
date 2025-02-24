@@ -97,7 +97,7 @@ ingress:
 persistence:
   config:
     storageClass: longhorn
-    size: 64Mi
+    size: 100Mi
     accessMode: ReadWriteOnce
   add-ons:
     type: emptyDir
