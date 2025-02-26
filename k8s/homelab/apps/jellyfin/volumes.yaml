@@ -37,7 +37,7 @@ spec:
     storage: 512Gi
   nfs:
     server: truenas.hs.liquid.sh
-    path: "/mnt/pool/jellyfin"
+    path: "/mnt/pool/media/media"
   mountOptions:
     - nfsvers=4.2
 ---
