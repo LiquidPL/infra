@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: '-50'
 spec:
-  instances: 1
+  instances: 2
   storage:
     storageClass: local-path
     size: 1Gi
@@ -15,10 +15,20 @@ spec:
       shared_buffers: '64MB'
       min_wal_size: '10MB' # scaled down from the default of 80 (80 / 8 = 10)
       max_wal_size: '128MB' # scaled down from the default of 1024 (1024 / 8 = 128)
-      wal_keep_size: '0' # TODO: set this to a proper value (default: 32 segments * 16MB size = 512MB) when setting up replication
+      wal_keep_size: '64MB' # 32 WAL segments * 2MB segment size = 64MB
+    synchronous:
+      method: any
+      number: 1
   bootstrap:
     initdb:
       walSegmentSize: 2 # default is 16
+  affinity:
+    nodeSelector:
+      node-role.kubernetes.io/postgres: 'true'
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
   resources:
     requests:
       memory: 256Mi
