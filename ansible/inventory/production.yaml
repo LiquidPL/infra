@@ -44,6 +44,7 @@ control_planes:
       k3s_agent:
         node-label:
           - "node.longhorn.io/create-default-disk=true"
+          - "node-role.kubernetes.io/postgres=true"
     homelab-control-plane-3:
 
 agents:
@@ -60,6 +61,7 @@ agents:
       k3s_agent:
         node-label:
           - "node.longhorn.io/create-default-disk=true"
+          - "node-role.kubernetes.io/postgres=true"
 
 nodes:
   vars:
