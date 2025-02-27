@@ -4,6 +4,7 @@ image:
 
 env:
   ND_BASEURL: https://navidrome.hs.liquid.sh
+  ND_PROMETHEUS_ENABLED: 'true'
   ND_PASSWORDENCRYPTIONKEY:
     valueFrom:
       secretKeyRef:
