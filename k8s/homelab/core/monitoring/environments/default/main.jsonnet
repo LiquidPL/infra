@@ -85,6 +85,7 @@ local kp =
       },
       prometheus+: {
         replicas: 1,
+        namespaces: ['default', 'kube-system', 'navidrome'],
       },
       grafana+: {
         sections+: {
