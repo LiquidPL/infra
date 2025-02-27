@@ -19,6 +19,11 @@ service:
   main:
     monitor:
       enabled: true
+      endpoints:
+        - port: http
+          scheme: http
+          path: /metrics
+          interval: 10s
 
 ingress:
   main:
