@@ -1,0 +1,111 @@
+controllers:
+  main:
+    type: deployment
+
+    pod:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/radarr
+          tag: 5.19.3.9730@sha256:7218cd42b646bb773a2c683b95860c51103c3ca7e0b9171b4bc549b95ddc6896
+          pullPolicy: IfNotPresent
+        env:
+          RADARR__POSTGRES__HOST:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: host
+          RADARR__POSTGRES__PORT:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: port
+          RADARR__POSTGRES__USER:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: user
+          RADARR__POSTGRES__PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-media-app
+                key: password
+          RADARR__POSTGRES__MAINDB: radarr-main
+          RADARR__POSTGRES__LOGDB: radarr-log
+          RADARR__AUTH__APIKEY:
+            valueFrom:
+              secretKeyRef:
+                name: radarr-api-key
+                key: apiKey
+          RADARR__SERVER__PORT: &port 7878
+          RADARR__LOG__LEVEL: info
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /ping
+                port: *port
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 20m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+
+ingress:
+  main:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - host: &host radarr.hs.liquid.sh
+        paths:
+          - path: /
+            service:
+              identifier: main
+              port: http
+    tls:
+      - hosts:
+          - *host
+        secretName: tls-radarr-ingress
+
+persistence:
+  config:
+    storageClass: longhorn
+    size: 100Mi
+    accessMode: ReadWriteOnce
+  add-ons:
+    type: emptyDir
+  tmp:
+    type: emptyDir
+  media:
+    type: persistentVolumeClaim
+    existingClaim: media-storage
+    globalMounts:
+      - path: /data

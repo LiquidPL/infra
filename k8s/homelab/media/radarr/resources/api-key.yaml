@@ -1,0 +1,20 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: radarr-api-key
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: "-100"
+spec:
+  encryptedData:
+    apiKey: AgBfkIvrJGoLlRSBU6Cm7KyLPkk3kX8moiYnrbJJheLhHes7dXy4r5KdJ+8mziMLR1NkDvz58ewRGRquKl6hUu3dj0eHPhOOaJdJTfKN5bFIwSqMozjB0ov5y/ai07oUlMk8iLfgaiBLMMj1kxJx1NnheY1Pm7hYi2FeE4H/eQ8Ue4ZsEkKGtdYHeuoXprUy+7HRI89PigCYW5po9yg1/SZbqmfIC09HWXdPvr5L2H9CfTmDCqjWRG5hDfCT9jQiB1a2faayI3ZLzC/HBNgdJcdpiWWQ1faGSOfOhZxQ8p1SQ7Gwq1wx8jPchoCRVEfIcwJItcz5KDE3EZk/pOUBkRCUmO/NEb139Ct/mIMZnsu+guYI6Z4lg03khR7hb3ZohNLK/95Q76LSFLumnWQ5zauJaCHbouTbgJbQkmdj4mLPKXnIqXv9oFRCrkYERBCkMDlPjBQGL/HelLrJI1Hq3j+oP1tTpf30DcHGim5bctbHZnzo/JRUqNSdWnKlxLgND0z6KzS0S2UhiphMXOsXlG98VMmpvVVDQUvJv7LK27QS2SA9LB617tsgCXCmErYNXmPi2zMZJoSpiyPzp/Sya/C+4F+Jxe0ELNSAKcPw9tqQC3C3HC4QN/HWAcQeq42I+uyNJU/vYPoafTwaMtQhJzfmlZfxZItw2r0wkfV45RnZraiaQaQwmMCyPSk0mVc2ucdIuraTXrc/Gauseqm/7xdkjbqQOElE+W7DarMd16tmX0FvpWQm17+mSZ8r
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+      creationTimestamp: null
+      name: radarr-api-key
+      namespace: media
+    type: Opaque

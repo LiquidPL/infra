@@ -1,0 +1,25 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: radarr-main
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+spec:
+  name: radarr-main
+  owner: app
+  cluster:
+    name: postgres-media
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: radarr-log
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+spec:
+  name: radarr-log
+  owner: app
+  cluster:
+    name: postgres-media
