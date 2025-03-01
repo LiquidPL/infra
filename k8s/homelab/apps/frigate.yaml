@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: frigate
       repoURL: https://blakeblackshear.github.io/blakeshome-charts/
-      targetRevision: 7.7.3
+      targetRevision: 7.8.0
       helm:
         valueFiles:
            - $values/k8s/homelab/apps/frigate/values.yaml
