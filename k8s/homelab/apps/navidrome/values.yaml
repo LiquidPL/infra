@@ -1,6 +1,6 @@
 image:
   repository: deluan/navidrome
-  tag: 0.54.5
+  tag: 0.55.0
 
 env:
   ND_BASEURL: https://navidrome.hs.liquid.sh
