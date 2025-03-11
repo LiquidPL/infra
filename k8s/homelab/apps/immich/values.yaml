@@ -1,3 +1,5 @@
+useDeprecatedPostgresChart: true
+
 immich:
   persistence:
     library:
