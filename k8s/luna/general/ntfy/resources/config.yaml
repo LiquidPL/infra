@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ntfy-config
+  namespace: ntfy
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+data:
+  server.yml: |
+    listen-http: :2345
+    metrics-listen-http: :2346
+
+    base-url: 'https://ntfy.liquid.sh'
+    behind-proxy: true
+
+    cache-file: '/var/cache/ntfy/cache.db'
+    cache-duration: '7d'
+
+    attachment-cache-dir: /var/cache/ntfy/attachments
+    attachment-expiry-duration: '7d'
+
+    auth-file: /var/lib/ntfy/user.db
+    auth-default-access: deny-all

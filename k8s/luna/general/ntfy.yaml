@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ntfy
+  namespace: apps-luna
+  labels:
+    name: ntfy
+spec:
+  project: luna
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ntfy
+  sources:
+    - chart: app-template
+      repoURL: https://bjw-s.github.io/helm-charts
+      targetRevision: 3.7.2
+      helm:
+        valueFiles:
+          - $values/k8s/luna/general/ntfy/values.yaml
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      path: k8s/luna/general/ntfy/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

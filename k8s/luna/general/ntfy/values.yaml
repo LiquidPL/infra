@@ -1,0 +1,98 @@
+controllers:
+  main:
+    type: deployment
+    strategy: RollingUpdate
+
+    pod:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+
+    containers:
+      main:
+        image:
+          repository: binwiederhier/ntfy
+          tag: v2.11.0@sha256:4a7d0f0adc6d5d9fc36e64ab55ef676e76e124a2bdd50ce115b6d9c1c7430294
+          pullPolicy: IfNotPresent
+        args:
+          - serve
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /v1/health
+                port: &port 2345
+              initialDelaySeconds: 0
+              periodSeconds: 5
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+      metrics:
+        port: 2346
+
+ingress:
+  main:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - host: &host ntfy.liquid.sh
+        paths:
+            - path: /
+              service:
+                identifier: main
+                port: http
+    tls:
+      - hosts:
+          - *host
+        secretName: tls-ntfy-ingress
+
+persistence:
+  config:
+    enabled: true
+    type: configMap
+    defaultMode: 440
+    name: ntfy-config
+    advancedMounts:
+      main:
+        main:
+          - path: /etc/ntfy/server.yml
+            subPath: server.yml
+  auth:
+    storageClass: longhorn
+    size: 50Mi
+    accessMode: ReadWriteOnce
+    advancedMounts:
+      main:
+        main:
+          - path: /var/lib/ntfy
+            readOnly: false
+  cache:
+    storageClass: longhorn
+    size: 500Mi
+    accessMode: ReadWriteOnce
+    advancedMounts:
+      main:
+        main:
+          - path: /var/cache/ntfy
+            readOnly: false
