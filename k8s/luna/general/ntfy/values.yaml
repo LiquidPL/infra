@@ -18,6 +18,22 @@ controllers:
           pullPolicy: IfNotPresent
         args:
           - serve
+        env:
+          NTFY_WEB_PUSH_PUBLIC_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: ntfy-web-push-secret
+                key: web-push-public-key
+          NTFY_WEB_PUSH_PRIVATE_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: ntfy-web-push-secret
+                key: web-push-private-key
+          NTFY_WEB_PUSH_EMAIL_ADDRESS:
+            valueFrom:
+              secretKeyRef:
+                name: ntfy-web-push-secret
+                key: web-push-email-address
         probes:
           liveness: &probes
             enabled: true

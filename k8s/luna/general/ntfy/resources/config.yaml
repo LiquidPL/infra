@@ -19,5 +19,7 @@ data:
     attachment-cache-dir: /var/cache/ntfy/attachments
     attachment-expiry-duration: '7d'
 
+    web-push-file: /var/cache/ntfy/webpush.db
+
     auth-file: /var/lib/ntfy/user.db
     auth-default-access: deny-all
