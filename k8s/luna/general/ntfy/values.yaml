@@ -1,7 +1,6 @@
 controllers:
   main:
     type: deployment
-    strategy: RollingUpdate
 
     pod:
       securityContext:
