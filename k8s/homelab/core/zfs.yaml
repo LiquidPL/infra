@@ -32,8 +32,8 @@ spec:
           targetRevision: master
           ref: values
         - chart: democratic-csi
-          repoURL: https://democratic-csi.github.io/charts
-          targetRevision: 0.14.7
+          repoURL: ghcr.io/democratic-csi/charts
+          targetRevision: 0.15.0
           helm:
             valueFiles:
               - $values/k8s/homelab/core/zfs/values.yaml
