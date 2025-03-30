@@ -7,7 +7,7 @@ immich:
 
 image:
   repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
-  tag: v1.129.0
+  tag: v1.130.3
 
 postgresql:
   enabled: true
