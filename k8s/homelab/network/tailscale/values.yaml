@@ -1,6 +1,4 @@
 operatorConfig:
-  hostname: tailscale-operator-luna
-
   resources:
     requests:
       cpu: 5m

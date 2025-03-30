@@ -16,9 +16,13 @@ spec:
     - chart: tailscale-operator
       repoURL: https://pkgs.tailscale.com/helmcharts
       targetRevision: 1.80.3
+      helm:
+        valueFiles:
+          - $values/k8s/homelab/network/tailscale/values.yaml
     - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
-      path: k8s/homelab/network/tailscale
+      path: k8s/homelab/network/tailscale/resources
+      ref: values
   syncPolicy:
     automated:
       selfHeal: true

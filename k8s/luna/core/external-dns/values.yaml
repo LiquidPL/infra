@@ -6,3 +6,7 @@ env:
       secretKeyRef:
         name: cloudflare-api-key
         key: apiKey
+resources:
+  requests:
+    cpu: 5m
+    memory: 64Mi

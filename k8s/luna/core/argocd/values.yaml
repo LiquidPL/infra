@@ -24,10 +24,36 @@ configs:
         discover:
           fileName: './environments/*/main.jsonnet'
 
+controller:
+  resources:
+    requests:
+      cpu: 50m
+
 applicationSet:
   allowAnyNamespace: true
+  resources:
+    requests:
+      cpu: 10m
+
+dex:
+  resources:
+    requests:
+      cpu: 10m
+
+notifications:
+  resources:
+    requests:
+      cpu: 10m
+
+redis:
+  resources:
+    requests:
+      cpu: 20m
 
 server:
+  resources:
+    requests:
+      cpu: 20m
   ingress:
     enabled: true
     annotations:
@@ -38,6 +64,9 @@ server:
         secretName: tls-argocd
 
 repoServer:
+  resources:
+    requests:
+      cpu: 50m
   volumes:
     - configMap:
         name: argocd-cmp-cm

@@ -13,11 +13,10 @@ foundryvtt:
 
 resources:
   requests:
-    cpu: 500m
+    cpu: 1000m
     memory: 512Mi
   limits:
-    cpu: 1500m
-    memory: 1024Mi
+    memory: 2048Mi
 
 persistence:
   enabled: true

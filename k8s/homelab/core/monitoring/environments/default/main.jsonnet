@@ -85,6 +85,10 @@ local kp =
       },
       prometheus+: {
         replicas: 1,
+        resources: {
+          requests: { cpu: '100m', memory: '1024Mi' },
+          limits: { memory: '2048Mi' },
+        },
         namespaces: ['default', 'kube-system', 'monitoring', 'navidrome'],
       },
       grafana+: {
