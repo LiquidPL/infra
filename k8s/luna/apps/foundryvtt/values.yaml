@@ -16,6 +16,7 @@ resources:
     cpu: 1000m
     memory: 512Mi
   limits:
+    cpu: ~
     memory: 2048Mi
 
 persistence:
