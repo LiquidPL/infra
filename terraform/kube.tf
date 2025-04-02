@@ -171,9 +171,11 @@ module "kube-hetzner" {
       name        = "agent-small",
       server_type = "cpx21",
       location    = "fsn1",
-      labels      = [],
+      labels      = [
+        "node.longhorn.io/create-default-disk=true"
+      ],
       taints      = [],
-      count       = 1
+      count       = 2
       # swap_size   = "2G" # remember to add the suffix, examples: 512M, 1G
       # zram_size   = "2G" # remember to add the suffix, examples: 512M, 1G
       # kubelet_args = ["kube-reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi", "system-reserved=cpu=250m,memory=300Mi"]
@@ -184,27 +186,27 @@ module "kube-hetzner" {
       # Enable automatic backups via Hetzner (default: false)
       # backups = true
     },
-    {
-      name        = "storage",
-      server_type = "cax11",
-      location    = "fsn1",
-      # Fully optional, just a demo.
-      labels      = [
-        "node-role.kubernetes.io/storage=true",
-        "node.longhorn.io/create-default-disk=true"
-      ],
-      taints      = ["node-role.kubernetes.io/storage:NoSchedule"],
-      count       = 2
+    # {
+    #   name        = "storage",
+    #   server_type = "cax11",
+    #   location    = "fsn1",
+    #   # Fully optional, just a demo.
+    #   labels      = [
+    #     "node-role.kubernetes.io/storage=true",
+    #     "node.longhorn.io/create-default-disk=true"
+    #   ],
+    #   taints      = ["node-role.kubernetes.io/storage:NoSchedule"],
+    #   count       = 0
 
-      # In the case of using Longhorn, you can use Hetzner volumes instead of using the node's own storage by specifying a value from 10 to 10000 (in GB)
-      # It will create one volume per node in the nodepool, and configure Longhorn to use them.
-      # Something worth noting is that Volume storage is slower than node storage, which is achieved by not mentioning longhorn_volume_size or setting it to 0.
-      # So for something like DBs, you definitely want node storage, for other things like backups, volume storage is fine, and cheaper.
-      # longhorn_volume_size = 20
+    #   # In the case of using Longhorn, you can use Hetzner volumes instead of using the node's own storage by specifying a value from 10 to 10000 (in GB)
+    #   # It will create one volume per node in the nodepool, and configure Longhorn to use them.
+    #   # Something worth noting is that Volume storage is slower than node storage, which is achieved by not mentioning longhorn_volume_size or setting it to 0.
+    #   # So for something like DBs, you definitely want node storage, for other things like backups, volume storage is fine, and cheaper.
+    #   # longhorn_volume_size = 20
 
-      # Enable automatic backups via Hetzner (default: false)
-      # backups = true
-    },
+    #   # Enable automatic backups via Hetzner (default: false)
+    #   # backups = true
+    # },
     # {
     #   name        = "agent-large",
     #   server_type = "cpx31",
