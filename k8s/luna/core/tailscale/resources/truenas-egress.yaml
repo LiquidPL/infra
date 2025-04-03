@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    tailscale.com/tailnet-fqdn: truenas.lobster-altair.ts.net
+  name: truenas
+  namespace: tailscale
+spec:
+  externalName: placeholder
+  type: ExternalName

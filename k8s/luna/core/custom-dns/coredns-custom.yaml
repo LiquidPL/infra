@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  hs.liquid.sh.override: |
+    rewrite name truenas.hs.liquid.sh. truenas.tailscale.svc.cluster.local.
+    rewrite name minio.hs.liquid.sh. truenas.tailscale.svc.cluster.local.
