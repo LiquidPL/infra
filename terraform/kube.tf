@@ -548,7 +548,7 @@ module "kube-hetzner" {
   # enable_metrics_server = false
 
   # If you want to enable the k3s built-in local-storage controller set this to "true". Default is "false".
-  # enable_local_storage = false
+  enable_local_storage = true
 
   # If you want to allow non-control-plane workloads to run on the control-plane nodes, set this to "true". The default is "false".
   # True by default for single node clusters, and when enable_klipper_metal_lb is true. In those cases, the value below will be ignored.
