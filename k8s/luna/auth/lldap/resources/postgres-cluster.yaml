@@ -1,0 +1,40 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-lldap
+  namespace: lldap
+spec:
+  instances: 2
+  storage:
+    storageClass: local-path
+    size: 128Mi
+  postgresql:
+    parameters:
+      shared_buffers: '32MB'
+      min_wal_size: '5MB' # scaled down from the default of 80 (80 / 16 = 5)
+      max_wal_size: '64MB' # scaled down from the default of 1024 (1024 / 16 = 64)
+      wal_keep_size: '32MB' # 32 WAL segments * 1MB segment size = 32MB
+    synchronous:
+      method: any
+      number: 1
+  bootstrap:
+    initdb:
+      walSegmentSize: 1 # default is 16
+  resources:
+    requests:
+      memory: 128Mi
+      cpu: 50m
+    limits:
+      memory: 256Mi
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://postgres-lldap
+      endpointURL: https://minio.hs.liquid.sh
+      s3Credentials:
+        accessKeyId:
+          name: s3-secret
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-secret
+          key: SECRET_ACCESS_KEY
+    retentionPolicy: '1d'

@@ -1,0 +1,26 @@
+image:
+  tag: v0.6.1-alpine-rootless
+
+lldap:
+  baseDN: 'dc=liquid,dc=sh'
+  secretName: lldap-secret
+
+  uid: &uid 1000
+  gid: &gid 1000
+
+externalPostgresql:
+  enabled: true
+  fromSecret: postgres-lldap-app
+  uriKey: uri
+
+securityContext:
+  runAsUser: *uid
+  runAsGroup: *gid
+  runAsNonRoot: true
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 16Mi
+  limits:
+    memory: 64Mi
