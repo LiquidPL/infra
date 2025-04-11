@@ -2,7 +2,7 @@ nameOverride: foundryvtt
 
 image:
   repository: felddy/foundryvtt
-  tag: &version '12.331'
+  tag: &version '13.339'
 
 foundryvtt:
   existingUserSecret: foundryvtt
