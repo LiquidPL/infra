@@ -16,33 +16,41 @@ configs:
 controller:
   resources:
     requests:
-      cpu: 50m
+      cpu: 750m
+      memory: 500Mi
+    limits:
+      memory: 1250Mi
 
 applicationSet:
   allowAnyNamespace: true
   resources:
     requests:
-      cpu: 10m
+      cpu: 100m
+      memory: 100Mi
 
 dex:
   resources:
     requests:
-      cpu: 10m
+      cpu: 50m
+      memory: 100Mi
 
 notifications:
   resources:
     requests:
-      cpu: 10m
+      cpu: 50m
+      memory: 100Mi
 
 redis:
   resources:
     requests:
-      cpu: 20m
+      cpu: 100m
+      memory: 100Mi
 
 server:
   resources:
     requests:
-      cpu: 20m
+      cpu: 150m
+      memory: 200Mi
   ingress:
     enabled: true
     annotations:
@@ -55,4 +63,5 @@ server:
 repoServer:
   resources:
     requests:
-      cpu: 50m
+      cpu: 100m
+      memory: 100Mi
