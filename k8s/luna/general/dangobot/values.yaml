@@ -23,8 +23,9 @@ postgresql:
     postgresql:
       auth:
         existingSecret: postgres-secret
-    primary:
-      resources:
+  primary:
+    resources:
+      requests:
         cpu: 50m
         memory: 64Mi
       limits:
