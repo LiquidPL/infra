@@ -12,17 +12,6 @@ configs:
     controller.operation.processors: 5
   cm:
     application.resourceTrackingMethod: annotation+label
-  cmp:
-    create: true
-    plugins:
-      tanka:
-        version: '0.27.1'
-        init:
-          command: ['sh', '-c', '/usr/local/bin/jb install']
-        generate:
-          command: ['sh', '-c', '/usr/local/bin/tk show environments/${ARGOCD_ENV_TK_ENV} --dangerous-allow-redirect']
-        discover:
-          fileName: './environments/*/main.jsonnet'
 
 controller:
   resources:
@@ -67,27 +56,3 @@ repoServer:
   resources:
     requests:
       cpu: 50m
-  volumes:
-    - configMap:
-        name: argocd-cmp-cm
-      name: plugin-config
-    - emptyDir: {}
-      name: cmp-tmp
-  extraContainers:
-    - name: tanka
-      command: ['/var/run/argocd/argocd-cmp-server']
-      image: grafana/tanka:0.31.3
-      imagePullPolicy: IfNotPresent
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 999
-      volumeMounts:
-        - mountPath: /var/run/argocd
-          name: var-files
-        - mountPath: /home/argocd/cmp-server/plugins
-          name: plugins
-        - mountPath: /home/argocd/cmp-server/config/plugin.yaml
-          subPath: tanka.yaml
-          name: plugin-config
-        - mountPath: /tmp
-          name: cmp-tmp
