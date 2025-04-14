@@ -599,7 +599,7 @@ module "kube-hetzner" {
   # ⚠️ If you are going to use Rancher addons for instance, it's always a good idea to fix the kube version to latest - 0.01,
   # ⚠️ Rancher currently only supports v1.25 and earlier versions: https://github.com/rancher/rancher/issues/41113
   # The default is "v1.29".
-  # initial_k3s_channel = "stable"
+  initial_k3s_channel = "v1.32"
 
   # The cluster name, by default "k3s"
   cluster_name = "luna"
