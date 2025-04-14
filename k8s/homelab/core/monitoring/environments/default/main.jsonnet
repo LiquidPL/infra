@@ -1,7 +1,7 @@
 local ingress(metadata, host, service) = {
   apiVersion: 'networking.k8s.io/v1',
   kind: 'Ingress',
-  metadata: metadata + {
+  metadata: metadata {
     annotations+: {
       'cert-manager.io/cluster-issuer': 'letsencrypt',
     },
@@ -17,7 +17,7 @@ local ingress(metadata, host, service) = {
               path: '/',
               backend: {
                 service: service,
-              }
+              },
             },
           ],
         },
@@ -41,7 +41,7 @@ local allowIngressNetworkPolicy(port) = {
             namespaceSelector: {
               matchLabels: {
                 'kubernetes.io/metadata.name': 'network',
-              }
+              },
             },
             podSelector: {
               matchLabels: {
@@ -111,7 +111,7 @@ local kp =
             group_by: ['namespace', 'job'],
             receiver: 'ntfy',
             routes: [
-              { matchers: 'alertname = InfoInhibitor', receiver: 'null' },
+              { matchers: ['alertname = InfoInhibitor'], receiver: 'null' },
             ],
           },
           receivers: [
@@ -122,7 +122,7 @@ local kp =
               }],
             },
             {
-              name: 'null'
+              name: 'null',
             },
           ],
         },
@@ -154,10 +154,11 @@ local kp =
           template+: {
             spec+: {
               index:: [
-                x for x in std.range(0, std.length(super.volumes) - 1)
-                if super.volumes[x].name == "grafana-storage" != []
+                x
+                for x in std.range(0, std.length(super.volumes) - 1)
+                if super.volumes[x].name == 'grafana-storage' != []
               ][0],
-              volumes: super.volumes[0:self.index] + [{ name: 'grafana-storage', persistentVolumeClaim: { claimName: $.grafana.pvc.metadata.name } }] + super.volumes[self.index + 1:]
+              volumes: super.volumes[0:self.index] + [{ name: 'grafana-storage', persistentVolumeClaim: { claimName: $.grafana.pvc.metadata.name } }] + super.volumes[self.index + 1:],
             },
           },
         },
@@ -173,7 +174,7 @@ local kp =
         spec: {
           storageClassName: 'nfs-csi',
           accessModes: ['ReadWriteOnce'],
-          resources: { requests: { storage: '60Mi' } }
+          resources: { requests: { storage: '60Mi' } },
         },
       },
 
