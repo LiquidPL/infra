@@ -1,0 +1,34 @@
+http-address :8080
+log-level info
+log-format text
+alert-mode multi
+
+include /etc/ntfy-alertmanager/secrets/auth
+
+labels {
+    order "severity"
+
+    severity "critical" {
+        priority 4
+        tags "rotating_light"
+    }
+
+    severity "warning" {
+        priority 3
+        tags "warning"
+    }
+
+    severity "info" {
+        priority 1
+    }
+}
+
+resolved {
+    tags "resolved,partying_face"
+    priority 1
+}
+
+ntfy {
+    server https://ntfy.liquid.sh
+    topic infra-alerts
+}

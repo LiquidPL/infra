@@ -61,9 +61,11 @@ local allowIngressNetworkPolicy(port) = {
   },
 };
 
+local ntfyReceiver = (import 'lib/ntfy-receiver.libsonnet');
+
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
-  (import 'addons/tolerations.libsonnet') +
+  (import 'lib/tolerations.libsonnet') +
   (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
   {
     values+:: {
@@ -98,7 +100,28 @@ local kp =
           },
         },
       },
+      ntfyReceiver+: {
+        namespace: $.values.common.namespace,
+        version: '0.4.0',
+        image: 'xenrox/ntfy-alertmanager:' + self.version,
+      },
+      alertmanager+: {
+        config+: {
+          route+: {
+            group_by: ['namespace', 'job'],
+            receiver: 'ntfy',
+            routes: [],
+          },
+          receivers: [{
+            name: 'ntfy',
+            webhook_configs: [{
+              url: 'http://' + $.ntfyReceiver.service.metadata.name + '.' + $.ntfyReceiver.service.metadata.namespace + '.svc:' + $.ntfyReceiver.service.spec.ports[0].port,
+            }],
+          }],
+        },
+      },
     },
+
     prometheus+:: {
       prometheus+: {
         spec+: {
@@ -117,6 +140,7 @@ local kp =
         },
       },
     },
+
     grafana+:: {
       deployment+: {
         spec+: {
@@ -158,6 +182,9 @@ local kp =
         },
       ),
     },
+
+    ntfyReceiver: ntfyReceiver($.values.ntfyReceiver),
+
     kubernetesControlPlane+: {
       // k3s exposes all this data under single endpoint and those can be obtained via "kubelet" Service
       serviceMonitorApiserver:: null,
@@ -171,6 +198,7 @@ local manifests =
   [kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus)] +
   [kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator)] +
   [kp.alertmanager[name] for name in std.objectFields(kp.alertmanager)] +
+  [kp.ntfyReceiver[name] for name in std.objectFields(kp.ntfyReceiver)] +
   [kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter)] +
   [kp.grafana[name] for name in std.objectFields(kp.grafana)] +
   // [ kp.pyrra[name] for name in std.objectFields(kp.pyrra)] +
