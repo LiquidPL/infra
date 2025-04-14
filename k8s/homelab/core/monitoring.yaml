@@ -15,11 +15,9 @@ spec:
   source:
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
-    path: k8s/homelab/core/monitoring
-    plugin:
-      env:
-        - name: TK_ENV
-          value: default
+    path: k8s/homelab/core/monitoring/manifests
+    directory:
+      recurse: true
   syncPolicy:
     automated:
       selfHeal: true

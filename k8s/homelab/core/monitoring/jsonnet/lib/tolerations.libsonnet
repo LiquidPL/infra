@@ -5,7 +5,7 @@ local controlPlaneToleration() = {
 };
 
 {
-  alertmanager+:: {
+  alertmanager+: {
     alertmanager+: {
       spec+: {
         tolerations: [controlPlaneToleration()],

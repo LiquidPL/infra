@@ -129,7 +129,7 @@ local kp =
       },
     },
 
-    prometheus+:: {
+    prometheus+: {
       prometheus+: {
         spec+: {
           retention: '14d',
@@ -148,7 +148,7 @@ local kp =
       },
     },
 
-    grafana+:: {
+    grafana+: {
       deployment+: {
         spec+: {
           template+: {
@@ -202,19 +202,19 @@ local kp =
     },
   };
 
-local manifests =
-  [kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus)] +
-  [kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator)] +
-  [kp.alertmanager[name] for name in std.objectFields(kp.alertmanager)] +
-  [kp.ntfyReceiver[name] for name in std.objectFields(kp.ntfyReceiver)] +
-  [kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter)] +
-  [kp.grafana[name] for name in std.objectFields(kp.grafana)] +
-  // [ kp.pyrra[name] for name in std.objectFields(kp.pyrra)] +
-  [kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics)] +
-  [kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane)] +
-  [kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter)] +
-  [kp.prometheus[name] for name in std.objectFields(kp.prometheus)] +
-  [kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter)];
+// local manifests =
+//   [kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus)] +
+//   [kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator)] +
+//   [kp.alertmanager[name] for name in std.objectFields(kp.alertmanager)] +
+//   [kp.ntfyReceiver[name] for name in std.objectFields(kp.ntfyReceiver)] +
+//   [kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter)] +
+//   [kp.grafana[name] for name in std.objectFields(kp.grafana)] +
+//   // [ kp.pyrra[name] for name in std.objectFields(kp.pyrra)] +
+//   [kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics)] +
+//   [kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane)] +
+//   [kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter)] +
+//   [kp.prometheus[name] for name in std.objectFields(kp.prometheus)] +
+//   [kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter)];
 
 local argoAnnotations(manifest) =
   manifest {
@@ -238,10 +238,8 @@ local argoAnnotations(manifest) =
     },
   };
 
-// Add argo-cd annotations to all the manifests
-[
-  if std.endsWith(manifest.kind, 'List') && std.objectHas(manifest, 'items')
-  then manifest { items: [argoAnnotations(item) for item in manifest.items] }
-  else argoAnnotations(manifest)
-  for manifest in manifests
-]
+{
+  [component + '/' + resource + '.yaml']: std.manifestYamlDoc(argoAnnotations(kp[component][resource])) // Add argo-cd annotations to all the manifests
+  for component in std.objectFields(kp)
+  for resource in std.objectFields(kp[component])
+}

@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: ""
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/component: alertmanager-webhook-receiver
+    app.kubernetes.io/name: ntfy-receiver
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.4.0
+  name: ntfy-receiver
+  namespace: monitoring
+spec:
+  egress:
+    - ports:
+        - port: 443
+          protocol: TCP
+      to:
+        - ipBlock:
+            cidr: 128.140.29.17/32
+    - ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: alertmanager
+              app.kubernetes.io/part-of: kube-prometheus
+      ports:
+        - port: 8080
+          protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: alertmanager-webhook-receiver
+      app.kubernetes.io/name: ntfy-receiver
+      app.kubernetes.io/part-of: kube-prometheus
+  policyTypes:
+    - Egress
+    - Ingress
