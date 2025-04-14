@@ -110,14 +110,21 @@ local kp =
           route+: {
             group_by: ['namespace', 'job'],
             receiver: 'ntfy',
-            routes: [],
+            routes: [
+              { matchers: 'alertname = InfoInhibitor', receiver: 'null' },
+            ],
           },
-          receivers: [{
-            name: 'ntfy',
-            webhook_configs: [{
-              url: 'http://' + $.ntfyReceiver.service.metadata.name + '.' + $.ntfyReceiver.service.metadata.namespace + '.svc:' + $.ntfyReceiver.service.spec.ports[0].port,
-            }],
-          }],
+          receivers: [
+            {
+              name: 'ntfy',
+              webhook_configs: [{
+                url: 'http://' + $.ntfyReceiver.service.metadata.name + '.' + $.ntfyReceiver.service.metadata.namespace + '.svc:' + $.ntfyReceiver.service.spec.ports[0].port,
+              }],
+            },
+            {
+              name: 'null'
+            },
+          ],
         },
       },
     },
