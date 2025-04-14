@@ -52,7 +52,7 @@ function(params) {
     metadata: $._metadata,
     spec: {
       podSelector: {
-        matchLabels: $._config.selectorLabels
+        matchLabels: $._config.selectorLabels,
       },
       policyTypes: ['Egress', 'Ingress'],
       ingress: [{
@@ -69,17 +69,32 @@ function(params) {
           protocol: 'TCP',
         }],
       }],
-      egress: [{
-        to: [{
-          ipBlock: {
-            cidr: '128.140.29.17/32', # IP address of load balancer that provides access to ntfy
-          },
-        }],
-        ports: [{
-          port: 443,
-          protocol: 'TCP',
-        }],
-      }],
+      egress: [
+        {
+          to: [{
+            ipBlock: {
+              cidr: '128.140.29.17/32',  // IP address of load balancer that provides access to ntfy
+            },
+          }],
+          ports: [{
+            port: 443,
+            protocol: 'TCP',
+          }],
+        },
+        {
+          to: [{
+            namespaceSelector: {
+              matchLabels: {
+                'kubernetes.io/metadata.name': 'kube-system',
+              },
+            },
+          }],
+          ports: [
+            { port: 53, protocol: 'UDP' },
+            { port: 53, protocol: 'TCP' },
+          ],
+        },
+      ],
     },
   },
 
