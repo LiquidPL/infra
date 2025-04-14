@@ -9,5 +9,8 @@
   },
   "argocd": {
     "fileMatch": ["^k8s/.+/.+/.+\\.ya?ml$"]
-  }
+  },
+  "ignorePaths": [
+    "k8s/homelab/core/monitoring/manifests"
+  ]
 }
