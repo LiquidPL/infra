@@ -135,7 +135,7 @@ config: |
             mode: active_objects
 image:
   repository: ghcr.io/blakeblackshear/frigate
-  tag: 0.15.0
+  tag: 0.15.1
 persistence:
   media:
     enabled: true
