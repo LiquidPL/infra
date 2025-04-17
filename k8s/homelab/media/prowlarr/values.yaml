@@ -13,8 +13,8 @@ controllers:
     containers:
       main:
         image:
-          repository: ghcr.io/onedr0p/prowlarr
-          tag: 1.32.2.4987@sha256:aa248643aa72c407d2f565c2b63831f887152aae47acb076a12b062bbbdeb61d
+          repository: ghcr.io/home-operations/prowlarr
+          tag: 1.33.3.5008@sha256:561f1fef63adf59913a97939689faa0889619c189169e74ced708b47f513b168
           pullPolicy: IfNotPresent
         env:
           PROWLARR__POSTGRES__HOST:
