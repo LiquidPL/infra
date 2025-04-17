@@ -106,12 +106,22 @@ local kp =
         image: 'xenrox/ntfy-alertmanager:' + self.version,
       },
       alertmanager+: {
+        secrets+: [$.alertmanager.receiversSecret.metadata.name],
         config+: {
           route+: {
             group_by: ['namespace', 'job'],
             receiver: 'ntfy',
             routes: [
-              { matchers: ['alertname = InfoInhibitor'], receiver: 'null' },
+              {
+                matchers: ['alertname = Watchdog'],
+                receiver: 'healthchecks.io',
+                repeat_interval: '2m',
+                group_interval: '2m',
+              },
+              {
+                matchers: ['alertname = InfoInhibitor'],
+                receiver: 'null',
+              },
             ],
           },
           receivers: [
@@ -119,6 +129,13 @@ local kp =
               name: 'ntfy',
               webhook_configs: [{
                 url: 'http://' + $.ntfyReceiver.service.metadata.name + '.' + $.ntfyReceiver.service.metadata.namespace + '.svc:' + $.ntfyReceiver.service.spec.ports[0].port,
+              }],
+            },
+            {
+              name: 'healthchecks.io',
+              webhook_configs: [{
+                send_resolved: false,
+                url_file: '/etc/alertmanager/secrets/' + $.alertmanager.receiversSecret.metadata.name + '/healthchecks-io-url',
               }],
             },
             {
@@ -193,6 +210,10 @@ local kp =
 
     ntfyReceiver: ntfyReceiver($.values.ntfyReceiver),
 
+    alertmanager+: {
+      receiversSecret: (import 'lib/alertmanager/receivers-secret.json'),
+    },
+
     kubernetesControlPlane+: {
       // k3s exposes all this data under single endpoint and those can be obtained via "kubelet" Service
       serviceMonitorApiserver:: null,
@@ -239,7 +260,7 @@ local argoAnnotations(manifest) =
   };
 
 {
-  [component + '/' + resource + '.yaml']: std.manifestYamlDoc(argoAnnotations(kp[component][resource])) // Add argo-cd annotations to all the manifests
+  [component + '/' + resource + '.yaml']: std.manifestYamlDoc(argoAnnotations(kp[component][resource]))  // Add argo-cd annotations to all the manifests
   for component in std.objectFields(kp)
   for resource in std.objectFields(kp[component])
 }

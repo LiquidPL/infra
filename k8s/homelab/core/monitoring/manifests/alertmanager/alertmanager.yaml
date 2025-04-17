@@ -45,7 +45,8 @@ spec:
     requests:
       cpu: 4m
       memory: 100Mi
-  secrets: []
+  secrets:
+    - alertmanager-receivers
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
