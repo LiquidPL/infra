@@ -17,9 +17,9 @@ controller:
   resources:
     requests:
       cpu: 750m
-      memory: 500Mi
+      memory: 1000Mi
     limits:
-      memory: 1250Mi
+      memory: 2000Mi
 
 applicationSet:
   allowAnyNamespace: true
