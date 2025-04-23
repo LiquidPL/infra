@@ -73,7 +73,7 @@ jobs:
       - name: Get kernel version
         id: kernel-version
         run: |
-          echo "version=$(podman run -it --rm ghcr.io/ublue-os/ucore:latest /bin/bash -c "rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}'")" >> $GITHUB_OUTPUT
+          echo "version=$(podman run -it --rm ghcr.io/ublue-os/ucore:stable /bin/bash -c "rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}'")" >> $GITHUB_OUTPUT
 
       - name: Cache akmods
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
@@ -120,7 +120,7 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
 
       - name: Install Cosign
-        uses: sigstore/cosign-installer@3454372f43399081ed03b604cb2d021dabca52bb # v3
+        uses: sigstore/cosign-installer@3454372f43399081ed03b604cb2d021dabca52bb # v3.8.2
         if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
 
       - name: Sign container image
