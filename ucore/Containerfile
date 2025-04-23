@@ -1,0 +1,16 @@
+FROM scratch AS ctx
+COPY build-files /
+COPY kmods /built-kmods
+
+FROM ghcr.io/ublue-os/ucore:stable
+
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/build.sh && \
+    ostree container commit
+
+# TODO: uncomment this once ublue-os/packages#245 is resolved
+# https://github.com/ublue-os/packages/issues/245
+# RUN bootc container lint
