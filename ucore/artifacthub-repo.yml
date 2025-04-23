@@ -1,0 +1,8 @@
+# This file is completely optional, but if you want to index your image on https://artifacthub.io/ you can
+# Sign up and add the Repository ID to the right field. Owners fields are optional.
+# Examples: https://artifacthub.io/packages/search?ts_query_web=ublue&sort=relevance&page=1
+
+repositoryID: a300f595-9920-4b53-aacc-485371449dde
+owners: # (optional, used to claim repository ownership)
+  - name: Krzysztof Gutkowski
+    email: krzysio.gutkowski@gmail.com
