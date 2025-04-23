@@ -70,6 +70,19 @@ jobs:
           sep-tags: " "
           sep-annotations: " "
 
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@3454372f43399081ed03b604cb2d021dabca52bb # v3.8.2
+        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+
+      - name: Verify base image signature
+        working-directory: ucore/
+        run: |
+          set -ouex pipefail
+          image=$(grep -i '^FROM' "./Containerfile" | awk '{print $2}')
+          echo "Image: ${image}"
+          echo "Verifying image with cosign..."
+          cosign verify --key https://raw.githubusercontent.com/ublue-os/ucore/refs/heads/main/cosign.pub ${image}
+
       - name: Get kernel version
         id: kernel-version
         run: |
@@ -118,10 +131,6 @@ jobs:
           registry: ${{ steps.registry-case.outputs.registry }}
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.metadata.outputs.tags }}
-
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@3454372f43399081ed03b604cb2d021dabca52bb # v3.8.2
-        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
 
       - name: Sign container image
         if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
