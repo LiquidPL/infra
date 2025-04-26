@@ -24,7 +24,6 @@ control_planes:
   vars:
     k3s_control_node: true
     k3s_server:
-      selinux: true
       node-taint: node-role.kubernetes.io/control-plane:NoSchedule
       secrets-encryption: true
       disable-network-policy: true
@@ -45,7 +44,6 @@ control_planes:
       k3s_server:
         node-label:
           - "node.longhorn.io/create-default-disk=true"
-        selinux: true
         node-taint: node-role.kubernetes.io/control-plane:NoSchedule
         secrets-encryption: true
         disable-network-policy: true
@@ -65,7 +63,6 @@ control_planes:
 agents:
   vars:
     k3s_agent:
-      selinux: true
       kubelet-arg:
         - 'kube_reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi'
         - 'system_reserved=cpu=250m,memory=300Mi'
@@ -75,7 +72,6 @@ agents:
   hosts:
     homelab-agent-1:
       k3s_agent:
-        selinux: true
         kubelet-arg:
           - 'kube_reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi'
           - 'system_reserved=cpu=250m,memory=300Mi'
