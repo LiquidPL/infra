@@ -24,6 +24,7 @@ control_planes:
   vars:
     k3s_control_node: true
     k3s_server:
+      selinux: true
       node-taint: node-role.kubernetes.io/control-plane:NoSchedule
       secrets-encryption: true
       disable-network-policy: true
@@ -41,14 +42,30 @@ control_planes:
   hosts:
     homelab-control-plane-1:
     homelab-control-plane-2:
-      k3s_agent:
+      k3s_server:
         node-label:
           - "node.longhorn.io/create-default-disk=true"
+        selinux: true
+        node-taint: node-role.kubernetes.io/control-plane:NoSchedule
+        secrets-encryption: true
+        disable-network-policy: true
+        flannel-backend: 'none'
+        disable:
+          - traefik
+          - servicelb
+          - metrics-server
+        kubelet-arg:
+          - 'kube-reserved=cpu=250m,memory=1500Mi,ephemeral-storage=1Gi'
+          - 'system-reserved=cpu=250m,memory=300Mi'
+          - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+          - 'authentication-token-webhook=true'
+          - 'authorization-mode=Webhook'
     homelab-control-plane-3:
 
 agents:
   vars:
     k3s_agent:
+      selinux: true
       kubelet-arg:
         - 'kube_reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi'
         - 'system_reserved=cpu=250m,memory=300Mi'
@@ -58,6 +75,13 @@ agents:
   hosts:
     homelab-agent-1:
       k3s_agent:
+        selinux: true
+        kubelet-arg:
+          - 'kube_reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi'
+          - 'system_reserved=cpu=250m,memory=300Mi'
+          - 'resolv-conf=/run/systemd/resolve/resolv.conf'
+          - 'authentication-token-webhook=true'
+          - 'authorization-mode=Webhook'
         node-label:
           - "node.longhorn.io/create-default-disk=true"
 
