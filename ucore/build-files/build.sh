@@ -8,7 +8,9 @@ curl -o /etc/yum.repos.d/_copr-gasket.repo https://copr.fedorainfracloud.org/cop
 cp /ctx/rancher-k3s-common.repo /etc/yum.repos.d/
 
 rpm-ostree install -y /ctx/built-kmods/*.rpm \
-    k3s-selinux
+    k3s-selinux \
+    htop \
+    iotop
 
 rm /etc/yum.repos.d/_copr-gasket.repo \
    /etc/yum.repos.d/rancher-k3s-common.repo
