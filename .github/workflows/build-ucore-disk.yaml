@@ -1,0 +1,41 @@
+name: Build uCore disk image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Pull image
+        run: |
+          sudo podman pull ghcr.io/liquidpl/ucore:latest
+
+      - name: Build image
+        id: build
+        working-directory: ucore/
+        run: |
+          mkdir -p ./output
+
+          sudo podman run \
+            --rm \
+            --privileged \
+            --pull=newer --security-opt label=type:unconfined_t \
+            -v ./qcow2.toml:/config.toml:ro \
+            -v ./output:/output \
+            -v /var/lib/containers/storage:/var/lib/containers/storage \
+            quay.io/centos-bootc/bootc-image-builder:latest@sha256:87f20ff771f411a4cf94ac3ac0c2497661e3eab43e43b47a858a789fe95bd699 \
+            --type qcow2 \
+            --rootfs xfs \
+            ghcr.io/liquidpl/ucore:latest
+
+      - name: Upload image as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: qcow2 image
+          path: ./ucore/output/qcow2/disk.qcow2
