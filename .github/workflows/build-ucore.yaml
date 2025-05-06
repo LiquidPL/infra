@@ -1,4 +1,4 @@
-name: Build uCore container image
+name: Build uCore image
 
 on:
   schedule:
