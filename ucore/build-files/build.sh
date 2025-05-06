@@ -14,3 +14,7 @@ rpm-ostree install -y /ctx/built-kmods/*.rpm \
 
 rm /etc/yum.repos.d/_copr-gasket.repo \
    /etc/yum.repos.d/rancher-k3s-common.repo
+
+# TODO: consider moving this to the Ignition config once building
+# disk images from bootc based CoreOS images is working
+systemctl disable firewalld.service
