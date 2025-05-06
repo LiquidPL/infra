@@ -47,8 +47,8 @@ jobs:
         id: metadata
         with:
           tags: |
-            type=raw,value=latest
-            type=raw,value=latest.{{date 'YYYYMMDD'}}
+            type=raw,value=stable
+            type=raw,value=stable.{{date 'YYYYMMDD'}}
             type=raw,value={{date 'YYYYMMDD'}}
             type=sha,enable=${{ github.event_name == 'pull_request' }}
             type=ref,event=pr
@@ -61,7 +61,7 @@ jobs:
             org.opencontainers.image.title=${{ env.IMAGE_NAME }}
             org.opencontainers.image.url=https://github.com/${{ github.repository }}/ucore
             org.opencontainers.image.vendor=${{ github.repository_owner }}
-            org.opencontainers.image.version=latest
+            org.opencontainers.image.version=stable
             io.artifacthub.package.deprecated=false
             io.artifacthub.package.keywords=bootc,ublue,universal-blue
             io.artifacthub.package.license=MIT
@@ -86,7 +86,7 @@ jobs:
       - name: Get kernel version
         id: kernel-version
         run: |
-          echo "version=$(podman run -it --rm ghcr.io/ublue-os/ucore:stable /bin/bash -c "rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}'")" >> $GITHUB_OUTPUT
+          echo "version=$(podman run -it --rm ghcr.io/ublue-os/ucore-minimal:stable /bin/bash -c "rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}'")" >> $GITHUB_OUTPUT
 
       - name: Cache kmods
         id: cache-kmods

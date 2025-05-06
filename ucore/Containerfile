@@ -2,7 +2,7 @@ FROM scratch AS ctx
 COPY build-files /
 COPY kmods /built-kmods
 
-FROM ghcr.io/ublue-os/ucore:stable
+FROM ghcr.io/ublue-os/ucore-minimal:stable
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
