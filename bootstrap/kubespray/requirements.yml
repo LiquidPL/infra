@@ -1,0 +1,4 @@
+collections:
+  - name: https://github.com/LiquidPL/kubespray
+    type: git
+    version: fcos-helm-deps

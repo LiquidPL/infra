@@ -10,20 +10,57 @@ passwd:
         - {{ node_ssh_key }}
 systemd:
   units:
-    - name: install-tailscale.service
+    - name: ucore-unsigned-autorebase.service
       enabled: true
       contents: |
         [Unit]
-        Description=Install Tailscale
+        Description=uCore autorebase to unsigned OCI and reboot
+        ConditionPathExists=!/etc/ucore-autorebase/unverified
+        ConditionPathExists=!/etc/ucore-autorebase/signed
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        ExecStart=/usr/bin/rpm-ostree rebase --bypass-driver ostree-unverified-registry:ghcr.io/liquidpl/ucore:stable
+        ExecStart=/usr/bin/touch /etc/ucore-autorebase/unverified
+        ExecStart=/usr/bin/systemctl disable ucore-unsigned-autorebase.service
+        ExecStart=/usr/bin/systemctl reboot
+        [Install]
+        WantedBy=multi-user.target
+    - name: ucore-signed-autorebase.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=uCore autorebase to signed OCI and reboot
+        ConditionPathExists=/etc/ucore-autorebase/unverified
+        ConditionPathExists=!/etc/ucore-autorebase/signed
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        ExecStart=/usr/bin/rpm-ostree rebase --bypass-driver ostree-image-signed:docker://ghcr.io/liquidpl/ucore:stable
+        ExecStart=/usr/bin/touch /etc/ucore-autorebase/signed
+        ExecStart=/usr/bin/systemctl disable ucore-signed-autorebase.service
+        ExecStart=/usr/bin/systemctl reboot
+        [Install]
+        WantedBy=multi-user.target
+    - name: tailscale-auth.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Authenticate to Tailscale
         Wants=network-online.target
         After=network-online.target
         Before=zincati.service
         ConditionPathExists=!/var/lib/%N.done
+        ConditionPathExists=/etc/ucore-autorebase/unverified
+        ConditionPathExists=/etc/ucore-autorebase/signed
 
         [Service]
         Type=oneshot
         RemainAfterExit=yes
-        ExecStart=/usr/bin/rpm-ostree install --idempotent --apply-live tailscale
         ExecStart=/usr/bin/systemctl enable --now tailscaled
         ExecStart=/usr/bin/tailscale up --authkey {{ tailscale_auth_key }} --ssh
         ExecStart=/bin/touch /var/lib/%N.done
@@ -32,6 +69,9 @@ systemd:
         WantedBy=multi-user.target
 
 storage:
+  directories:
+    - path: /etc/ucore-autorebase
+      mode: 0754
   files:
     - path: /etc/hostname
       mode: 0644
@@ -42,22 +82,17 @@ storage:
         inline: |
           [keyfile]
           unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:vxlan-v6.calico;interface-name:wireguard.cali;interface-name:wg-v6.cali
+    # needed for calico
+    # see: https://kubespray.io/#/docs/operating_systems/fcos?id=network
+    - path: /etc/sysctl.d/90-reverse-path-filter.conf
+      contents:
+        inline: |
+          net.ipv4.conf.all.rp_filter=1
     - path: /etc/sysctl.d/99-inotify.conf
       contents:
         inline: |
           fs.inotify.max_user_instances=512
           fs.inotify.max_user_watches=262144
-    - path: /etc/yum.repos.d/tailscale.repo
-      contents:
-        inline: |
-          [tailscale-stable]
-          name=Tailscale stable
-          baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
-          enabled=1
-          type=rpm
-          repo_gpgcheck=1
-          gpgcheck=0
-          gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
   links:
     # some k8s apps break when there is no /etc/localtime symlink set
     - path: /etc/localtime

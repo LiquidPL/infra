@@ -9,6 +9,7 @@
     api_password: '{{ proxmox_password }}'
     node: proxmox
     name: '{{ item.hostname }}'
+    tags: '{{ item.tags }}'
     machine: q35
     bios: ovmf
     ostype: l26

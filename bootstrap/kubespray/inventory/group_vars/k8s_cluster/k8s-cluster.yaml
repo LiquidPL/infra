@@ -1,0 +1,29 @@
+kube_network_plugin: cni # calico is managed externally
+
+kube_service_addresses: 10.43.0.0/16
+kube_pods_subnet: 10.42.0.0/16
+
+kube_proxy_strict_arp: true # necessary for metallb
+
+cluster_name: homelab.hs.liquid.sh
+
+kubelet_enforce_node_allocatable: pods,system-reserved,kube-reserved
+
+kube_reserved: true
+kube_memory_reserved: 300Mi
+kube_cpu_reserved: 50m
+kube_ephemeral_storage_reserved: 1Gi
+
+system_reserved: true
+system_memory_reserved: 300Mi
+system_cpu_reserved: 250m
+system_ephemeral_storage_reserved: 1Gi
+
+nodelocaldns_ip: 10.43.0.10
+
+kube_owner: root
+kube_cert_group: root
+
+## Addons ##
+helm_enabled: false
+local_path_provisioner_enabled: true
