@@ -10,4 +10,5 @@ installation:
     ipPools:
       - cidr: 10.42.0.0/16
         encapsulation: None
-  flexVolumePath: /var/lib/rancher/k3s/agent/libexec/kubernetes
+  # default path is non-writable on coreos
+  flexVolumePath: /var/lib/kubelet/volumeplugins/
