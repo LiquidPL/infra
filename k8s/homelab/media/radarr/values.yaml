@@ -14,7 +14,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/home-operations/radarr
-          tag: 5.23.0.9907@sha256:36cd279903d97e74fc687c937d6a5693a6fb69a01787203795b17ab66fb0e3e9
+          tag: 5.26.1.10080@sha256:1c85411af158a269592b9ce2c90ec10a59528f3585844b832e38f710e0c89557
           pullPolicy: IfNotPresent
         env:
           RADARR__POSTGRES__HOST:
