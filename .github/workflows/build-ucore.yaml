@@ -83,24 +83,6 @@ jobs:
           echo "Verifying image with cosign..."
           cosign verify --key https://raw.githubusercontent.com/ublue-os/ucore/refs/heads/main/cosign.pub ${image}
 
-      - name: Get kernel version
-        id: kernel-version
-        run: |
-          echo "version=$(podman run -it --rm ghcr.io/ublue-os/ucore-minimal:stable /bin/bash -c "rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}'")" >> $GITHUB_OUTPUT
-
-      - name: Cache kmods
-        id: cache-kmods
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
-        with:
-          path: ucore/kmods
-          key: cache-kmods-${{ steps.kernel-version.outputs.version }}-${{ hashFiles('ucore/build-files/kmods/**') }}-${{ hashFiles('ucore/build-kmods.sh') }}
-
-      - name: Build kmods
-        if: steps.cache-kmods.outputs.cache-hit != 'true'
-        working-directory: ucore/
-        run: |
-          sudo ./build-kmods.sh
-
       - name: Build image
         uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2
         with:

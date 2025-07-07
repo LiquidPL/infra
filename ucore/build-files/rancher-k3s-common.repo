@@ -1,7 +1,0 @@
-[rancher-k3s-common-latest]
-name=Rancher K3s Common (latest)
-baseurl=https://rpm.rancher.io/k3s/latest/common/coreos/noarch/
-enabled=1
-gphcheck=1
-repo_gpgcheck=0
-gpgkey=https://rpm.rancher.io/public.key

@@ -1,6 +1,5 @@
 FROM scratch AS ctx
 COPY build-files /
-COPY kmods /built-kmods
 
 FROM ghcr.io/ublue-os/ucore-minimal:stable
 
