@@ -1,6 +1,7 @@
 domain: hs.liquid.sh
 watchedResources:
   - Ingress
+  - Service
   - HTTPRoute
 service:
   type: ClusterIP
