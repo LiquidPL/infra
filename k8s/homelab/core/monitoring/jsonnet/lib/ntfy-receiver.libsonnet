@@ -161,9 +161,11 @@ function(params) {
         spec: {
           restartPolicy: 'Always',
           securityContext: {
+            runAsNonRoot: true,
             runAsUser: 1000,
             runAsGroup: 1000,
-            runAsNonRoot: true,
+            fsGroup: 1000,
+            seccompProfile: { type: 'RuntimeDefault' },
           },
           containers: [receiver],
           volumes: [
