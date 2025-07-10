@@ -3,3 +3,6 @@ operatorConfig:
     requests:
       cpu: 5m
       memory: 64Mi
+
+apiServerProxyConfig:
+  mode: noauth
