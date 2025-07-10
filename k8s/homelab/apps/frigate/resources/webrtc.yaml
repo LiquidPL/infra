@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/instance: frigate
   annotations:
     tailscale.com/expose: "true"
+    tailscale.com/hostname: "frigate-webrtc"
 spec:
   type: LoadBalancer
   ports:
