@@ -70,23 +70,14 @@ local kp =
   {
     values+:: {
       common+: {
+        platform: 'kubespray',
         namespace: 'monitoring',
         baseDomain: 'hs.liquid.sh',
       },
       kubernetesControlPlane+: {
         kubeProxy: true,
-        mixin+: {
-          _config+: {
-            // k3s exposes all this data under single endpoint and those can be obtained via "kubelet" Service
-            kubeSchedulerSelector: 'job="kubelet"',
-            kubeControllerManagerSelector: 'job="kubelet"',
-            kubeApiserverSelector: 'job="kubelet"',
-            kubeProxySelector: 'job="kubelet"',
-          },
-        },
       },
       prometheus+: {
-        replicas: 1,
         resources: {
           requests: { cpu: '100m', memory: '1024Mi' },
           limits: { memory: '2048Mi' },
@@ -212,14 +203,6 @@ local kp =
 
     alertmanager+: {
       receiversSecret: (import 'lib/alertmanager/receivers-secret.json'),
-    },
-
-    kubernetesControlPlane+: {
-      // k3s exposes all this data under single endpoint and those can be obtained via "kubelet" Service
-      serviceMonitorApiserver:: null,
-      serviceMonitorKubeControllerManager:: null,
-      serviceMonitorKubeScheduler:: null,
-      podMonitorKubeProxy:: null,
     },
   };
 

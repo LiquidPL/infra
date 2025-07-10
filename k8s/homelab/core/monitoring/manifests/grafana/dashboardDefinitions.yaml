@@ -360,7 +360,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-alertmanager-overview
       namespace: monitoring
   - apiVersion: v1
@@ -956,7 +956,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(workqueue_adds_total{job=\"kubelet\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)",
+                            "expr": "sum(rate(workqueue_adds_total{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)",
                             "legendFormat": "{{instance}} {{name}}"
                         }
                     ],
@@ -999,7 +999,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(workqueue_depth{job=\"kubelet\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)",
+                            "expr": "sum(rate(workqueue_depth{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)",
                             "legendFormat": "{{instance}} {{name}}"
                         }
                     ],
@@ -1045,7 +1045,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"kubelet\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name, le))",
                             "legendFormat": "{{instance}} {{name}}"
                         }
                     ],
@@ -1087,7 +1087,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "process_resident_memory_bytes{job=\"kubelet\",instance=~\"$instance\", cluster=\"$cluster\"}",
+                            "expr": "process_resident_memory_bytes{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -1130,7 +1130,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "rate(process_cpu_seconds_total{job=\"kubelet\",instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
+                            "expr": "rate(process_cpu_seconds_total{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -1172,7 +1172,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "go_goroutines{job=\"kubelet\",instance=~\"$instance\", cluster=\"$cluster\"}",
+                            "expr": "go_goroutines{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -1208,7 +1208,7 @@ items:
                         "hide": 0,
                         "label": "cluster",
                         "name": "cluster",
-                        "query": "label_values(up{job=\"kubelet\"}, cluster)",
+                        "query": "label_values(up{job=\"apiserver\"}, cluster)",
                         "refresh": 2,
                         "sort": 1,
                         "type": "query"
@@ -1221,7 +1221,7 @@ items:
                         "hide": 0,
                         "includeAll": true,
                         "name": "instance",
-                        "query": "label_values(up{job=\"kubelet\", cluster=\"$cluster\"}, instance)",
+                        "query": "label_values(up{job=\"apiserver\", cluster=\"$cluster\"}, instance)",
                         "refresh": 2,
                         "sort": 1,
                         "type": "query"
@@ -1242,7 +1242,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-apiserver
       namespace: monitoring
   - apiVersion: v1
@@ -2056,7 +2056,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-cluster-total
       namespace: monitoring
   - apiVersion: v1
@@ -2106,7 +2106,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(up{cluster=\"$cluster\", job=\"kubelet\"})",
+                            "expr": "sum(up{cluster=\"$cluster\", job=\"kube-controller-manager\"})",
                             "instant": true
                         }
                     ],
@@ -2157,7 +2157,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(workqueue_adds_total{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, name)",
+                            "expr": "sum(rate(workqueue_adds_total{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, name)",
                             "legendFormat": "{{cluster}} {{instance}} {{name}}"
                         }
                     ],
@@ -2208,7 +2208,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(workqueue_depth{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, name)",
+                            "expr": "sum(rate(workqueue_depth{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, name)",
                             "legendFormat": "{{cluster}} {{instance}} {{name}}"
                         }
                     ],
@@ -2259,7 +2259,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, name, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, name, le))",
                             "legendFormat": "{{cluster}} {{instance}} {{name}}"
                         }
                     ],
@@ -2310,7 +2310,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{job=\"kubelet\", instance=~\"$instance\",code=~\"2..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{job=\"kube-controller-manager\", instance=~\"$instance\",code=~\"2..\"}[$__rate_interval]))",
                             "legendFormat": "2xx"
                         },
                         {
@@ -2318,7 +2318,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{job=\"kubelet\", instance=~\"$instance\",code=~\"3..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{job=\"kube-controller-manager\", instance=~\"$instance\",code=~\"3..\"}[$__rate_interval]))",
                             "legendFormat": "3xx"
                         },
                         {
@@ -2326,7 +2326,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{job=\"kubelet\", instance=~\"$instance\",code=~\"4..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{job=\"kube-controller-manager\", instance=~\"$instance\",code=~\"4..\"}[$__rate_interval]))",
                             "legendFormat": "4xx"
                         },
                         {
@@ -2334,7 +2334,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{job=\"kubelet\", instance=~\"$instance\",code=~\"5..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{job=\"kube-controller-manager\", instance=~\"$instance\",code=~\"5..\"}[$__rate_interval]))",
                             "legendFormat": "5xx"
                         }
                     ],
@@ -2385,7 +2385,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, le))",
                             "legendFormat": "{{verb}}"
                         }
                     ],
@@ -2436,7 +2436,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
                             "legendFormat": "{{verb}}"
                         }
                     ],
@@ -2487,7 +2487,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "process_resident_memory_bytes{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}",
+                            "expr": "process_resident_memory_bytes{cluster=\"$cluster\", job=\"kube-controller-manager\",instance=~\"$instance\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -2538,7 +2538,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])",
+                            "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kube-controller-manager\",instance=~\"$instance\"}[$__rate_interval])",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -2589,7 +2589,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "go_goroutines{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}",
+                            "expr": "go_goroutines{cluster=\"$cluster\", job=\"kube-controller-manager\",instance=~\"$instance\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -2625,7 +2625,7 @@ items:
                         "hide": 0,
                         "label": "cluster",
                         "name": "cluster",
-                        "query": "label_values(up{job=\"kubelet\"}, cluster)",
+                        "query": "label_values(up{job=\"kube-controller-manager\"}, cluster)",
                         "refresh": 2,
                         "sort": 1,
                         "type": "query"
@@ -2639,7 +2639,7 @@ items:
                         "includeAll": true,
                         "label": "instance",
                         "name": "instance",
-                        "query": "label_values(up{cluster=\"$cluster\", job=\"kubelet\"}, instance)",
+                        "query": "label_values(up{cluster=\"$cluster\", job=\"kube-controller-manager\"}, instance)",
                         "refresh": 2,
                         "sort": 1,
                         "type": "query"
@@ -2660,7 +2660,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-controller-manager
       namespace: monitoring
   - apiVersion: v1
@@ -3158,7 +3158,6 @@ items:
                 }
             ],
             "schemaVersion": 30,
-            "style": "dark",
             "tags": [
 
             ],
@@ -3285,7 +3284,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-grafana-overview
       namespace: monitoring
   - apiVersion: v1
@@ -4872,7 +4871,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-cluster
       namespace: monitoring
   - apiVersion: v1
@@ -5513,7 +5512,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-multicluster
       namespace: monitoring
   - apiVersion: v1
@@ -7031,7 +7030,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-namespace
       namespace: monitoring
   - apiVersion: v1
@@ -7712,7 +7711,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-node
       namespace: monitoring
   - apiVersion: v1
@@ -9096,7 +9095,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-pod
       namespace: monitoring
   - apiVersion: v1
@@ -9783,7 +9782,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-windows-cluster
       namespace: monitoring
   - apiVersion: v1
@@ -10237,7 +10236,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-windows-namespace
       namespace: monitoring
   - apiVersion: v1
@@ -10746,7 +10745,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-windows-pod
       namespace: monitoring
   - apiVersion: v1
@@ -11812,7 +11811,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-workload
       namespace: monitoring
   - apiVersion: v1
@@ -13075,7 +13074,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-resources-workloads-namespace
       namespace: monitoring
   - apiVersion: v1
@@ -13491,7 +13490,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-windows-cluster-rsrc-use
       namespace: monitoring
   - apiVersion: v1
@@ -14118,7 +14117,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-k8s-windows-node-rsrc-use
       namespace: monitoring
   - apiVersion: v1
@@ -15371,7 +15370,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-kubelet
       namespace: monitoring
   - apiVersion: v1
@@ -16011,7 +16010,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-namespace-by-pod
       namespace: monitoring
   - apiVersion: v1
@@ -16809,7 +16808,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-namespace-by-workload
       namespace: monitoring
   - apiVersion: v1
@@ -17402,7 +17401,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-node-cluster-rsrc-use
       namespace: monitoring
   - apiVersion: v1
@@ -18006,7 +18005,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-node-rsrc-use
       namespace: monitoring
   - apiVersion: v1
@@ -18729,7 +18728,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-nodes-aix
       namespace: monitoring
   - apiVersion: v1
@@ -19476,7 +19475,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-nodes-darwin
       namespace: monitoring
   - apiVersion: v1
@@ -20215,7 +20214,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-nodes
       namespace: monitoring
   - apiVersion: v1
@@ -20537,7 +20536,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-persistentvolumesusage
       namespace: monitoring
   - apiVersion: v1
@@ -21031,7 +21030,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-pod-total
       namespace: monitoring
   - apiVersion: v1
@@ -21832,7 +21831,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-prometheus-remote-write
       namespace: monitoring
   - apiVersion: v1
@@ -22245,7 +22244,7 @@ items:
                                 }
                             },
                             "min": 0,
-                            "unit": "ms"
+                            "unit": "short"
                         }
                     },
                     "gridPos": {
@@ -22663,7 +22662,8 @@ items:
                 ]
             },
             "timezone": "utc",
-            "title": "Prometheus / Overview"
+            "title": "Prometheus / Overview",
+            "uid": "9fa0d141-d019-4ad7-8bc5-42196ee308bd"
         }
     kind: ConfigMap
     metadata:
@@ -22671,7 +22671,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-prometheus
       namespace: monitoring
   - apiVersion: v1
@@ -22721,7 +22721,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(up{cluster=\"$cluster\", job=\"kubelet\"})",
+                            "expr": "sum(up{cluster=\"$cluster\", job=\"kube-proxy\"})",
                             "instant": true
                         }
                     ],
@@ -22772,7 +22772,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(kubeproxy_sync_proxy_rules_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval]))",
+                            "expr": "sum(rate(kubeproxy_sync_proxy_rules_duration_seconds_count{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval]))",
                             "legendFormat": "rate"
                         }
                     ],
@@ -22823,7 +22823,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99,rate(kubeproxy_sync_proxy_rules_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval]))",
+                            "expr": "histogram_quantile(0.99,rate(kubeproxy_sync_proxy_rules_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval]))",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -22874,7 +22874,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(kubeproxy_network_programming_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval]))",
+                            "expr": "sum(rate(kubeproxy_network_programming_duration_seconds_count{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval]))",
                             "legendFormat": "rate"
                         }
                     ],
@@ -22925,7 +22925,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(kubeproxy_network_programming_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(kubeproxy_network_programming_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -22976,7 +22976,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kubelet\", instance=~\"$instance\",code=~\"2..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kube-proxy\", instance=~\"$instance\",code=~\"2..\"}[$__rate_interval]))",
                             "legendFormat": "2xx"
                         },
                         {
@@ -22984,7 +22984,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kubelet\", instance=~\"$instance\",code=~\"3..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kube-proxy\", instance=~\"$instance\",code=~\"3..\"}[$__rate_interval]))",
                             "legendFormat": "3xx"
                         },
                         {
@@ -22992,7 +22992,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kubelet\", instance=~\"$instance\",code=~\"4..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kube-proxy\", instance=~\"$instance\",code=~\"4..\"}[$__rate_interval]))",
                             "legendFormat": "4xx"
                         },
                         {
@@ -23000,7 +23000,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kubelet\", instance=~\"$instance\",code=~\"5..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\",job=\"kube-proxy\", instance=~\"$instance\",code=~\"5..\"}[$__rate_interval]))",
                             "legendFormat": "5xx"
                         }
                     ],
@@ -23051,7 +23051,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\",verb=\"POST\"}[$__rate_interval])) by (verb, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\",instance=~\"$instance\",verb=\"POST\"}[$__rate_interval])) by (verb, le))",
                             "legendFormat": "{{verb}}"
                         }
                     ],
@@ -23102,7 +23102,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
                             "legendFormat": "{{verb}}"
                         }
                     ],
@@ -23153,7 +23153,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "process_resident_memory_bytes{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}",
+                            "expr": "process_resident_memory_bytes{cluster=\"$cluster\", job=\"kube-proxy\",instance=~\"$instance\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -23204,7 +23204,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])",
+                            "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kube-proxy\",instance=~\"$instance\"}[$__rate_interval])",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -23255,7 +23255,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "go_goroutines{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}",
+                            "expr": "go_goroutines{cluster=\"$cluster\", job=\"kube-proxy\",instance=~\"$instance\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -23291,7 +23291,7 @@ items:
                         "hide": 0,
                         "label": "cluster",
                         "name": "cluster",
-                        "query": "label_values(up{job=\"kubelet\"}, cluster)",
+                        "query": "label_values(up{job=\"kube-proxy\"}, cluster)",
                         "refresh": 2,
                         "sort": 1,
                         "type": "query"
@@ -23306,7 +23306,7 @@ items:
                         "includeAll": true,
                         "label": "instance",
                         "name": "instance",
-                        "query": "label_values(up{job=\"kubelet\", cluster=\"$cluster\", job=\"kubelet\"}, instance)",
+                        "query": "label_values(up{job=\"kube-proxy\", cluster=\"$cluster\", job=\"kube-proxy\"}, instance)",
                         "refresh": 2,
                         "type": "query"
                     }
@@ -23326,7 +23326,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-proxy
       namespace: monitoring
   - apiVersion: v1
@@ -23376,7 +23376,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(up{cluster=\"$cluster\", job=\"kubelet\"})",
+                            "expr": "sum(up{cluster=\"$cluster\", job=\"kube-scheduler\"})",
                             "instant": true
                         }
                     ],
@@ -23427,7 +23427,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(scheduler_e2e_scheduling_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
+                            "expr": "sum(rate(scheduler_e2e_scheduling_duration_seconds_count{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
                             "legendFormat": "{{cluster}} {{instance}} e2e"
                         },
                         {
@@ -23435,7 +23435,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(scheduler_binding_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
+                            "expr": "sum(rate(scheduler_binding_duration_seconds_count{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
                             "legendFormat": "{{cluster}} {{instance}} binding"
                         },
                         {
@@ -23443,7 +23443,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(scheduler_scheduling_algorithm_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
+                            "expr": "sum(rate(scheduler_scheduling_algorithm_duration_seconds_count{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
                             "legendFormat": "{{cluster}} {{instance}} scheduling algorithm"
                         },
                         {
@@ -23451,7 +23451,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(scheduler_volume_scheduling_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
+                            "expr": "sum(rate(scheduler_volume_scheduling_duration_seconds_count{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
                             "legendFormat": "{{cluster}} {{instance}} volume"
                         }
                     ],
@@ -23502,7 +23502,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
                             "legendFormat": "{{cluster}} {{instance}} e2e"
                         },
                         {
@@ -23510,7 +23510,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_binding_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_binding_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
                             "legendFormat": "{{cluster}} {{instance}} binding"
                         },
                         {
@@ -23518,7 +23518,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
                             "legendFormat": "{{cluster}} {{instance}} scheduling algorithm"
                         },
                         {
@@ -23526,7 +23526,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_volume_scheduling_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(scheduler_volume_scheduling_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
                             "legendFormat": "{{cluster}} {{instance}} volume"
                         }
                     ],
@@ -23577,7 +23577,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\",code=~\"2..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\",code=~\"2..\"}[$__rate_interval]))",
                             "legendFormat": "2xx"
                         },
                         {
@@ -23585,7 +23585,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\",code=~\"3..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\",code=~\"3..\"}[$__rate_interval]))",
                             "legendFormat": "3xx"
                         },
                         {
@@ -23593,7 +23593,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\",code=~\"4..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\",code=~\"4..\"}[$__rate_interval]))",
                             "legendFormat": "4xx"
                         },
                         {
@@ -23601,7 +23601,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\",code=~\"5..\"}[$__rate_interval]))",
+                            "expr": "sum(rate(rest_client_requests_total{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\",code=~\"5..\"}[$__rate_interval]))",
                             "legendFormat": "5xx"
                         }
                     ],
@@ -23652,7 +23652,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, le))",
                             "legendFormat": "{{verb}}"
                         }
                     ],
@@ -23703,7 +23703,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
+                            "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
                             "legendFormat": "{{verb}}"
                         }
                     ],
@@ -23754,7 +23754,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "process_resident_memory_bytes{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}",
+                            "expr": "process_resident_memory_bytes{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -23805,7 +23805,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])",
+                            "expr": "rate(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -23856,7 +23856,7 @@ items:
                                 "type": "prometheus",
                                 "uid": "${datasource}"
                             },
-                            "expr": "go_goroutines{cluster=\"$cluster\", job=\"kubelet\",instance=~\"$instance\"}",
+                            "expr": "go_goroutines{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}",
                             "legendFormat": "{{instance}}"
                         }
                     ],
@@ -23892,7 +23892,7 @@ items:
                         "hide": 0,
                         "label": "cluster",
                         "name": "cluster",
-                        "query": "label_values(up{job=\"kubelet\"}, cluster)",
+                        "query": "label_values(up{job=\"kube-scheduler\"}, cluster)",
                         "refresh": 2,
                         "sort": 1,
                         "type": "query"
@@ -23907,7 +23907,7 @@ items:
                         "includeAll": true,
                         "label": "instance",
                         "name": "instance",
-                        "query": "label_values(up{job=\"kubelet\", cluster=\"$cluster\"}, instance)",
+                        "query": "label_values(up{job=\"kube-scheduler\", cluster=\"$cluster\"}, instance)",
                         "refresh": 2,
                         "type": "query"
                     }
@@ -23927,7 +23927,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-scheduler
       namespace: monitoring
   - apiVersion: v1
@@ -24513,7 +24513,7 @@ items:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.5.2
+        app.kubernetes.io/version: 12.0.1
       name: grafana-dashboard-workload-total
       namespace: monitoring
 kind: ConfigMapList

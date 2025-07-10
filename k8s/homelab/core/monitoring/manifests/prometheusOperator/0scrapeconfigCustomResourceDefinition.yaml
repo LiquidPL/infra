@@ -4,8 +4,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/sync-wave: "-5"
-    controller-gen.kubebuilder.io/version: v0.17.2
-    operator.prometheus.io/version: 0.81.0
+    controller-gen.kubebuilder.io/version: v0.18.0
+    operator.prometheus.io/version: 0.83.0
   name: scrapeconfigs.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -368,7 +368,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -584,7 +584,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
@@ -1091,7 +1091,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -1310,7 +1310,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: |-
@@ -1722,7 +1722,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -1936,7 +1936,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: Refresh interval to re-read the instance list.
@@ -2423,7 +2423,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -2634,7 +2634,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: Time after which the container is refreshed.
@@ -3069,7 +3069,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -3285,7 +3285,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: The time after which the service discovery data is refreshed.
@@ -3582,7 +3582,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
@@ -4025,7 +4025,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -4233,7 +4233,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: Refresh interval to re-read the instance list.
@@ -4595,6 +4595,12 @@ spec:
                       followRedirects:
                         description: Configure whether HTTP requests follow HTTP 3xx redirects.
                         type: boolean
+                      labelSelector:
+                        description: |-
+                          Label selector used to filter the servers when fetching them from the API.
+                          It requires Prometheus >= v3.5.0.
+                        minLength: 1
+                        type: string
                       noProxy:
                         description: |-
                           `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
@@ -4737,7 +4743,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -4948,7 +4954,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: The time after which the servers are refreshed.
@@ -5368,7 +5374,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -5576,7 +5582,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: |-
@@ -5934,7 +5940,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -6148,7 +6154,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: Refresh interval to re-read the list of resources.
@@ -6609,7 +6615,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -6817,7 +6823,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       role:
                         description: |-
@@ -7271,7 +7277,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -7479,7 +7485,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: The time to wait between polling update requests.
@@ -7932,7 +7938,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -8148,7 +8154,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: Refresh interval to re-read the list of instances.
@@ -8524,7 +8530,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -8738,7 +8744,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: Time after which the linode instances are refreshed.
@@ -8993,6 +8999,26 @@ spec:
                 metricsPath:
                   description: MetricsPath HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. /metrics).
                   minLength: 1
+                  type: string
+                nameEscapingScheme:
+                  description: |-
+                    Metric name escaping mode to request through content negotiation.
+
+                    It requires Prometheus >= v3.4.0.
+                  enum:
+                    - AllowUTF8
+                    - Underscores
+                    - Dots
+                    - Values
+                  type: string
+                nameValidationScheme:
+                  description: |-
+                    Specifies the validation scheme for metric and label names.
+
+                    It requires Prometheus >= v3.0.0.
+                  enum:
+                    - UTF8
+                    - Legacy
                   type: string
                 nativeHistogramBucketLimit:
                   description: |-
@@ -9267,7 +9293,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -9475,7 +9501,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: |-
@@ -9777,7 +9803,7 @@ spec:
                       type: boolean
                     proxyUrl:
                       description: '`proxyURL` defines the HTTP proxy server to use.'
-                      pattern: ^http(s)?://.+$
+                      pattern: ^(http|https|socks5)://.+$
                       type: string
                     scopes:
                       description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -10375,7 +10401,7 @@ spec:
                   type: boolean
                 proxyUrl:
                   description: '`proxyURL` defines the HTTP proxy server to use.'
-                  pattern: ^http(s)?://.+$
+                  pattern: ^(http|https|socks5)://.+$
                   type: string
                 puppetDBSDConfigs:
                   description: PuppetDBSDConfigs defines a list of PuppetDB service discovery configurations.
@@ -10628,7 +10654,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           scopes:
                             description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -10842,7 +10868,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       query:
                         description: |-
@@ -11191,7 +11217,7 @@ spec:
                         type: boolean
                       proxyUrl:
                         description: '`proxyURL` defines the HTTP proxy server to use.'
-                        pattern: ^http(s)?://.+$
+                        pattern: ^(http|https|socks5)://.+$
                         type: string
                       refreshInterval:
                         description: Refresh interval to re-read the list of instances.

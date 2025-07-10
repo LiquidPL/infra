@@ -4,6 +4,11 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: ""
     argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/component: exporter
+    app.kubernetes.io/name: blackbox-exporter
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.26.0
   name: blackbox-exporter
 rules:
   - apiGroups:
