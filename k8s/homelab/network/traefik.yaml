@@ -11,7 +11,7 @@ spec:
   project: homelab
   destination:
     server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
-    namespace: network
+    namespace: traefik
   sources:
     - chart: traefik-crds
       repoURL: https://traefik.github.io/charts
