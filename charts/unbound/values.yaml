@@ -17,16 +17,19 @@ fullnameOverride: ""
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 1000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  seccompProfile:
+    type: RuntimeDefault
 
 service:
   enabled: true
@@ -54,10 +57,10 @@ affinity: {}
 
 config: |
   server:
-    username: "_unbound"
+    username: ""
 
     directory: "/opt/unbound/etc/unbound"
-    chroot: "/opt/unbound/etc/unbound"
+    chroot: ""
 
     logfile: ""
     use-syslog: no
@@ -70,8 +73,8 @@ config: |
 
     tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
 
-    interface: 0.0.0.0@53
-    interface: ::0@53
+    interface: 0.0.0.0@5053
+    interface: ::0@5053
 
     access-control: 127.0.0.0/32 allow
     access-control: 172.18.0.0/12 allow

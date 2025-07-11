@@ -10,4 +10,4 @@ groups:
   etcd: "'etcd' in (proxmox_tags_parsed|list) and 'k8s' in (proxmox_tags_parsed|list)"
   kube_node: "'worker' in (proxmox_tags_parsed|list) and 'k8s' in (proxmox_tags_parsed|list)"
 compose:
-  ansible_host: (proxmox_agent_interfaces | selectattr('name', 'eq', 'enp6s18') | first)['ip-addresses'] | ansible.utils.ipv4('address') | first
+  ansible_host: (proxmox_agent_interfaces | selectattr('name', 'eq', 'ens18') | first)['ip-addresses'] | ansible.utils.ipv4('address') | first

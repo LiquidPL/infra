@@ -1,23 +1,44 @@
 hypervisors:
   hosts:
-    proxmox.hs.liquid.sh:
+    proxmox:
       ansible_host: 10.10.0.50
       ansible_user: root
       nodes:
         - hostname: homelab-control-plane-hva
           cores: 2
-          memory: 3072
-          disk_size: 15G
+          memory: 5120
+          disk_size: 20G
           mac: 'bc:24:11:62:c3:81'
           tags:
             - k8s
             - etcd
             - control-plane
-        - hostname: homelab-agent-cnq
+        - hostname: homelab-worker-cnq
           cores: 4
-          memory: 10240
-          disk_size: 80G
+          memory: 12288
+          disk_size: 40G
           mac: 'bc:24:11:e1:29:cf'
+          tags:
+            - k8s
+            - worker
+    proxmox2:
+      ansible_host: 10.10.0.51
+      ansible_user: root
+      nodes:
+        - hostname: homelab-control-plane-lma
+          cores: 2
+          memory: 5120
+          disk_size: 20G
+          mac: 'fa:36:df:07:ca:a7'
+          tags:
+            - k8s
+            - etcd
+            - control-plane
+        - hostname: homelab-worker-mhr
+          cores: 4
+          memory: 12288
+          disk_size: 40G
+          mac: '42:de:3d:09:15:ec'
           tags:
             - k8s
             - worker

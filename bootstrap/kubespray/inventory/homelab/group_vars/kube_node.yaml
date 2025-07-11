@@ -1,0 +1,5 @@
+node_labels:
+  node.longhorn.io/create-default-disk: config
+
+# TODO: add annotations with longhorn disk config
+# node.longhorn.io/default-disks-config: '[{"path": "/var/longhorn", "allowScheduling": true}]'

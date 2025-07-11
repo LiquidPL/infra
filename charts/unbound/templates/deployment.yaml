@@ -34,30 +34,35 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.service.port }}
+            - containerPort: 5053
               name: dnsudp
               protocol: UDP
-            - containerPort: {{ .Values.service.port }}
+            - containerPort: 5053
               name: dnstcp
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 53
+              port: 5053
             initialDelaySeconds: 15
             periodSeconds: 20
             timeoutSeconds: 2
           readinessProbe:
             tcpSocket:
-              port: 53
+              port: 5053
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            - name: unbound
+              mountPath: /opt/unbound/etc/unbound
             - name: unbound-config
               mountPath: /opt/unbound/etc/unbound/unbound.conf
               subPath: unbound.conf
       volumes:
+        - name: unbound
+          emptyDir:
+            sizeLimit: 100Mi
         - name: unbound-config
           configMap:
             name: unbound-config

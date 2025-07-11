@@ -1,0 +1,12 @@
+pi:
+  hosts:
+    homelab-control-plane-dnd:
+      ansible_host: 10.10.0.212
+
+kube_control_plane:
+  hosts:
+    homelab-control-plane-dnd:
+
+etcd:
+  hosts:
+    homelab-control-plane-dnd:

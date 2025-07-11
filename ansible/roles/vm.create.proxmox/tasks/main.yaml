@@ -7,7 +7,7 @@
     api_host: '{{ ansible_host }}'
     api_user: '{{ proxmox_username }}'
     api_password: '{{ proxmox_password }}'
-    node: proxmox
+    node: '{{ inventory_hostname }}'
     name: '{{ item.hostname }}'
     tags: '{{ item.tags }}'
     machine: q35
@@ -24,6 +24,7 @@
     serial:
       serial0: socket
     scsihw: virtio-scsi-single
+    agent: true
     efidisk0:
       efitype: 4m
       format: raw
@@ -69,7 +70,7 @@
     api_host: '{{ ansible_host }}'
     api_user: '{{ proxmox_username }}'
     api_password: '{{ proxmox_password }}'
-    node: proxmox
+    node: '{{ inventory_hostname }}'
     name: '{{ item.hostname }}'
     boot: 'order=scsi0'
     update: true

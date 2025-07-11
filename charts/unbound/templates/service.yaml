@@ -12,11 +12,11 @@ spec:
   ports:
     - name: dnstcp
       port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.port }}
+      targetPort: dnstcp
       protocol: TCP
     - name: dnsudp
       port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.port }}
+      targetPort: dnsudp
       protocol: UDP
   selector:
     {{- include "unbound.selectorLabels" . | nindent 4 }}
