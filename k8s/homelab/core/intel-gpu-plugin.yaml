@@ -24,6 +24,29 @@ spec:
       path: deployments/gpu_plugin/overlays/nfd_labeled_nodes
       kustomize:
         patches:
+        # TODO: create own kustomization containing node-feature-discovery instead of using intel's
+          - target:
+              kind: Namespace
+              name: node-feature-discovery
+            patch: |-
+              - op: add
+                path: '/metadata/labels/pod-security.kubernetes.io/audit'
+                value: 'privileged'
+              - op: add
+                path: '/metadata/labels/pod-security.kubernetes.io/audit-version'
+                value: 'latest'
+              - op: add
+                path: '/metadata/labels/pod-security.kubernetes.io/enforce'
+                value: 'privileged'
+              - op: add
+                path: '/metadata/labels/pod-security.kubernetes.io/enforce-version'
+                value: 'latest'
+              - op: add
+                path: '/metadata/labels/pod-security.kubernetes.io/warn'
+                value: 'privileged'
+              - op: add
+                path: '/metadata/labels/pod-security.kubernetes.io/warn-version'
+                value: 'latest'
           - target:
               kind: DaemonSet
               name: intel-gpu-plugin
