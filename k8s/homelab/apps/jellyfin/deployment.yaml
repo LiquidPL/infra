@@ -50,6 +50,12 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+              - ALL
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -60,4 +66,11 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: jellyfin-cache
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       restartPolicy: Always
