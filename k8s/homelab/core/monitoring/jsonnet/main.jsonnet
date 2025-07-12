@@ -40,7 +40,7 @@ local allowIngressNetworkPolicy(port) = {
           {
             namespaceSelector: {
               matchLabels: {
-                'kubernetes.io/metadata.name': 'network',
+                'kubernetes.io/metadata.name': 'traefik',
               },
             },
             podSelector: {
