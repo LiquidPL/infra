@@ -59,3 +59,6 @@ persistence:
   music:
     enabled: true
     existingClaim: navidrome-media
+  tmp:
+    enabled: true
+    type: emptyDir
