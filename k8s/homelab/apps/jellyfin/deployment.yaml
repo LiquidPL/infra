@@ -34,6 +34,8 @@ spec:
               mountPath: /media
             - name: cache
               mountPath: /cache
+            - name: tmp
+              mountPath: /tmp
           livenessProbe:
             initialDelaySeconds: 30
             periodSeconds: 30
@@ -66,6 +68,9 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: jellyfin-cache
+        - name: tmp
+          emptyDir:
+            sizeLimit: 1Gi
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
