@@ -1,0 +1,6 @@
+lvmd:
+  deviceClasses:
+    - name: ssd
+      volume-group: topolvm
+      default: true
+      spare-gb: 2

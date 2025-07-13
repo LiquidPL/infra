@@ -1,0 +1,44 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: topolvm-add-namespace-label
+  labels:
+    app.kubernetes.io/name: topolvm
+    app.kubernetes.io/instance: topolvm-system-topolvm
+    app.kubernetes.io/part-of: topolvm
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: topolvm
+        app.kubernetes.io/instance: topolvm-system-topolvm
+        app.kubernetes.io/part-of: topolvm
+    spec:
+      restartPolicy: Never
+      serviceAccountName: topolvm-add-namespace-label-hook
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: add-namespace-label
+          image: bitnami/kubectl:latest
+          command:
+            - kubectl
+            - label
+            - namespace
+            - kube-system
+            - topolvm.io/webhook=ignore
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+              - ALL

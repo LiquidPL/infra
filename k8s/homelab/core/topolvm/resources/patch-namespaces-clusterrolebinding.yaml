@@ -1,0 +1,40 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: topolvm-add-namespace-label-hook
+  labels:
+    app.kubernetes.io/name: topolvm
+    app.kubernetes.io/instance: topolvm-system-topolvm
+    app.kubernetes.io/part-of: topolvm
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+subjects:
+  - kind: ServiceAccount
+    name: topolvm-add-namespace-label-hook
+    namespace: topolvm-system
+roleRef:
+  kind: ClusterRole
+  name: topolvm-add-namespace-label-hook
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: topolvm-delete-namespace-label-hook
+  labels:
+    app.kubernetes.io/name: topolvm
+    app.kubernetes.io/instance: topolvm-system-topolvm
+    app.kubernetes.io/part-of: topolvm
+  annotations:
+    argocd.argoproj.io/hook: PostDelete
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+subjects:
+  - kind: ServiceAccount
+    name: topolvm-delete-namespace-label-hook
+    namespace: topolvm-system
+roleRef:
+  kind: ClusterRole
+  name: topolvm-delete-namespace-label-hook
+  apiGroup: rbac.authorization.k8s.io
