@@ -13,3 +13,7 @@ ingress:
   tlsSecret: tls-longhorn
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+
+defaultBackupStore:
+  backupTarget: s3://longhorn@homelab/
+  backupTargetCredentialSecret: s3-secret
