@@ -11,6 +11,9 @@ image:
 
 postgresql:
   enabled: true
+  image:
+    repository: ghcr.io/immich-app/postgres
+    tag: 14-vectorchord0.3.0-pgvectors0.2.0@sha256:007a98749340534a0408a26435b1a0ab5ded76df788f897fdb6342c9c1b95448
   primary:
     resources:
       requests:
