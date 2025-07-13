@@ -5,7 +5,7 @@ metadata:
   namespace: traefik
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-network
+    app.kubernetes.io/instance: traefik-traefik
 spec:
   type: LoadBalancer
   loadBalancerClass: tailscale
@@ -20,4 +20,4 @@ spec:
       protocol: TCP
   selector:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-network
+    app.kubernetes.io/instance: traefik-traefik
