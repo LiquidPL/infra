@@ -54,6 +54,23 @@ server:
           paths:
             - path: /
 
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+    - ALL
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
+
 machine-learning:
   resources:
     requests:
@@ -64,3 +81,6 @@ machine-learning:
     cache:
       type: pvc
       storageClass: nfs-csi
+    tmp:
+      enabled: true
+      type: emptyDir
