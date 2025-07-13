@@ -8,7 +8,7 @@ metadata:
 spec:
   instances: 2
   storage:
-    storageClass: local-path
+    storageClass: topolvm-provisioner
     size: 1Gi
   postgresql:
     parameters:
@@ -22,20 +22,24 @@ spec:
   bootstrap:
     initdb:
       walSegmentSize: 2 # default is 16
-  affinity:
-    nodeSelector:
-      node-role.kubernetes.io/postgres: 'true'
-    tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
   resources:
     requests:
       memory: 256Mi
       cpu: 100m
     limits:
       memory: 512Mi
-      cpu: 500m
+  externalClusters:
+    - name: postgres-media
+      barmanObjectStore:
+        destinationPath: s3://postgres-media
+        endpointURL: https://minio.hs.liquid.sh
+        s3Credentials:
+          accessKeyId:
+            name: s3-secret
+            key: ACCESS_KEY_ID
+          secretAccessKey:
+            name: s3-secret
+            key: SECRET_ACCESS_KEY
   backup:
     barmanObjectStore:
       destinationPath: s3://postgres-media
