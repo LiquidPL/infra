@@ -8,6 +8,7 @@ spec:
   acme:
     email: krzysio.gutkowski@gmail.com
     server: https://acme-v02.api.letsencrypt.org/directory
+    profile: tlsserver
     privateKeySecretRef:
       name: letsencrypt-issuer-key
     solvers:
