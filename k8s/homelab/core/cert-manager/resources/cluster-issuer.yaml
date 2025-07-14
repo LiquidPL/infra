@@ -17,3 +17,6 @@ spec:
             apiTokenSecretRef:
               name: cloudflare-api-token
               key: api-token
+        selector:
+          dnsZones:
+            - 'hs.liquid.sh'
