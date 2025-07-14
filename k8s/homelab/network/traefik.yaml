@@ -18,7 +18,7 @@ spec:
       targetRevision: 1.9.0
     - chart: traefik
       repoURL: https://traefik.github.io/charts
-      targetRevision: 35.2.0
+      targetRevision: 35.4.0
       helm:
         skipCrds: true
         valueFiles:
