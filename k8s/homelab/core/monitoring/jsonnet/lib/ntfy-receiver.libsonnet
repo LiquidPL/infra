@@ -82,13 +82,7 @@ function(params) {
           }],
         },
         {
-          to: [{
-            namespaceSelector: {
-              matchLabels: {
-                'kubernetes.io/metadata.name': 'kube-system',
-              },
-            },
-          }],
+          to: [],
           ports: [
             { port: 53, protocol: 'UDP' },
             { port: 53, protocol: 'TCP' },
