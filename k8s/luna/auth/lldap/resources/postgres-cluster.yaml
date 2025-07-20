@@ -26,15 +26,8 @@ spec:
       cpu: 50m
     limits:
       memory: 256Mi
-  backup:
-    barmanObjectStore:
-      destinationPath: s3://postgres-lldap
-      endpointURL: https://minio.hs.liquid.sh
-      s3Credentials:
-        accessKeyId:
-          name: s3-secret
-          key: ACCESS_KEY_ID
-        secretAccessKey:
-          name: s3-secret
-          key: SECRET_ACCESS_KEY
-    retentionPolicy: '1d'
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: minio-homelab
