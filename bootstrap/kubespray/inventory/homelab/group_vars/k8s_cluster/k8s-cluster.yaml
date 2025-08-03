@@ -5,7 +5,7 @@ kube_pods_subnet: 10.42.0.0/16
 
 kube_proxy_strict_arp: true # necessary for metallb
 
-kubelet_enforce_node_allocatable: pods,system-reserved,kube-reserved
+kubelet_enforce_node_allocatable: pods
 
 kube_reserved: true
 kube_memory_reserved: 300Mi
