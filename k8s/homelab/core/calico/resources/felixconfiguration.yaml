@@ -1,8 +1,0 @@
-apiVersion: projectcalico.org/v3
-kind: FelixConfiguration
-metadata:
-  name: default
-spec:
-  # this is necessary to allow direct Tailscale connections to the cluster
-  # see https://github.com/tailscale/tailscale/issues/11427#issuecomment-2021287969
-  featureDetectOverride: 'MASQFullyRandom=false'

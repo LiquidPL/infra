@@ -12,3 +12,9 @@ installation:
         encapsulation: None
   # default path is non-writable on coreos
   flexVolumePath: /var/lib/kubelet/volumeplugins/
+
+defaultFelixConfiguration:
+  enabled: true
+  # this is necessary to allow direct Tailscale connections to the cluster
+  # see https://github.com/tailscale/tailscale/issues/11427#issuecomment-2021287969
+  featureDetectOverride: 'MASQFullyRandom=false'
