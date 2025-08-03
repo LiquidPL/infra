@@ -2,6 +2,9 @@ apiVersion: projectcalico.org/v3
 kind: BGPConfiguration
 metadata:
   name: default
+  annotations:
+    argocd.argoproj.io/sync-wave: '100'
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   nodeToNodeMeshEnabled: false
   asNumber: 64512
