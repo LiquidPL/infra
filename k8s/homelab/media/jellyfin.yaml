@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
-    path: k8s/homelab/apps/jellyfin
+    path: k8s/homelab/media/jellyfin
   syncPolicy:
     automated:
       selfHeal: true

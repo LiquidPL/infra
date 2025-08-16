@@ -18,10 +18,10 @@ spec:
       targetRevision: 6.7.4
       helm:
         valueFiles:
-          - $values/k8s/homelab/apps/navidrome/values.yaml
+          - $values/k8s/homelab/media/navidrome/values.yaml
     - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
-      path: k8s/homelab/apps/navidrome/resources
+      path: k8s/homelab/media/navidrome/resources
       ref: values
   syncPolicy:
     automated:
