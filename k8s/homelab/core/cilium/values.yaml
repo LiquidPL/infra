@@ -1,0 +1,40 @@
+ipam:
+  mode: cluster-pool
+
+  operator:
+    clusterPoolIPv4PodCIDRList: 10.42.0.0/16
+    clusterPoolIPv4MaskSize: 24
+
+kubeProxyReplacement: true
+k8sServiceHost: homelab.liquid.sh
+k8sServicePort: 6443
+
+bgpControlPlane:
+  enabled: true
+
+routingMode: native
+ipv4NativeRoutingCIDR: 10.10.0.0/24
+enableIPv4Masquerade: false
+
+ingressController:
+  enabled: true
+  default: true
+  loadbalancerMode: shared
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 10.10.100.10
+
+hubble:
+  tls:
+    auto:
+      enabled: true
+      method: certmanager
+      certValidityDuration: 1095
+      certManagerIssuerRef:
+        name: hubble-issuer
+        kind: Issuer
+        group: cert-manager.io
+  relay:
+    enabled: true
+  ui:
+    enabled: true

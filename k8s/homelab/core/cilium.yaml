@@ -1,32 +1,35 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: calico
+  name: cilium
   namespace: apps-homelab
   labels:
-    name: calico
+    name: cilium
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: homelab
   destination:
     server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
-    namespace: tigera-operator
+    namespace: kube-system
   sources:
-    - chart: tigera-operator
-      repoURL: https://docs.tigera.io/calico/charts
-      targetRevision: v3.30.2
+    - chart: cilium
+      repoURL: https://helm.cilium.io/
+      targetRevision: 1.18.0
       helm:
         valueFiles:
-          - $values/k8s/homelab/core/calico/values.yaml
+          - $values/k8s/homelab/core/cilium/values.yaml
     - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
-      path: k8s/homelab/core/calico/resources
+      path: k8s/homelab/core/cilium/resources
       ref: values
   ignoreDifferences:
-    - group: operator.tigera.io
-      kind: Installation
-      name: default
+    - kind: Service
+      namespace: kube-system
+      name: cilium-ingress
       jsonPointers:
-        - /spec/calicoNetwork/ipPools
+        - /spec/ports/0/nodePort
+        - /spec/ports/1/nodePort
   syncPolicy:
     automated:
       selfHeal: true
@@ -45,4 +48,3 @@ spec:
         pod-security.kubernetes.io/warn-version: latest
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true

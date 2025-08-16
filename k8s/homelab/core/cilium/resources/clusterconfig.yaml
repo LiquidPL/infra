@@ -1,0 +1,15 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumBGPClusterConfig
+metadata:
+  name: homelab-bgp
+spec:
+  bgpInstances:
+    - name: homelab
+      localASN: 64513
+      peers:
+        - name: router
+          peerASN: 64512
+          peerAddress: 10.10.0.1
+          peerConfigRef:
+            name: router
