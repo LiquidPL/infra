@@ -1,0 +1,39 @@
+nameOverride: foundryvtt
+
+image:
+  repository: felddy/foundryvtt
+  tag: &version '13.347'
+
+foundryvtt:
+  existingUserSecret: foundryvtt-schlymo
+  existingLicenseType: account
+  proxySSL: true
+  hostname: schlymo.vtt.liquid.sh
+  version: *version
+
+resources:
+  requests:
+    cpu: 1000m
+    memory: 512Mi
+  limits:
+    cpu: ~
+    memory: 2048Mi
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: longhorn
+
+ingress:
+  enabled: true
+  hostname: schlymo.vtt.liquid.sh
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  tls: true

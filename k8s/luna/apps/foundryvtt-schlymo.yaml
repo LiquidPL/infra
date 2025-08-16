@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: foundryvtt-schlymo
+  namespace: apps-luna
+  labels:
+    name: foundryvtt-schlymo
+spec:
+  project: luna
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: foundryvtt-schlymo
+  sources:
+    - chart: foundry-vtt
+      repoURL: https://helm.mahahe.it/
+      targetRevision: 0.1.4
+      helm:
+        valueFiles:
+          - $values/k8s/luna/apps/foundryvtt-schlymo/values.yaml
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      path: k8s/luna/apps/foundryvtt-schlymo/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
