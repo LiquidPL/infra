@@ -13,7 +13,7 @@ bgpControlPlane:
   enabled: true
 
 routingMode: native
-ipv4NativeRoutingCIDR: 10.10.0.0/24
+ipv4NativeRoutingCIDR: 10.10.0.0/16
 enableIPv4Masquerade: false
 
 ingressController:
