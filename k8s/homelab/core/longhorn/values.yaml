@@ -9,6 +9,7 @@ persistence:
 ingress:
   enabled: true
   host: longhorn.hs.liquid.sh
+  pathType: Prefix
   tls: true
   tlsSecret: tls-longhorn
   annotations:

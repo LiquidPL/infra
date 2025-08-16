@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: frigate
     app.kubernetes.io/instance: frigate
   annotations:
-    metallb.universe.tf/allow-shared-ip: 'key-to-share-10.10.100.10'
+    lbipam.cilium.io/sharing-key: sharing-10.10.100.10
 spec:
   type: LoadBalancer
   ports:
