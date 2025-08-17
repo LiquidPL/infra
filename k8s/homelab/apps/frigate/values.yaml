@@ -8,6 +8,8 @@ config: |
     host: 10.10.0.200
     user: '{FRIGATE_MQTT_USER}'
     password: '{FRIGATE_MQTT_PASSWORD}'
+  detect:
+    enabled: true
   detectors:
     ov:
       type: openvino
