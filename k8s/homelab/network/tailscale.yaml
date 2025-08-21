@@ -23,6 +23,11 @@ spec:
       targetRevision: master
       path: k8s/homelab/network/tailscale/resources
       ref: values
+  ignoreDifferences:
+    - kind: Service
+      namespace: tailscale
+      jsonPointers:
+        - /spec/externalName
   syncPolicy:
     automated:
       selfHeal: true

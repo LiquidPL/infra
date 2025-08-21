@@ -26,12 +26,6 @@ spec:
   ignoreDifferences:
     - kind: Service
       namespace: tailscale
-      name: homelab-apiserver
-      jsonPointers:
-        - /spec/externalName
-    - kind: Service
-      namespace: tailscale
-      name: truenas
       jsonPointers:
         - /spec/externalName
   syncPolicy:
