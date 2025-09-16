@@ -89,6 +89,12 @@ machine-learning:
     cache:
       type: pvc
       storageClass: nfs-csi
+    config:
+      type: emptyDir
+      mountPath: /.config
+    tempCache:
+      type: emptyDir
+      mountPath: /.cache
     tmp:
       enabled: true
       type: emptyDir
