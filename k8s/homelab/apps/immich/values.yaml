@@ -1,4 +1,24 @@
-useDeprecatedPostgresChart: true
+env:
+  DB_HOSTNAME:
+    valueFrom:
+      secretKeyRef:
+        name: postgres-immich-app
+        key: host
+  DB_DATABASE_NAME:
+    valueFrom:
+      secretKeyRef:
+        name: postgres-immich-app
+        key: dbname
+  DB_USERNAME:
+    valueFrom:
+      secretKeyRef:
+        name: postgres-immich-app
+        key: username
+  DB_PASSWORD:
+    valueFrom:
+      secretKeyRef:
+        name: postgres-immich-app
+        key: password
 
 immich:
   persistence:
@@ -8,21 +28,6 @@ immich:
 image:
   repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
   tag: v1.139.2
-
-postgresql:
-  enabled: true
-  image:
-    repository: ghcr.io/immich-app/postgres
-    tag: 14-vectorchord0.3.0-pgvectors0.2.0@sha256:f36625fffae9611b0e6e28cc1a9bb573d20a9d3cc5e62ab0ff1a19874e34e1f4
-  primary:
-    resources:
-      requests:
-        cpu: 200m
-      limits:
-        cpu: 300m
-    persistence:
-      size: 8Gi
-      storageClass: longhorn
 
 redis:
   enabled: true
