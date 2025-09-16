@@ -27,7 +27,7 @@ immich:
 
 image:
   repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
-  tag: v1.139.2
+  tag: v1.142.1
 
 redis:
   enabled: true
