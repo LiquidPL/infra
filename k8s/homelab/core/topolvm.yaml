@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: topolvm
       repoURL: https://topolvm.github.io/topolvm/
-      targetRevision: 15.6.0
+      targetRevision: 15.6.1
       helm:
         valueFiles:
           - $values/k8s/homelab/core/topolvm/values.yaml
