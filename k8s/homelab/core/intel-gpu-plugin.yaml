@@ -14,13 +14,13 @@ spec:
     namespace: node-feature-discovery
   sources:
     - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
-      targetRevision: v0.32.1
+      targetRevision: v0.34.0
       path: deployments/nfd
     - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
-      targetRevision: v0.32.1
+      targetRevision: v0.34.0
       path: deployments/nfd/overlays/node-feature-rules
     - repoURL: https://github.com/intel/intel-device-plugins-for-kubernetes.git
-      targetRevision: v0.32.1
+      targetRevision: v0.34.0
       path: deployments/gpu_plugin/overlays/nfd_labeled_nodes
       kustomize:
         patches:
