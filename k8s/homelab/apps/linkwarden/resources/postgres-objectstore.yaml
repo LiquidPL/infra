@@ -1,0 +1,21 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: minio-homelab
+  namespace: linkwarden
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+spec:
+  configuration:
+    destinationPath: s3://postgres-linkwarden
+    endpointURL: https://minio.hs.liquid.sh
+    s3Credentials:
+      accessKeyId:
+        name: s3-secret
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: s3-secret
+        key: SECRET_ACCESS_KEY
+    wal:
+      compression: gzip
+  retentionPolicy: 1d

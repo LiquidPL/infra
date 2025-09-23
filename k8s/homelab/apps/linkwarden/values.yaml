@@ -1,0 +1,102 @@
+controllers:
+  main:
+    type: deployment
+
+    pod:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+
+    containers:
+      main:
+        image:
+          repository: ghcr.io/linkwarden/linkwarden
+          tag: v2.12.2@sha256:c1c6f417ea566de2c2dac6e79353ee5f40cb6a44fd9dd3970c83e6fc098de1df
+          pullPolicy: IfNotPresent
+        env:
+          NEXTAUTH_URL: http://localhost:3000/api/v1/auth
+          NEXTAUTH_SECRET:
+            valueFrom:
+              secretKeyRef:
+                name: linkwarden-nextauth-secret
+                key: secret
+          DATABASE_URL:
+            valueFrom:
+              secretKeyRef:
+                name: postgres-linkwarden-app
+                key: uri
+          MEILI_HOST: meilisearch.linkwarden.svc.cluster.local:7700
+          MEILI_MASTER_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: linkwarden-meilisearch-master-key
+                key: MEILI_MASTER_KEY
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: &port 3000
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          # limits:
+          #   memory: 512Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+
+ingress:
+  main:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - host: linkwarden.liquid.sh
+        paths:
+          - path: /
+            service:
+              identifier: main
+              port: http
+    tls:
+      - hosts:
+          - linkwarden.liquid.sh
+        secretName: tls-linkwarden-ingress
+
+persistence:
+  main:
+    storageClass: nfs-csi
+    size: 10Gi
+    accessMode: ReadWriteOnce
+    globalMounts:
+      - path: /data/data
+  cache:
+    enabled: true
+    type: emptyDir
+    globalMounts:
+      - path: /home/node
+  tmp:
+    enabled: true
+    type: emptyDir

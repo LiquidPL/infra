@@ -1,0 +1,29 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-linkwarden
+  namespace: linkwarden
+  annotations:
+    argocd.argoproj.io/sync-wave: '-50'
+spec:
+  instances: 2
+  storage:
+    storageClass: topolvm-provisioner
+    size: 1Gi
+  postgresql:
+    parameters:
+      shared_buffers: '128MB'
+    synchronous:
+      method: any
+      number: 1
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+  # plugins:
+  #   - name: barman-cloud.cloudnative-pg.io
+  #     isWALArchiver: true
+  #     parameters:
+  #       barmanObjectName: minio-homelab

@@ -1,0 +1,33 @@
+image:
+  repository: getmeili/meilisearch
+  tag: v1.21.0
+  digest: sha256:38e0ae3cfd2f319461f321c79a1d9320143a2258ee0e2f567bc9441d79dcff5f
+
+environment:
+  MEILI_ENV: production
+
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+persistence:
+  enabled: true
+  storageClass: longhorn
+  size: 1Gi
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
