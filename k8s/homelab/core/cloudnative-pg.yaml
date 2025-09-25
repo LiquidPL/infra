@@ -24,7 +24,7 @@ spec:
             limits:
               memory: 128Mi
     - repoURL: https://github.com/cloudnative-pg/plugin-barman-cloud.git
-      targetRevision: v0.6.0
+      targetRevision: v0.7.0
       path: ./
       directory:
         include: manifest.yaml
