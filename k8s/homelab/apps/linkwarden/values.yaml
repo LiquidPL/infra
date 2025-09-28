@@ -92,11 +92,23 @@ persistence:
     accessMode: ReadWriteOnce
     globalMounts:
       - path: /data/data
-  cache:
+  node-cache:
     enabled: true
     type: emptyDir
     globalMounts:
       - path: /home/node
+  playwright-cache:
+    enabled: true
+    storageClass: nfs-csi
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    globalMounts:
+      - path: /home/node/.cache/ms-playwright
+  image-cache:
+    enabled: true
+    type: emptyDir
+    globalMounts:
+      - path: /data/apps/web/.next/cache/images
   tmp:
     enabled: true
     type: emptyDir
