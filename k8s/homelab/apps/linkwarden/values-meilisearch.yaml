@@ -6,6 +6,9 @@ image:
 environment:
   MEILI_ENV: production
 
+auth:
+  existingMasterKeySecret: meilisearch-master-key
+
 podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000
