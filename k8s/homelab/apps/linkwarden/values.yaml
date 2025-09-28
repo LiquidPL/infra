@@ -74,7 +74,7 @@ ingress:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
     hosts:
-      - host: linkwarden.liquid.sh
+      - host: linkwarden.hs.liquid.sh
         paths:
           - path: /
             service:
@@ -82,7 +82,7 @@ ingress:
               port: http
     tls:
       - hosts:
-          - linkwarden.liquid.sh
+          - linkwarden.hs.liquid.sh
         secretName: tls-linkwarden-ingress
 
 persistence:
