@@ -23,6 +23,7 @@ spec:
       repoURL: https://meilisearch.github.io/meilisearch-kubernetes
       targetRevision: 0.17.1
       helm:
+        releaseName: meilisearch
         valueFiles:
           - $values/k8s/homelab/apps/linkwarden/values-meilisearch.yaml
     - repoURL: https://github.com/LiquidPL/infra.git

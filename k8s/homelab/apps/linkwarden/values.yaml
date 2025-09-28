@@ -34,7 +34,7 @@ controllers:
           MEILI_MASTER_KEY:
             valueFrom:
               secretKeyRef:
-                name: linkwarden-meilisearch-master-key
+                name: meilisearch-master-key
                 key: MEILI_MASTER_KEY
         probes:
           liveness: &probes
