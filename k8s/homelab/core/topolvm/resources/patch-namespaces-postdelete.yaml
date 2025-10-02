@@ -29,7 +29,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: delete-namespace-label
-          image: bitnami/kubectl:latest
+          image: alpine/kubectl:latest
           command:
             - kubectl
             - label
