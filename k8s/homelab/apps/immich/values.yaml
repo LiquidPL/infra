@@ -25,10 +25,6 @@ immich:
     library:
       existingClaim: immich-upload
 
-image:
-  repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
-  tag: v2.0.0
-
 valkey:
   enabled: true
   master:
@@ -37,6 +33,9 @@ valkey:
       storageClass: longhorn
 
 server:
+  image:
+    repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
+    tag: v2.0.0@sha256:d81f4af6a622d0955e5b8e3927da32b3ec882466a7ee8a26906d9cccad4364ca
   resources:
     requests:
       cpu: 250m
@@ -62,24 +61,10 @@ server:
           paths:
             - path: /
 
-securityContext:
-  allowPrivilegeEscalation: false
-  readOnlyRootFilesystem: true
-  capabilities:
-    drop:
-    - ALL
-
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1000
-  fsGroup: 1000
-  fsGroupChangePolicy: OnRootMismatch
-  seccompProfile:
-    type: RuntimeDefault
-
-
 machine-learning:
+  image:
+    repository: ghcr.io/immich-app/immich-machine-learning # needed here for renovate to pick up this file
+    tag: v2.0.0@sha256:68bd95ff703a3b4c6a662b7f638bd2e01e3c7aeb2223dc0f142f02a555e24ca4
   resources:
     requests:
       cpu: 250m
@@ -98,3 +83,19 @@ machine-learning:
     tmp:
       enabled: true
       type: emptyDir
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+    - ALL
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
