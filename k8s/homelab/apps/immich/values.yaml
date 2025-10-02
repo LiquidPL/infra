@@ -27,9 +27,11 @@ immich:
 
 valkey:
   enabled: true
-  master:
-    persistence:
+  persistence:
+    data:
+      enabled: true
       size: 256Mi
+      type: pvc
       storageClass: longhorn
 
 server:
