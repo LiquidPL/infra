@@ -13,9 +13,9 @@ spec:
     namespace: immich
   project: homelab
   sources:
-    - chart: immich
-      repoURL: https://immich-app.github.io/immich-charts
-      targetRevision: 0.9.3
+    - repoURL: https://github.com/immich-app/immich-charts.git
+      path: charts/immich
+      targetRevision: a00f30185bf4fdd16547b2c4a4602624f90f791c
       helm:
         valueFiles:
           - $values/k8s/homelab/apps/immich/values.yaml

@@ -29,11 +29,11 @@ image:
   repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
   tag: v1.143.1
 
-redis:
+valkey:
   enabled: true
   master:
     persistence:
-      size: 2Gi
+      size: 256Mi
       storageClass: longhorn
 
 server:
