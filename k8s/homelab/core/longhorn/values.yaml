@@ -1,6 +1,6 @@
 defaultSettings:
   createDefaultDiskLabeledNodes: true
-  defaultReplicaCount: 2
+  defaultReplicaCount: '{"v1": "2", "v2": "2"}'
   backupTarget: nfs://truenas.hs.liquid.sh:/mnt/pool/longhorn
 
 persistence:
