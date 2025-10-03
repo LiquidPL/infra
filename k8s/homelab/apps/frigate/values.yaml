@@ -140,7 +140,7 @@ image:
 persistence:
   media:
     enabled: true
-    size: 650Gi
+    size: 680Gi
     storageClass: nfs-csi
     skipuninstall: true
   config:
