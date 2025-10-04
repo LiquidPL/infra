@@ -11,9 +11,11 @@ spec:
     server: https://kubernetes.default.svc
     namespace: foundryvtt
   sources:
-    - chart: foundry-vtt
-      repoURL: https://helm.mahahe.it/
-      targetRevision: 0.1.4
+    # - chart: foundry-vtt
+    #   repoURL: https://helm.mahahe.it/
+    - repoURL: https://github.com/LiquidPL/mahahe-it-helm.git
+      path: charts/foundry-vtt
+      targetRevision: homelab
       helm:
         valueFiles:
           - $values/k8s/luna/apps/foundryvtt/values.yaml
