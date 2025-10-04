@@ -10,6 +10,13 @@
   "argocd": {
     "fileMatch": ["^k8s/.+/.+/.+\\.ya?ml$"]
   },
+  "packageRules": [
+    {
+      "matchDatasources": "docker",
+      "matchPackageNames": ["/^ghcr\\.io\/immich-app\/immich-(.+)$/"],
+      "groupName": "immich"
+    }
+  ],
   "ignorePaths": [
     "k8s/homelab/core/monitoring/manifests"
   ]
