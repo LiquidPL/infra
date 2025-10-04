@@ -13,9 +13,12 @@ spec:
     namespace: frigate
   project: homelab
   sources:
-    - chart: frigate
-      repoURL: https://blakeblackshear.github.io/blakeshome-charts/
-      targetRevision: 7.8.0
+    # - chart: frigate
+    #   repoURL: https://blakeblackshear.github.io/blakeshome-charts/
+    #   targetRevision: 7.8.0
+    - repoURL: https://github.com/LiquidPL/blakeshome-charts.git
+      path: charts/frigate
+      targetRevision: probes
       helm:
         valueFiles:
            - $values/k8s/homelab/apps/frigate/values.yaml
