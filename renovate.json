@@ -3,17 +3,25 @@
   "extends": [
     "config:recommended"
   ],
-  "assignees": ["@LiquidPL"],
+  "assignees": [
+    "@LiquidPL"
+  ],
   "kubernetes": {
-    "fileMatch": ["^k8s/.+/.+/.*(deployment|replicaset|daemonset|job|cronjob).*\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/^k8s/.+/.+/.*(deployment|replicaset|daemonset|job|cronjob).*\\.ya?ml$/"
+    ]
   },
   "argocd": {
-    "fileMatch": ["^k8s/.+/.+/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/^k8s/.+/.+/.+\\.ya?ml$/"
+    ]
   },
   "packageRules": [
     {
       "matchDatasources": "docker",
-      "matchPackageNames": ["/^ghcr\\.io\/immich-app\/immich-(.+)$/"],
+      "matchPackageNames": [
+        "/^ghcr\\.io/immich-app/immich-(.+)$/"
+      ],
       "groupName": "immich"
     }
   ],
