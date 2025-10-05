@@ -1,2 +1,13 @@
 - name: Install Kubernetes
   ansible.builtin.import_playbook: kubernetes_sigs.kubespray.cluster
+
+- name: Annotate nodes
+  hosts: k8s_cluster
+  tags: asdf
+  tasks:
+    - name: Set annotations
+      ansible.builtin.command: "kubectl annotate --overwrite node {{ ansible_hostname }} {{ item.key }}='{{ item.value }}'"
+      changed_when: true
+      loop: '{{ node_annotations | ansible.builtin.dict2items }}'
+      delegate_to: '{{ groups["kube_control_plane"][0] }}'
+      when: node_annotations is defined
