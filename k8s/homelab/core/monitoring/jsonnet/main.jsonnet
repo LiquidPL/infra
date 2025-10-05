@@ -74,9 +74,6 @@ local kp =
         namespace: 'monitoring',
         baseDomain: 'hs.liquid.sh',
       },
-      kubernetesControlPlane+: {
-        kubeProxy: true,
-      },
       prometheus+: {
         resources: {
           requests: { cpu: '100m', memory: '1024Mi' },
