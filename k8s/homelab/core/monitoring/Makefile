@@ -1,17 +1,14 @@
 MANIFESTS_DIR=manifests
 VENDOR_DIR=jsonnet/vendor
 
-.PHONY: generate
-generate: $(MANIFESTS_DIR) $(VENDOR_DIR)
+$(MANIFESTS_DIR): $(VENDOR_DIR) jsonnet/main.jsonnet $(shell find jsonnet/lib/ -type f '(' -name '*.jsonnet' -o -name '*.json' -o -name '*.libsonnet' ')' -type f) $(shell find jsonnet/lib/ -type d)
+	rm -rf $(MANIFESTS_DIR)
+	mkdir -p $(MANIFESTS_DIR)
 	jsonnet -J $(VENDOR_DIR) -c -m $(MANIFESTS_DIR) -S jsonnet/main.jsonnet
 	$(MAKE) beautify
 
-$(MANIFESTS_DIR):
-	rm -rf $(MANIFESTS_DIR)
-	mkdir -p $(MANIFESTS_DIR)
-
-$(VENDOR_DIR):
-	jb install
+$(VENDOR_DIR): jsonnet/jsonnetfile.json jsonnet/jsonnetfile.lock.json
+	cd jsonnet && jb install
 
 .PHONY: beautify
 beautify:
@@ -19,10 +16,10 @@ beautify:
 
 .PHONY: clean
 clean:
-	rm -rf vendor
+	rm -rf $(VENDOR_DIR)
 
 .PHONY: update
 update:
-	jb update
+	cd jsonnet && jb update
 	rm -rf $(VENDOR_DIR)
 	$(MAKE) generate
