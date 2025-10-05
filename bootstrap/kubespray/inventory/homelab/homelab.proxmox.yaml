@@ -1,7 +1,7 @@
 plugin: community.general.proxmox
 url: https://proxmox.hs.liquid.sh:8006
-user: "{{ lookup('community.general.onepassword', 'Proxmox', field='username') }}@pam"
-password: "{{ lookup('community.general.onepassword', 'Proxmox', field='password') }}"
+user: "{{ lookup('community.general.onepassword', 'vkpctqrzenumupwfmpdmmfcow4', field='username') }}@pam"
+password: "{{ lookup('community.general.onepassword', 'vkpctqrzenumupwfmpdmmfcow4', field='password') }}"
 want_facts: true
 filters:
   - "proxmox_tags_parsed is defined and 'k8s' in proxmox_tags_parsed"
