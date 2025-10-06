@@ -62,6 +62,7 @@ local allowIngressNetworkPolicy(port) = {
 };
 
 local ntfyReceiver = (import 'lib/ntfy-receiver.libsonnet');
+local kubeletMetricsForwarder = (import 'lib/kubelet-metrics-forwarder.libsonnet');
 
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
@@ -92,6 +93,10 @@ local kp =
         namespace: $.values.common.namespace,
         version: '0.4.0',
         image: 'xenrox/ntfy-alertmanager:' + self.version,
+      },
+      kubeletMetricsForwarder+: {
+        namespace: 'kube-system',
+        image: 'alpine/socat:1.8.0.3@sha256:67f2f93884c21216776aeeb1bc5326d8302f80e585e13ee1e0a6d8bb08e45436',
       },
       alertmanager+: {
         secrets+: [$.alertmanager.receiversSecret.metadata.name],
@@ -212,6 +217,7 @@ local kp =
     },
 
     ntfyReceiver: ntfyReceiver($.values.ntfyReceiver),
+    kubeletMetricsForwarder: kubeletMetricsForwarder($.values.kubeletMetricsForwarder),
 
     alertmanager+: {
       receiversSecret: (import 'lib/alertmanager/receivers-secret.json'),

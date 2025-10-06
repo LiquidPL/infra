@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: ""
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/name: kubelet-metrics-forwarder
+    app.kubernetes.io/part-of: kube-prometheus
+  name: kubelet-metrics-forwarder
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubelet-metrics-forwarder
+      app.kubernetes.io/part-of: kube-prometheus
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kubelet-metrics-forwarder
+        app.kubernetes.io/part-of: kube-prometheus
+    spec:
+      containers:
+        - args:
+            - -c
+            - socat TCP4-LISTEN:10257,reuseaddr,bind=${NODE_IP},fork TCP4:127.0.0.1:10257
+          command:
+            - /bin/sh
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.hostIP
+          image: alpine/socat:1.8.0.3@sha256:67f2f93884c21216776aeeb1bc5326d8302f80e585e13ee1e0a6d8bb08e45436
+          imagePullPolicy: IfNotPresent
+          name: socat-kube-controller-manager
+          ports:
+            - containerPort: 10257
+        - args:
+            - -c
+            - socat TCP4-LISTEN:10259,reuseaddr,bind=${NODE_IP},fork TCP4:127.0.0.1:10259
+          command:
+            - /bin/sh
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.hostIP
+          image: alpine/socat:1.8.0.3@sha256:67f2f93884c21216776aeeb1bc5326d8302f80e585e13ee1e0a6d8bb08e45436
+          imagePullPolicy: IfNotPresent
+          name: socat-kube-scheduler
+          ports:
+            - containerPort: 10259
+      hostNetwork: true
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
