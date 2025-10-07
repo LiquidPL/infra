@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: frigate
+  namespace: frigate
+  labels:
+    app.kubernetes.io/name: frigate
+    app.kubernetes.io/instance: frigate
+spec:
+  endpoints:
+    - interval: 10s
+      path: /api/metrics
+      port: http
+      scheme: http
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frigate
+      app.kubernetes.io/instance: frigate
