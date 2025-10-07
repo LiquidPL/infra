@@ -88,6 +88,9 @@ local kp =
             root_url: 'https://grafana.' + $.values.common.baseDomain,
           },
         },
+        dashboards+: {
+          'navidrome.json': (import 'dashboards/navidrome.json'),
+        },
       },
       ntfyReceiver+: {
         namespace: $.values.common.namespace,
