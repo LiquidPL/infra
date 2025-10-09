@@ -32,35 +32,6 @@ local ingress(metadata, host, service) = {
   },
 };
 
-local allowIngressNetworkPolicy(port) = {
-  spec+: {
-    ingress+: [
-      {
-        from: [
-          {
-            namespaceSelector: {
-              matchLabels: {
-                'kubernetes.io/metadata.name': 'traefik',
-              },
-            },
-            podSelector: {
-              matchLabels: {
-                'app.kubernetes.io/name': 'traefik',
-              },
-            },
-          },
-        ],
-        ports: [
-          {
-            port: port,
-            protocol: 'TCP',
-          },
-        ],
-      },
-    ],
-  },
-};
-
 local ntfyReceiver = (import 'lib/ntfy-receiver.libsonnet');
 local kubeletMetricsForwarder = (import 'lib/kubelet-metrics-forwarder.libsonnet');
 
@@ -206,7 +177,30 @@ local kp =
         },
       },
 
-      networkPolicy+: allowIngressNetworkPolicy($.grafana.service.spec.ports[0].port),
+      networkPolicy: {
+        apiVersion: 'cilium.io/v2',
+        kind: 'CiliumNetworkPolicy',
+        metadata: $.grafana._metadata,
+        spec: {
+          endpointSelector: {
+            matchLabels: $.grafana._config.selectorLabels,
+          },
+          ingress: [
+            {
+              fromEndpoints: [{ matchLabels: { 'app.kubernetes.io/name': 'prometheus' } }],
+              toPorts: [{ ports: [{ port: '3000', protocol: 'TCP' }] }],
+            },
+            { fromEntities: ['world'] },
+            {
+              fromEndpoints: [{ matchExpressions: [{ key: 'reserved:ingress', operator: 'Exists' }] }],
+              toPorts: [{ ports: [{ port: '3000', protocol: 'TCP' }] }],
+            },
+          ],
+          egress: [
+            { toEntities: ['all'] },
+          ],
+        },
+      },
       ingress: ingress(
         $.grafana.service.metadata,
         'grafana.' + $.values.common.baseDomain,
