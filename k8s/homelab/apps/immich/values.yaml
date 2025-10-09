@@ -24,6 +24,8 @@ immich:
   persistence:
     library:
       existingClaim: immich-upload
+  metrics:
+    enabled: true
 
 valkey:
   enabled: true

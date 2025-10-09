@@ -51,7 +51,7 @@ local kp =
           requests: { cpu: '100m', memory: '1024Mi' },
           limits: { memory: '2048Mi' },
         },
-        namespaces: ['default', 'kube-system', 'monitoring', 'navidrome', 'frigate'],
+        namespaces: ['default', 'kube-system', 'monitoring', 'navidrome', 'frigate', 'immich'],
       },
       grafana+: {
         sections+: {
