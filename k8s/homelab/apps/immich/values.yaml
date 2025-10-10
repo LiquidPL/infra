@@ -1,24 +1,32 @@
-env:
-  DB_HOSTNAME:
-    valueFrom:
-      secretKeyRef:
-        name: postgres-immich-app
-        key: host
-  DB_DATABASE_NAME:
-    valueFrom:
-      secretKeyRef:
-        name: postgres-immich-app
-        key: dbname
-  DB_USERNAME:
-    valueFrom:
-      secretKeyRef:
-        name: postgres-immich-app
-        key: username
-  DB_PASSWORD:
-    valueFrom:
-      secretKeyRef:
-        name: postgres-immich-app
-        key: password
+controllers:
+  main:
+    pod:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+
+    containers:
+      main:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+
+valkey:
+  enabled: true
+  persistence:
+    data:
+      enabled: true
+      size: 256Mi
+      type: persistentVolumeClaim
+      storageClass: longhorn
 
 immich:
   persistence:
@@ -27,30 +35,48 @@ immich:
   metrics:
     enabled: true
 
-valkey:
-  enabled: true
-  persistence:
-    data:
-      enabled: true
-      size: 256Mi
-      type: pvc
-      storageClass: longhorn
-
 server:
-  image:
-    repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
-    tag: v2.0.1@sha256:8286638680f0a38a7cb380be64ed77d1d1cfe6d0e0b843f64bff92b24289078d
-  resources:
-    requests:
-      cpu: 250m
-    limits:
-      cpu: 1250m
-      gpu.intel.com/i915: 1
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ghcr.io/immich-app/immich-server # needed here for renovate to pick up this file
+            tag: v2.0.1@sha256:8286638680f0a38a7cb380be64ed77d1d1cfe6d0e0b843f64bff92b24289078d
+          env:
+            DB_HOSTNAME:
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-immich-app
+                  key: host
+            DB_DATABASE_NAME:
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-immich-app
+                  key: dbname
+            DB_USERNAME:
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-immich-app
+                  key: username
+            DB_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-immich-app
+                  key: password
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 1250m
+              gpu.intel.com/i915: 1
+
   persistence:
     external:
       enabled: true
       existingClaim: immich-external
       readOnly: true
+
   ingress:
     main:
       enabled: true
@@ -66,40 +92,35 @@ server:
             - path: /
 
 machine-learning:
-  image:
-    repository: ghcr.io/immich-app/immich-machine-learning # needed here for renovate to pick up this file
-    tag: v2.0.1@sha256:45626a33361ef7ed361de41b0d2dc19e5949442cdf0a8eb64b157dc8a04e9855
-  resources:
-    requests:
-      cpu: 250m
-    limits:
-      cpu: 1000m
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ghcr.io/immich-app/immich-machine-learning # needed here for renovate to pick up this file
+            tag: v2.0.1@sha256:45626a33361ef7ed361de41b0d2dc19e5949442cdf0a8eb64b157dc8a04e9855
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 1000m
+
   persistence:
     cache:
-      type: pvc
+      enabled: true
+      size: 10Gi
+      type: persistentVolumeClaim
       storageClass: nfs-csi
     config:
+      enabled: true
       type: emptyDir
-      mountPath: /.config
-    tempCache:
+      globalMounts:
+        - path: /.config
+    temp-cache:
+      enabled: true
       type: emptyDir
-      mountPath: /.cache
+      globalMounts:
+        - path: /.cache
     tmp:
       enabled: true
       type: emptyDir
-
-securityContext:
-  allowPrivilegeEscalation: false
-  readOnlyRootFilesystem: true
-  capabilities:
-    drop:
-    - ALL
-
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1000
-  fsGroup: 1000
-  fsGroupChangePolicy: OnRootMismatch
-  seccompProfile:
-    type: RuntimeDefault
