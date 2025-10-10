@@ -16,7 +16,7 @@ hypervisors:
         - hostname: homelab-worker-cnq
           cores: 4
           memory: 12288
-          disk_size: 40G
+          disk_size: 50G
           mac: 'bc:24:11:e1:29:cf'
           tags:
             - k8s
@@ -37,7 +37,7 @@ hypervisors:
         - hostname: homelab-worker-mhr
           cores: 4
           memory: 12288
-          disk_size: 40G
+          disk_size: 50G
           mac: '42:de:3d:09:15:ec'
           tags:
             - k8s
