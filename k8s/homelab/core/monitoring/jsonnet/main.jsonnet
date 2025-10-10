@@ -32,6 +32,12 @@ local ingress(metadata, host, service) = {
   },
 };
 
+local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
+local certManagerMixin = addMixin({
+  name: 'cert-manager',
+  mixin: (import 'cert-manager-mixin/mixin.libsonnet'),
+});
+
 local ntfyReceiver = (import 'lib/ntfy-receiver.libsonnet');
 local kubeletMetricsForwarder = (import 'lib/kubelet-metrics-forwarder.libsonnet');
 
@@ -51,7 +57,15 @@ local kp =
           requests: { cpu: '100m', memory: '1024Mi' },
           limits: { memory: '2048Mi' },
         },
-        namespaces: ['default', 'kube-system', 'monitoring', 'navidrome', 'frigate', 'immich'],
+        namespaces: [
+          'default',
+          'kube-system',
+          'cert-manager',
+          'monitoring',
+          'navidrome',
+          'frigate',
+          'immich'
+        ],
       },
       grafana+: {
         sections+: {
@@ -59,7 +73,7 @@ local kp =
             root_url: 'https://grafana.' + $.values.common.baseDomain,
           },
         },
-        dashboards+: {
+        dashboards+: certManagerMixin.grafanaDashboards + {
           'navidrome.json': (import 'dashboards/navidrome.json'),
         },
       },
@@ -218,6 +232,10 @@ local kp =
 
     alertmanager+: {
       receiversSecret: (import 'lib/alertmanager/receivers-secret.json'),
+    },
+
+    other: {
+      certManagerPrometheusRules: certManagerMixin.prometheusRules,
     },
   };
 
