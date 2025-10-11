@@ -19,6 +19,10 @@ persistence:
   defaultClassReplicaCount: 2
   defaultClass: true
 
+defaultBackupStore:
+  backupTarget: s3://longhorn-luna@homelab/
+  backupTargetCredentialSecret: s3-secret
+
 csi:
   attacherReplicaCount: 2
   provisionerReplicaCount: 2
