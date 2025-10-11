@@ -27,6 +27,7 @@ spec:
             jobEnabled: false
     - repoURL: https://github.com/LiquidPL/infra.git
       targetRevision: master
+      path: k8s/luna/core/longhorn/resources
       ref: values
   syncPolicy:
     automated:
