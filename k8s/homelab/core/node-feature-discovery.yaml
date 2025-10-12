@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-feature-discovery
+  namespace: apps-homelab
+  labels:
+    name: node-feature-discovery
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  destination:
+    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    namespace: node-feature-discovery
+  sources:
+    - repoURL: https://github.com/LiquidPL/infra.git
+      path: k8s/homelab/core/node-feature-discovery
+      targetRevision: master
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3

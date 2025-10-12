@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://github.com/kubernetes-sigs/node-feature-discovery/deployment/overlays/default?ref=v0.18.1
+  - intel-gpu-plugin
+configMapGenerator:
+  - name: nfd-worker-conf
+    behavior: replace
+    files:
+      - nfd-worker.conf
+patches:
+  - target:
+      kind: Namespace
+      name: node-feature-discovery
+    patch: |-
+      - op: add
+        path: '/metadata/labels'
+        value: {}
+      - op: add
+        path: '/metadata/labels/pod-security.kubernetes.io~1audit'
+        value: 'privileged'
+      - op: add
+        path: '/metadata/labels/pod-security.kubernetes.io~1audit-version'
+        value: 'latest'
+      - op: add
+        path: '/metadata/labels/pod-security.kubernetes.io~1enforce'
+        value: 'privileged'
+      - op: add
+        path: '/metadata/labels/pod-security.kubernetes.io~1enforce-version'
+        value: 'latest'
+      - op: add
+        path: '/metadata/labels/pod-security.kubernetes.io~1warn'
+        value: 'privileged'
+      - op: add
+        path: '/metadata/labels/pod-security.kubernetes.io~1warn-version'
+        value: 'latest'
