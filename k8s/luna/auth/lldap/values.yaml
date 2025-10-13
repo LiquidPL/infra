@@ -1,5 +1,6 @@
 image:
-  tag: v0.6.1-alpine-rootless
+  tag: v0.6.2-alpine-rootless
+  variant: ~ # managed in tag instead
 
 lldap:
   baseDN: 'dc=liquid,dc=sh'
