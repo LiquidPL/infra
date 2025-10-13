@@ -10,6 +10,7 @@ config: |
     password: '{FRIGATE_MQTT_PASSWORD}'
   detect:
     enabled: true
+    annotation_offset: -1500
   detectors:
     ov:
       type: openvino
