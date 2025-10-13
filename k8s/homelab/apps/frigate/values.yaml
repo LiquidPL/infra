@@ -22,7 +22,7 @@ config: |
     height: 320
     input_tensor: nchw
     input_pixel_format: bgr
-    path: /config/models/yolo_nas_m.onnx
+    path: /config/models/yolo_nas_s.onnx
     labelmap_path: /labelmap/coco-80.txt
   go2rtc:
     streams:
