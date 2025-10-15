@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: lldap
       repoURL: https://djjudas21.github.io/charts/
-      targetRevision: 0.6.1
+      targetRevision: 0.6.2
       helm:
         valueFiles:
           - $values/k8s/luna/auth/lldap/values.yaml
