@@ -28,6 +28,7 @@ config: |
     track:
       - person
       - car
+      - cat
   detectors:
     ov:
       type: openvino
@@ -98,6 +99,7 @@ config: |
           labels:
             - person
             - car
+            - cat
           required_zones:
             - driveway
             - front_yard
@@ -136,6 +138,7 @@ config: |
         alerts:
           labels:
             - person
+            - cat
         detections:
           labels:
             - car
