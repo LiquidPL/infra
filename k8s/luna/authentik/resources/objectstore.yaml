@@ -1,0 +1,18 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: minio-homelab
+spec:
+  configuration:
+    destinationPath: s3://postgres-authentik
+    endpointURL: https://minio.hs.liquid.sh
+    s3Credentials:
+      accessKeyId:
+        name: minio-secret
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: minio-secret
+        key: SECRET_ACCESS_KEY
+    wal:
+      compression: gzip
+  retentionPolicy: 1d

@@ -1,0 +1,44 @@
+authentik:
+  secret_key: file:///secret-key/secret-key
+  # This sends anonymous usage-data, stack traces on errors and
+  # performance data to sentry.io, and is fully opt-in
+  error_reporting:
+    enabled: true
+  postgresql:
+    host: file:///postgres-authentik-app/host
+    port: file:///postgres-authentik-app/port
+    name: file:///postgres-authentik-app/dbname
+    user: file:///postgres-authentik-app/user
+    password: file:///postgres-authentik-app/password
+
+global:
+  volumeMounts:
+    - name: postgres-authentik-app
+      mountPath: /postgres-authentik-app
+    - name: secret-key
+      mountPath: /secret-key
+
+  volumes:
+    - name: postgres-authentik-app
+      secret:
+        secretName: postgres-authentik-app
+    - name: secret-key
+      secret:
+        secretName: secret-key
+
+server:
+  ingress:
+    # Specify kubernetes ingress controller class name
+    ingressClassName: traefik
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - auth.liquid.sh
+    tls:
+      - hosts:
+          - auth.liquid.sh
+        secretName: tls-authentik-ingress
+
+redis:
+    enabled: true
