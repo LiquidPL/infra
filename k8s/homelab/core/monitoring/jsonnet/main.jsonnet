@@ -74,6 +74,9 @@ local kp =
             server+: {
               root_url: 'https://grafana.' + $.values.common.baseDomain,
             },
+            date_formats+: {
+              default_timezone: 'Europe/Warsaw',
+            },
           },
         },
         dashboards+: certManagerMixin.grafanaDashboards + {
