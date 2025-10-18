@@ -12,6 +12,28 @@ configs:
     controller.operation.processors: 5
   cm:
     application.resourceTrackingMethod: annotation+label
+    oidc.config: |
+      name: auth.liquid.sh
+      issuer: https://auth.liquid.sh/application/o/argo-cd/
+      clientID: CCeSyaVFwymAeja4XBcFKH8CeCqlpIlHqO4gAmjA
+      enablePKCEAuthentication: true
+      requestedScopes: ['openid', 'profile', 'email']
+      logoutURL: https://auth.liquid.sh/application/o/argo-cd/end-session/
+  rbac:
+    policy.csv: |
+      p, role:authenticated, applications, *, */*, deny
+      p, role:authenticated, applicationsets, *, */*, deny
+      p, role:authenticated, certificates, *, *, deny
+      p, role:authenticated, clusters, *, *, deny
+      p, role:authenticated, repositories, *, *, deny
+      p, role:authenticated, write-repositories, *, *, deny
+      p, role:authenticated, projects, *, *, deny
+      p, role:authenticated, accounts, *, *, deny
+      p, role:authenticated, gpgkeys, *, *, deny
+      p, role:authenticated, logs, *, */*, deny
+
+      g, K8s Cluster Admins, role:admin
+    policy.default: role:authenticated
 
 controller:
   resources:
