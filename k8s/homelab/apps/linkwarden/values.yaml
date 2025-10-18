@@ -36,6 +36,20 @@ controllers:
               secretKeyRef:
                 name: meilisearch-master-key
                 key: MEILI_MASTER_KEY
+          NEXT_PUBLIC_AUTHENTIK_ENABLED: true
+          NEXT_PUBLIC_CREDENTIALS_ENABLED: false
+          AUTHENTIK_CUSTOM_NAME: auth.liquid.sh
+          AUTHENTIK_ISSUER: https://auth.liquid.sh/application/o/linkwarden/
+          AUTHENTIK_CLIENT_ID:
+            valueFrom:
+              secretKeyRef:
+                name: oidc-secret
+                key: clientID
+          AUTHENTIK_CLIENT_SECRET:
+            valueFrom:
+              secretKeyRef:
+                name: oidc-secret
+                key: clientSecret
         probes:
           liveness: &probes
             enabled: true
