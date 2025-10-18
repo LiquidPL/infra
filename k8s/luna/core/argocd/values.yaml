@@ -12,6 +12,7 @@ configs:
     controller.operation.processors: 5
   cm:
     application.resourceTrackingMethod: annotation+label
+    admin.enabled: false
     oidc.config: |
       name: auth.liquid.sh
       issuer: https://auth.liquid.sh/application/o/argo-cd/
