@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: b44c93b67a485b93d44bdc6e173213da
+        checksum/grafana-config: 3f91acd075cf3462f99e740c2d9ea3fc
         checksum/grafana-dashboardproviders: 7bfe17dee1b0cf65e31b3bc6f3d41f50
         checksum/grafana-datasources: 0448db3deb16fa6f6f565d7107d176be
       labels:
@@ -175,6 +175,9 @@ spec:
             - mountPath: /etc/grafana
               name: grafana-config
               readOnly: false
+            - mountPath: /etc/secrets/auth_generic_oauth
+              name: auth-oauth-generic-secret
+              readOnly: true
       nodeSelector:
         kubernetes.io/os: linux
       securityContext:
@@ -301,3 +304,7 @@ spec:
         - name: grafana-config
           secret:
             secretName: grafana-config
+        - name: auth-oauth-generic-secret
+          secret:
+            defaultMode: 420
+            secretName: oauth-client
