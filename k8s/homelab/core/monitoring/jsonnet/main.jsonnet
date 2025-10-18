@@ -45,6 +45,7 @@ local kp =
   (import 'kube-prometheus/main.libsonnet') +
   (import 'lib/tolerations.libsonnet') +
   (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
+  (import 'lib/grafana-oauth.libsonnet') +
   {
     values+:: {
       common+: {
@@ -68,9 +69,11 @@ local kp =
         ],
       },
       grafana+: {
-        sections+: {
-          server+: {
-            root_url: 'https://grafana.' + $.values.common.baseDomain,
+        config+: {
+          sections+: {
+            server+: {
+              root_url: 'https://grafana.' + $.values.common.baseDomain,
+            },
           },
         },
         dashboards+: certManagerMixin.grafanaDashboards + {

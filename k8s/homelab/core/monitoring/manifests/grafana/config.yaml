@@ -13,6 +13,21 @@ metadata:
   namespace: monitoring
 stringData:
   grafana.ini: |
+    [auth]
+    oauth_auto_login = true
+    signout_redirect_url = https://auth.liquid.sh/application/o/grafana/end-session/
+    [auth.generic_oauth]
+    api_url = https://auth.liquid.sh/application/o/userinfo/
+    auth_url = https://auth.liquid.sh/application/o/authorize/
+    client_id = $__file{/etc/secrets/auth_generic_oauth/client_id}
+    client_secret = $__file{/etc/secrets/auth_generic_oauth/client_secret}
+    enabled = true
+    name = auth.liquid.sh
+    role_attribute_path = contains(groups, 'K8s Cluster Admins') && 'Admin'
+    scopes = openid email profile
+    token_url = https://auth.liquid.sh/application/o/token/
     [date_formats]
     default_timezone = UTC
+    [server]
+    root_url = https://grafana.hs.liquid.sh
 type: Opaque
