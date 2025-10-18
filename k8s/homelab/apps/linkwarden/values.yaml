@@ -38,6 +38,7 @@ controllers:
                 key: MEILI_MASTER_KEY
           NEXT_PUBLIC_AUTHENTIK_ENABLED: true
           NEXT_PUBLIC_CREDENTIALS_ENABLED: false
+          NEXT_PUBLIC_DISABLE_REGISTRATION: true
           AUTHENTIK_CUSTOM_NAME: auth.liquid.sh
           AUTHENTIK_ISSUER: https://auth.liquid.sh/application/o/linkwarden/
           AUTHENTIK_CLIENT_ID:
