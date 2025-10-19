@@ -168,7 +168,7 @@ module "kube-hetzner" {
 
   agent_nodepools = [
     {
-      name        = "agent-small",
+      name        = "agent-small-storage",
       server_type = "cpx21",
       location    = "fsn1",
       labels      = [
@@ -176,6 +176,24 @@ module "kube-hetzner" {
       ],
       taints      = [],
       count       = 2
+      # swap_size   = "2G" # remember to add the suffix, examples: 512M, 1G
+      # zram_size   = "2G" # remember to add the suffix, examples: 512M, 1G
+      # kubelet_args = ["kube-reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi", "system-reserved=cpu=250m,memory=300Mi"]
+
+      # Fine-grained control over placement groups (nodes in the same group are spread over different physical servers, 10 nodes per placement group max):
+      # placement_group = "default"
+
+      # Enable automatic backups via Hetzner (default: false)
+      # backups = true
+    },
+    {
+      name        = "agent-small",
+      server_type = "cpx21",
+      location    = "fsn1",
+      labels      = [
+      ],
+      taints      = [],
+      count       = 1
       # swap_size   = "2G" # remember to add the suffix, examples: 512M, 1G
       # zram_size   = "2G" # remember to add the suffix, examples: 512M, 1G
       # kubelet_args = ["kube-reserved=cpu=50m,memory=300Mi,ephemeral-storage=1Gi", "system-reserved=cpu=250m,memory=300Mi"]
