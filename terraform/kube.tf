@@ -270,13 +270,19 @@ module "kube-hetzner" {
     #   }
     # },
   ]
-  # Add custom control plane configuration options here.
+  # Add additional configuration options for control planes here.
   # E.g to enable monitoring for etcd, proxy etc:
   # control_planes_custom_config = {
   #  etcd-expose-metrics = true,
   #  kube-controller-manager-arg = "bind-address=0.0.0.0",
   #  kube-proxy-arg ="metrics-bind-address=0.0.0.0",
   #  kube-scheduler-arg = "bind-address=0.0.0.0",
+  # }
+
+  # Add additional configuration options for agent nodes and autoscaler nodes here.
+  # E.g to enable monitoring for proxy:
+  # agent_nodes_custom_config = {
+  #  kube-proxy-arg ="metrics-bind-address=0.0.0.0",
   # }
 
   # You can enable encrypted wireguard for the CNI by setting this to "true". Default is "false".
@@ -308,15 +314,30 @@ module "kube-hetzner" {
   # Specifies the number of times a health check is retried before a target is marked as unhealthy. (default: 3)
   # load_balancer_health_check_retries = 3
 
+
+  # Setup a NAT router, and automatically disable public ips on all control plane and agent nodes.
+  # To use this, you must also set use_control_plane_lb = true, otherwise kubectl can never
+  # reach the cluster. The NAT router will also function as bastion. This makes securing the cluster
+  # easier, as all public traffic passes through a single strongly secured node. It does
+  # however also introduce a single point of failure, so if you need high-availability on your
+  # egress, you should consider other configurations.
+  #
+  #
+  # nat_router = {
+  #   server_type = "cax21"
+  #   location    = "fsn1"
+  #   enable_sudo = false # optional, default to false. Set to true to add nat-router user to the sudo'ers. Note that ssh as root is disabled.
+  #   labels      = {} # optionally add labels.
+  # }
+
+
   ### The following values are entirely optional (and can be removed from this if unused)
 
   # You can refine a base domain name to be use in this form of nodename.base_domain for setting the reserve dns inside Hetzner
   base_domain = "luna.liquid.sh"
 
   # Cluster Autoscaler
-  # Providing at least one map for the array enables the cluster autoscaler feature, default is disabled
-  # By default we set a compatible version with the default initial_k3s_channel, to set another one,
-  # have a look at the tag value in https://github.com/kubernetes/autoscaler/blob/master/charts/cluster-autoscaler/values.yaml
+  # Providing at least one map for the array enables the cluster autoscaler feature, default is disabled.
   # ⚠️ Based on how the autoscaler works with this project, you can only choose either x86 instances or ARM server types for ALL autoscaler nodepools.
   # If you are curious, it's ok to have a multi-architecture cluster, as most underlying container images are multi-architecture too.
   #
@@ -343,6 +364,10 @@ module "kube-hetzner" {
   #    # kubelet_args = ["kube-reserved=cpu=250m,memory=1500Mi,ephemeral-storage=1Gi", "system-reserved=cpu=250m,memory=300Mi"]
   #  }
   # ]
+  #
+  # To disable public ips on your autoscaled nodes, uncomment the following lines:
+  # autoscaler_disable_ipv4 = true
+  # autoscaler_disable_ipv6 = true
 
   # ⚠️ Deprecated, will be removed after a new Cluster Autoscaler version has been released which support the new way of setting labels and taints. See above.
   # Add extra labels on nodes started by the Cluster Autoscaler
@@ -363,7 +388,9 @@ module "kube-hetzner" {
   #
   # Image and version of Kubernetes Cluster Autoscaler for Hetzner Cloud:
   #   - cluster_autoscaler_image: Image of Kubernetes Cluster Autoscaler for Hetzner Cloud to be used.
+  #       The default is the official image from the Kubernetes project: registry.k8s.io/autoscaling/cluster-autoscaler
   #   - cluster_autoscaler_version: Version of Kubernetes Cluster Autoscaler for Hetzner Cloud. Should be aligned with Kubernetes version.
+  #       Available versions for the official image can be found at https://explore.ggcr.dev/?repo=registry.k8s.io%2Fautoscaling%2Fcluster-autoscaler
   #
   # Logging related arguments are managed using separate variables:
   #   - cluster_autoscaler_log_level: Controls the verbosity of logs (--v), the value is from 0 to 5, default is 4, for max debug info set it to 5.
@@ -376,7 +403,7 @@ module "kube-hetzner" {
   # Example:
   #
   # cluster_autoscaler_image = "registry.k8s.io/autoscaling/cluster-autoscaler"
-  # cluster_autoscaler_version = "v1.30.1"
+  # cluster_autoscaler_version = "v1.30.3"
   # cluster_autoscaler_log_level = 4
   # cluster_autoscaler_log_to_stderr = true
   # cluster_autoscaler_stderr_threshold = "INFO"
@@ -421,10 +448,14 @@ module "kube-hetzner" {
   #   etcd-s3-access-key      = "<access-key>"
   #   etcd-s3-secret-key      = "<secret-key>"
   #   etcd-s3-bucket          = "k3s-etcd-snapshots"
+  #   etcd-s3-region          = "<your-s3-bucket-region|usually required for aws>"
   # }
 
   # To enable Hetzner Storage Box support, you can enable csi-driver-smb, default is "false".
   # enable_csi_driver_smb = true
+  # If you want to specify the version for csi-driver-smb, set it below - otherwise it'll use the latest version available.
+  # See https://github.com/kubernetes-csi/csi-driver-smb/releases for the available versions.
+  # csi_driver_smb_version = "v1.16.0"
 
   # To enable iscid without setting enable_longhorn = true, set enable_iscsid = true. You will need this if
   # you install your own version of longhorn outside of this module.
@@ -455,17 +486,24 @@ module "kube-hetzner" {
   # After the cluster is deployed, you can always use HelmChartConfig definition to tweak the configuration.
 
   # Also, you can choose to use a Hetzner volume with Longhorn. By default, it will use the nodes own storage space, but if you add an attribute of
-  # longhorn_volume_size (⚠️ not a variable, just a possible agent nodepool attribute) with a value between 10 and 10000 GB to your agent nodepool definition, it will create and use the volume in question.
+  # longhorn_volume_size (⚠️ not a variable, just a possible agent nodepool attribute) with a value between 10 and 10240 GB to your agent nodepool definition, it will create and use the volume in question.
   # See the agent nodepool section for an example of how to do that.
 
   # To disable Hetzner CSI storage, you can set the following to "true", default is "false".
   # disable_hetzner_csi = true
 
   # If you want to use a specific Hetzner CCM and CSI version, set them below; otherwise, leave them as-is for the latest versions.
+  # See https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases for the available versions.
   # hetzner_ccm_version = ""
+
+  # By default, new installations use Helm to install Hetzner CCM. You can use the legacy deployment method (using `kubectl apply`) by setting `hetzner_ccm_use_helm = false`.
+  hetzner_ccm_use_helm = true
+
+  # See https://github.com/hetznercloud/csi-driver/releases for the available versions.
   # hetzner_csi_version = ""
 
   # If you want to specify the Kured version, set it below - otherwise it'll use the latest version available.
+  # See https://github.com/kubereboot/kured/releases for the available versions.
   # kured_version = ""
 
   # Default is "traefik".
@@ -548,6 +586,12 @@ module "kube-hetzner" {
   # enable_metrics_server = false
 
   # If you want to enable the k3s built-in local-storage controller set this to "true". Default is "false".
+  # Warning: When enabled together with the Hetzner CSI, there will be two default storage classes: "local-path" and "hcloud-volumes"!
+  #   Even if patched to remove the "default" label, the local-path storage class will be reset as default on each reboot of
+  #   the node where the controller runs.
+  #   This is not a problem if you explicitly define which storageclass to use in your PVCs.
+  #   Workaround if you don't want two default storage classes: leave this to false and add the local-path-provisioner helm chart
+  #   as an extra (https://github.com/kube-hetzner/terraform-hcloud-kube-hetzner#adding-extras).
   enable_local_storage = true
 
   # If you want to allow non-control-plane workloads to run on the control-plane nodes, set this to "true". The default is "false".
@@ -594,12 +638,20 @@ module "kube-hetzner" {
   #   "lock-ttl" : "30m",
   # }
 
+  # Allows you to specify the k3s version. If defined, supersedes initial_k3s_channel.
+  # See https://github.com/k3s-io/k3s/releases for the available versions.
+  # install_k3s_version = "v1.30.2+k3s2"
+
   # Allows you to specify either stable, latest, testing or supported minor versions.
   # see https://rancher.com/docs/k3s/latest/en/upgrades/basic/ and https://update.k3s.io/v1-release/channels
-  # ⚠️ If you are going to use Rancher addons for instance, it's always a good idea to fix the kube version to latest - 0.01,
-  # ⚠️ Rancher currently only supports v1.25 and earlier versions: https://github.com/rancher/rancher/issues/41113
-  # The default is "v1.29".
-  initial_k3s_channel = "v1.32"
+  # ⚠️ If you are going to use Rancher addons for instance, it's always a good idea to fix the kube version to one minor version below the latest stable,
+  #     e.g. v1.29 instead of the stable v1.30.
+  # The default is "v1.30".
+  # initial_k3s_channel = "stable"
+
+  # Allows to specify the version of the System Upgrade Controller for automated upgrades of k3s
+  # See https://github.com/rancher/system-upgrade-controller/releases for the available versions.
+  sys_upgrade_controller_version = "v0.16.2"
 
   # The cluster name, by default "k3s"
   cluster_name = "luna"
@@ -637,6 +689,50 @@ module "kube-hetzner" {
   #   "trust anchor --store /root/ca.crt",
   # ]
 
+  # Structured authentication configuration. Multiple authentication providers support requires v1.30+ of
+  # kubernetes.
+  # https://kubernetes.io/docs/reference/access-authn-authz/authentication/#using-authentication-configuration
+  #
+  # authentication_config = <<-EOT
+  #   apiVersion: apiserver.config.k8s.io/v1beta1
+  #   kind: AuthenticationConfiguration
+  #   jwt:
+  #   - issuer:
+  #       url: "https://token.actions.githubusercontent.com"
+  #       audiences:
+  #       - "https://github.com/octo-org"
+  #     claimMappings:
+  #       username:
+  #         claim: sub
+  #         prefix: "gh:"
+  #       groups:
+  #         claim: repository_owner
+  #         prefix: "gh:"
+  #     claimValidationRules:
+  #     - claim: repository
+  #       requiredValue: "octo-org/octo-repo"
+  #     - claim: "repository_visibility"
+  #       requiredValue: "public"
+  #     - claim: "ref"
+  #       requiredValue: "refs/heads/main"
+  #     - claim: "ref_type"
+  #       requiredValue: "branch"
+  #   - issuer:
+  #       url: "https://your.oidc.issuer"
+  #       audiences:
+  #       - "oidc_client_id"
+  #     claimMappings:
+  #       username:
+  #         claim: oidc_username_claim
+  #         prefix: "oidc:"
+  #       groups:
+  #         claim: oidc_groups_claim
+  #         prefix: "oidc:"
+  #   EOT
+
+  # Set to true if util-linux breaks on the OS (temporary regression fixed in util-linux v2.41.1).
+  # k3s_prefer_bundled_bin = true
+
   # Additional flags to pass to the k3s server command (the control plane).
   # k3s_exec_server_args = "--kube-apiserver-arg enable-admission-plugins=PodTolerationRestriction,PodNodeSelector"
 
@@ -666,6 +762,11 @@ module "kube-hetzner" {
   # Allowed values: null (disable SSH rule entirely) or a list of allowed networks with CIDR notation.
   # Ideally you would set your IP there. And if it changes after cluster deploy, you can always update this variable and apply again.
   # firewall_ssh_source = ["1.2.3.4/32"]
+
+  # By default, SELinux is enabled in enforcing mode on all nodes. For container-specific SELinux issues,
+  # consider using the pre-installed 'udica' tool to create custom, targeted SELinux policies instead of
+  # disabling SELinux globally. See the "Fix SELinux issues with udica" example in the README for details.
+  # disable_selinux = false
 
   # Adding extra firewall rules, like opening a port
   # More info on the format here https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
@@ -697,6 +798,7 @@ module "kube-hetzner" {
   # cni_plugin = "cilium"
 
   # You can choose the version of Cilium that you want. By default we keep the version up to date and configure Cilium with compatible settings according to the version.
+  # See https://github.com/cilium/cilium/releases for the available versions.
   # cilium_version = "v1.14.0"
 
   # Set native-routing mode ("native") or tunneling mode ("tunnel"). Default: tunnel
@@ -798,7 +900,7 @@ module "kube-hetzner" {
   # lb_hostname = "mycluster.domain.com"
 
   # You can enable Rancher (installed by Helm behind the scenes) with the following flag, the default is "false".
-  # ⚠️ Rancher currently only supports Kubernetes v1.28 and earlier, you will need to set initial_k3s_channel to a supported version: https://github.com/rancher/rancher/issues/43110
+  # ⚠️ Rancher often doesn't support the latest Kubernetes version. You will need to set initial_k3s_channel to a supported version.
   # When Rancher is enabled, it automatically installs cert-manager too, and it uses rancher's own self-signed certificates.
   # See for options https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster#3-choose-your-ssl-configuration
   # The easiest thing is to leave everything as is (using the default rancher self-signed certificate) and put Cloudflare in front of it.
@@ -864,10 +966,15 @@ module "kube-hetzner" {
   # Please understand that the indentation is very important, inside the EOTs, as those are proper yaml helm values.
   # We advise you to use the default values, and only change them if you know what you are doing!
 
+  # You can inline the values here in heredoc-style (as the examples below with the <<EOT to EOT). Please note that the current indentation inside the EOT is important.
+  # Or you can create a thepackage-values.yaml file with the content and use it here with the following syntax:
+  # thepackage_values = file("thepackage-values.yaml")
+
   # Cilium, all Cilium helm values can be found at https://github.com/cilium/cilium/blob/master/install/kubernetes/cilium/values.yaml
   # Be careful when maintaining your own cilium_values, as the choice of available settings depends on the Cilium version used. See also the cilium_version setting to fix a specific version.
   # The following is an example, please note that the current indentation inside the EOT is important.
   /*   cilium_values = <<EOT
+
 ipam:
   mode: kubernetes
 k8s:
@@ -889,13 +996,39 @@ MTU: 1450
 
   # Cert manager, all cert-manager helm values can be found at https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
   # The following is an example, please note that the current indentation inside the EOT is important.
+  # For cert-manager versions < v1.15.0, you need to set installCRDs: true instead of crds.enabled and crds.keep.
   /*   cert_manager_values = <<EOT
-installCRDs: true
+crds:
+  enabled: true
+  keep: true
 replicaCount: 3
 webhook:
   replicaCount: 3
 cainjector:
   replicaCount: 3
+  EOT */
+
+  # Hetzner Cloud Controller Manager, all Hetzner Cloud Controller Manager helm values can be found at https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/main/chart/values.yaml
+  # We advise you to not touch this and to let the defaults that are already set under the hood.
+  # For advanced use cases like adding Hetzner Robot servers, see: https://github.com/kube-hetzner/terraform-hcloud-kube-hetzner/blob/master/docs/add-robot-server.md
+  # The following is an example, please note that the current indentation inside the EOT is important.
+  /*   hetzner_ccm_values = <<EOT
+networking:
+  enabled: true
+args:
+  cloud-provider: hcloud
+  allow-untagged-cloud: ""
+  route-reconciliation-period: 30s
+  webhook-secure-port: "0"
+env:
+  HCLOUD_LOAD_BALANCERS_LOCATION:
+    value: "fsn1"
+  HCLOUD_LOAD_BALANCERS_USE_PRIVATE_IP:
+    value: "true"
+  HCLOUD_LOAD_BALANCERS_ENABLED:
+    value: "true"
+  HCLOUD_LOAD_BALANCERS_DISABLE_PRIVATE_INGRESS:
+    value: "true"
   EOT */
 
   # csi-driver-smb, all csi-driver-smb helm values can be found at https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/latest/csi-driver-smb/values.yaml
@@ -939,6 +1072,7 @@ persistence:
   EOT */
 
   # If you want to use a specific Traefik helm chart version, set it below; otherwise, leave them as-is for the latest versions.
+  # See https://github.com/traefik/traefik-helm-chart/releases for the available versions.
   # traefik_version = ""
 
   # Traefik, all Traefik helm values can be found at https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
@@ -960,8 +1094,11 @@ service:
 
 ports:
   web:
-    redirectTo:
-      port: websecure
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
 
     proxyProtocol:
       trustedIPs:
@@ -983,6 +1120,7 @@ ports:
   EOT */
 
   # If you want to use a specific Nginx helm chart version, set it below; otherwise, leave them as-is for the latest versions.
+  # See https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#supported-versions-table for the available versions.
   # nginx_version = ""
 
   # Nginx, all Nginx helm values can be found at https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
@@ -1068,7 +1206,7 @@ terraform {
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = ">= 1.43.0"
+      version = ">= 1.51.0"
     }
   }
 }
