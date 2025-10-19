@@ -711,42 +711,22 @@ module "kube-hetzner" {
   # kubernetes.
   # https://kubernetes.io/docs/reference/access-authn-authz/authentication/#using-authentication-configuration
   #
-  # authentication_config = <<-EOT
-  #   apiVersion: apiserver.config.k8s.io/v1beta1
-  #   kind: AuthenticationConfiguration
-  #   jwt:
-  #   - issuer:
-  #       url: "https://token.actions.githubusercontent.com"
-  #       audiences:
-  #       - "https://github.com/octo-org"
-  #     claimMappings:
-  #       username:
-  #         claim: sub
-  #         prefix: "gh:"
-  #       groups:
-  #         claim: repository_owner
-  #         prefix: "gh:"
-  #     claimValidationRules:
-  #     - claim: repository
-  #       requiredValue: "octo-org/octo-repo"
-  #     - claim: "repository_visibility"
-  #       requiredValue: "public"
-  #     - claim: "ref"
-  #       requiredValue: "refs/heads/main"
-  #     - claim: "ref_type"
-  #       requiredValue: "branch"
-  #   - issuer:
-  #       url: "https://your.oidc.issuer"
-  #       audiences:
-  #       - "oidc_client_id"
-  #     claimMappings:
-  #       username:
-  #         claim: oidc_username_claim
-  #         prefix: "oidc:"
-  #       groups:
-  #         claim: oidc_groups_claim
-  #         prefix: "oidc:"
-  #   EOT
+  authentication_config = <<-EOT
+    apiVersion: apiserver.config.k8s.io/v1beta1
+    kind: AuthenticationConfiguration
+    jwt:
+      - issuer:
+          url: https://auth.liquid.sh/application/o/k8s-luna/
+          audiences:
+            - oLqDsBDyhepPTLAoyOXKEKeVdCU2Lr0innO7xZtx
+        claimMappings:
+          username:
+            claim: email
+            prefix: "oidc:"
+          groups:
+            claim: groups
+            prefix: "oidc:"
+    EOT
 
   # Set to true if util-linux breaks on the OS (temporary regression fixed in util-linux v2.41.1).
   # k3s_prefer_bundled_bin = true
