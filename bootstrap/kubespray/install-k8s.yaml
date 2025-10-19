@@ -1,13 +1,32 @@
 - name: Install Kubernetes
   ansible.builtin.import_playbook: kubernetes_sigs.kubespray.cluster
 
-- name: Annotate nodes
+- name: Apply post-install configuration
   hosts: k8s_cluster
   tags: asdf
   tasks:
-    - name: Set annotations
+    - name: Set node annotations
       ansible.builtin.command: "kubectl annotate --overwrite node {{ ansible_hostname }} {{ item.key }}='{{ item.value }}'"
       changed_when: true
       loop: '{{ node_annotations | ansible.builtin.dict2items }}'
       delegate_to: '{{ groups["kube_control_plane"][0] }}'
       when: node_annotations is defined
+
+    - name: Copy OIDC ClusterRoleBinding
+      ansible.builtin.copy:
+        src: manifests/clusterrolebinding.yaml
+        dest: /tmp/clusterrolebinding.yaml
+        owner: root
+        group: root
+      when: inventory_hostname == groups["kube_control_plane"][0]
+
+    - name: Apply OIDC ClusterRoleBinding
+      ansible.builtin.command: 'kubectl apply -f /tmp/clusterrolebinding.yaml'
+      delegate_to: '{{ groups["kube_control_plane"][0] }}'
+      when: inventory_hostname == groups["kube_control_plane"][0]
+
+    - name: Delete manifest file
+      ansible.builtin.file:
+        path: /tmp/clusterrolebinding.yaml
+        state: absent
+      when: inventory_hostname == groups["kube_control_plane"][0]

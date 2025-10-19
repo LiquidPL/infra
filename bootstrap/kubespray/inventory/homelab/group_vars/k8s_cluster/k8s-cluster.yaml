@@ -19,3 +19,10 @@ system_ephemeral_storage_reserved: 1Gi
 
 kube_owner: root
 kube_cert_group: root
+
+kube_oidc_auth: true
+
+kube_oidc_url: https://auth.liquid.sh/application/o/k8s-homelab/
+kube_oidc_client_id: BKtOtenCsWE9XFd4wqdzmUrTKyGk3zbRA8HUyxMX
+kube_oidc_username_claim: email
+kube_oidc_groups_claim: groups
