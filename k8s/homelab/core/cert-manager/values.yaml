@@ -4,6 +4,11 @@ crds:
 
 dns01RecursiveNameservers: '1.1.1.1:53, 1.0.0.1:54'
 
+config:
+  apiVersion: controller.config.cert-manager.io/v1alpha1
+  kind: ControllerConfiguration
+  enableGatewayAPI: true
+
 prometheus:
   enabled: true
   podmonitor:
