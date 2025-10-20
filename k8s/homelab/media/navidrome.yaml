@@ -9,7 +9,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
     namespace: navidrome
   project: homelab
   sources:

@@ -27,7 +27,7 @@ spec:
     - apps-homelab
   destinations:
     - namespace: '*'
-      server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+      server: https://homelab-k8s-operator.lobster-altair.ts.net
     - namespace: apps-homelab
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:

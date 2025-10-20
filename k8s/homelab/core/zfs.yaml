@@ -25,7 +25,7 @@ spec:
     spec:
       project: homelab
       destination:
-        server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+        server: https://homelab-k8s-operator.lobster-altair.ts.net
         namespace: democratic-csi
       sources:
         - repoURL: https://github.com/LiquidPL/infra.git
@@ -68,7 +68,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    server: https://homelab-apiserver.tailscale.svc.cluster.local:6443
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
     namespace: democratic-csi
   project: homelab
   source:
