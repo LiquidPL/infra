@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    tailscale.com/tailnet-fqdn: homelab-control-plane-hva.lobster-altair.ts.net
-  name: homelab-apiserver
+    tailscale.com/tailnet-fqdn: k8s-homelab-operator.lobster-altair.ts.net
+  name: k8s-homelab-operator
   namespace: tailscale
 spec:
   externalName: placeholder
