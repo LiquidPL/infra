@@ -1,5 +1,5 @@
 operatorConfig:
-  hostname: k8s-luna-operator
+  hostname: luna-k8s-operator
 
   resources:
     requests:

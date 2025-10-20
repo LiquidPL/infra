@@ -1,5 +1,5 @@
 operatorConfig:
-  hostname: k8s-homelab-operator
+  hostname: homelab-k8s-operator
 
   resources:
     requests:
