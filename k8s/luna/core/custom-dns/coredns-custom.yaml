@@ -7,3 +7,9 @@ data:
   hs.liquid.sh.override: |
     rewrite name truenas.hs.liquid.sh. truenas.tailscale.svc.cluster.local.
     rewrite name minio.hs.liquid.sh. truenas.tailscale.svc.cluster.local.
+  ts.net.server: |
+    ts.net:53 {
+      errors
+      cache 30
+      forward . 10.43.76.112
+    }
