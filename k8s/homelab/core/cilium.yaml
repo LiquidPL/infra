@@ -23,13 +23,6 @@ spec:
       targetRevision: master
       path: k8s/homelab/core/cilium/resources
       ref: values
-  ignoreDifferences:
-    - kind: Service
-      namespace: kube-system
-      name: cilium-ingress
-      jsonPointers:
-        - /spec/ports/0/nodePort
-        - /spec/ports/1/nodePort
   syncPolicy:
     automated:
       selfHeal: true
