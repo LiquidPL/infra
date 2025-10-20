@@ -1,4 +1,6 @@
 operatorConfig:
+  hostname: k8s-homelab-operator
+
   resources:
     requests:
       cpu: 5m

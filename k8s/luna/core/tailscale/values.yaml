@@ -1,5 +1,5 @@
 operatorConfig:
-  hostname: tailscale-operator-luna
+  hostname: k8s-luna-operator
 
   resources:
     requests:
