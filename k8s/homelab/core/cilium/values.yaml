@@ -16,16 +16,6 @@ routingMode: native
 ipv4NativeRoutingCIDR: 10.10.0.0/16
 enableIPv4Masquerade: false
 
-ingressController:
-  enabled: true
-  default: true
-  loadbalancerMode: shared
-  service:
-    annotations:
-      tailscale.com/expose: 'true'
-      tailscale.com/hostname: cilium-ingress
-    type: LoadBalancer
-    loadBalancerIP: 10.10.100.11
 hubble:
   tls:
     auto:
