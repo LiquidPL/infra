@@ -100,21 +100,24 @@ service:
       http:
         port: *port
 
-ingress:
+route:
   main:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-    hosts:
-      - host: &host qbittorrent.hs.liquid.sh
-        paths:
-          - path: /
-            service:
-              identifier: main
-              port: http
-    tls:
-      - hosts:
-          - *host
-        secretName: tls-qbittorrent-ingress
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - namespace: envoy-gateway-system
+        name: gateway-local
+      - namespace: envoy-gateway-system
+        name: gateway-tailscale
+    hostnames:
+      - qbittorrent.hs.liquid.sh
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - kind: Service
 
 persistence:
   gluetun:

@@ -1,0 +1,32 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: ""
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 12.0.1
+  name: grafana
+  namespace: monitoring
+spec:
+  hostnames:
+    - grafana.hs.liquid.sh
+  parentRefs:
+    - name: gateway-local
+      namespace: envoy-gateway-system
+    - name: gateway-tailscale
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: grafana
+          namespace: monitoring
+          port: 3000
+      matches:
+        - path:
+            type: PathPrefix
+            value: /

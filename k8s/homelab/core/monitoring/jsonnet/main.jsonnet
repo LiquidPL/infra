@@ -1,34 +1,17 @@
-local ingress(metadata, host, service) = {
-  apiVersion: 'networking.k8s.io/v1',
-  kind: 'Ingress',
-  metadata: metadata {
-    annotations+: {
-      'cert-manager.io/cluster-issuer': 'letsencrypt',
-    },
-  },
+local httpRoute(metadata, host, backendRef) = {
+  apiVersion: 'gateway.networking.k8s.io/v1',
+  kind: 'HTTPRoute',
+  metadata: metadata,
   spec: {
-    rules: [
-      {
-        host: host,
-        http: {
-          paths: [
-            {
-              pathType: 'Prefix',
-              path: '/',
-              backend: {
-                service: service,
-              },
-            },
-          ],
-        },
-      },
+    parentRefs: [
+      { namespace: 'envoy-gateway-system', name: 'gateway-local' },
+      { namespace: 'envoy-gateway-system', name: 'gateway-tailscale' },
     ],
-    tls: [
-      {
-        hosts: [host],
-        secretName: 'tls-' + metadata.name,
-      },
-    ],
+    hostnames: [host],
+    rules: [{
+      matches: [{ path: { type: 'PathPrefix', value: '/' } }],
+      backendRefs: [backendRef],
+    }],
   },
 };
 
@@ -221,16 +204,27 @@ local kp =
           ],
         },
       },
-      ingress: ingress(
+      httpRoute: httpRoute(
         $.grafana.service.metadata,
         'grafana.' + $.values.common.baseDomain,
         {
+          group: '',
+          kind: 'Service',
+          namespace: $.grafana.service.metadata.namespace,
           name: $.grafana.service.metadata.name,
-          port: {
-            name: $.grafana.service.spec.ports[0].name,
-          },
-        },
+          port: $.grafana.service.spec.ports[0].port,
+        }
       ),
+      // ingress: ingress(
+      //   $.grafana.service.metadata,
+      //   'grafana.' + $.values.common.basedomain,
+      //   {
+      //     name: $.grafana.service.metadata.name,
+      //     port: {
+      //       name: $.grafana.service.spec.ports[0].name,
+      //     },
+      //   },
+      // ),
     },
 
     ntfyReceiver: ntfyReceiver($.values.ntfyReceiver),

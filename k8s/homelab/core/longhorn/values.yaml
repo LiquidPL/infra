@@ -5,15 +5,6 @@ defaultSettings:
 persistence:
   defaultClassReplicaCount: 2
 
-ingress:
-  enabled: true
-  host: longhorn.hs.liquid.sh
-  pathType: Prefix
-  tls: true
-  tlsSecret: tls-longhorn
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-
 defaultBackupStore:
   backupTarget: s3://longhorn@homelab/
   backupTargetCredentialSecret: s3-secret

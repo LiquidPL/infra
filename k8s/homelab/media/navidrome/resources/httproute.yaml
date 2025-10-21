@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: navidrome
+spec:
+  parentRefs:
+    - namespace: envoy-gateway-system
+      name: gateway-local
+    - namespace: envoy-gateway-system
+      name: gateway-tailscale
+  hostnames:
+    - navidrome.hs.liquid.sh
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: ""
+          kind: Service
+          namespace: navidrome
+          name: navidrome
+          port: 4533

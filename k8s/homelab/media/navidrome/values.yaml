@@ -37,20 +37,6 @@ service:
           path: /metrics
           interval: 10s
 
-ingress:
-  main:
-    enabled: true
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-    hosts:
-      - host: navidrome.hs.liquid.sh
-        paths:
-          - path: /
-    tls:
-      - hosts:
-          - navidrome.hs.liquid.sh
-        secretName: tls-navidrome-ingress
-
 persistence:
   config:
     enabled: true

@@ -81,21 +81,24 @@ service:
       http:
         port: *port
 
-ingress:
+route:
   main:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-    hosts:
-      - host: &host radarr.hs.liquid.sh
-        paths:
-          - path: /
-            service:
-              identifier: main
-              port: http
-    tls:
-      - hosts:
-          - *host
-        secretName: tls-radarr-ingress
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - namespace: envoy-gateway-system
+        name: gateway-local
+      - namespace: envoy-gateway-system
+        name: gateway-tailscale
+    hostnames:
+      - radarr.hs.liquid.sh
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - kind: Service
 
 persistence:
   config:

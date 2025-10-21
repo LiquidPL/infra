@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: envoy-gateway
+  namespace: apps-homelab
+  labels:
+    name: envoy-gateway
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: homelab
+  destination:
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
+    namespace: envoy-gateway-system
+  sources:
+    - chart: gateway-helm
+      repoURL: docker.io/envoyproxy
+      targetRevision: v1.5.4
+    - repoURL: https://github.com/LiquidPL/infra.git
+      path: k8s/homelab/network/envoy-gateway/resources
+      targetRevision: master
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
