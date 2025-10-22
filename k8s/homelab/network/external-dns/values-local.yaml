@@ -6,6 +6,7 @@ filters:
     - gateway-local
 service:
   type: LoadBalancer
+  loadBalancerIP: 10.10.100.1
 securityContext:
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: true
