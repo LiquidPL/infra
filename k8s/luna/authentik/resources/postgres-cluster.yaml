@@ -10,13 +10,13 @@ spec:
     size: 512Mi
   postgresql:
     parameters:
-      shared_buffers: '64MB'
+      shared_buffers: '128MB'
     synchronous:
       method: any
       number: 1
   resources:
     requests:
-      memory: 256Mi
+      memory: 512Mi
       cpu: 150m
     limits:
       memory: 512Mi
