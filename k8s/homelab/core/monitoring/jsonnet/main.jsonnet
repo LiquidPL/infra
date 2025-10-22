@@ -15,6 +15,37 @@ local httpRoute(metadata, host, backendRef) = {
   },
 };
 
+local allowIngressNetworkPolicy(port) = {
+  spec+: {
+    ingress+: [
+      {
+        from: [
+          {
+            namespaceSelector: {
+              matchLabels: {
+                'kubernetes.io/metadata.name': 'envoy-gateway-system',
+              },
+            },
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/component': 'proxy',
+                'app.kubernetes.io/name': 'envoy',
+                'app.kubernetes.io/managed-by': 'envoy-gateway',
+              },
+            },
+          },
+        ],
+        ports: [
+          {
+            port: port,
+            protocol: 'TCP',
+          },
+        ],
+      },
+    ],
+  },
+};
+
 local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
 local certManagerMixin = addMixin({
   name: 'cert-manager',
@@ -180,30 +211,6 @@ local kp =
         },
       },
 
-      networkPolicy: {
-        apiVersion: 'cilium.io/v2',
-        kind: 'CiliumNetworkPolicy',
-        metadata: $.grafana._metadata,
-        spec: {
-          endpointSelector: {
-            matchLabels: $.grafana._config.selectorLabels,
-          },
-          ingress: [
-            {
-              fromEndpoints: [{ matchLabels: { 'app.kubernetes.io/name': 'prometheus' } }],
-              toPorts: [{ ports: [{ port: '3000', protocol: 'TCP' }] }],
-            },
-            { fromEntities: ['world'] },
-            {
-              fromEndpoints: [{ matchExpressions: [{ key: 'reserved:ingress', operator: 'Exists' }] }],
-              toPorts: [{ ports: [{ port: '3000', protocol: 'TCP' }] }],
-            },
-          ],
-          egress: [
-            { toEntities: ['all'] },
-          ],
-        },
-      },
       httpRoute: httpRoute(
         $.grafana.service.metadata,
         'grafana.' + $.values.common.baseDomain,
@@ -215,16 +222,7 @@ local kp =
           port: $.grafana.service.spec.ports[0].port,
         }
       ),
-      // ingress: ingress(
-      //   $.grafana.service.metadata,
-      //   'grafana.' + $.values.common.basedomain,
-      //   {
-      //     name: $.grafana.service.metadata.name,
-      //     port: {
-      //       name: $.grafana.service.spec.ports[0].name,
-      //     },
-      //   },
-      // ),
+      networkPolicy+: allowIngressNetworkPolicy($.grafana.service.spec.ports[0].port),
     },
 
     ntfyReceiver: ntfyReceiver($.values.ntfyReceiver),
