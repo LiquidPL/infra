@@ -1,8 +1,9 @@
 domain: hs.liquid.sh
 watchedResources:
-  - Ingress
-  - Service
   - HTTPRoute
+filters:
+  gatewayClasses:
+    - gateway-local
 service:
   type: ClusterIP
   clusterIP: 10.43.0.50
