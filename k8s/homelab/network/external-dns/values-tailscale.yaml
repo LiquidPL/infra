@@ -4,6 +4,20 @@ watchedResources:
 filters:
   gatewayClasses:
     - gateway-tailscale
+fallthrough:
+  enabled: true
+zoneFiles:
+  - filename: homelab.db
+    reload: 1m
+    domain: hs.liquid.sh
+    contents: |
+      $ORIGIN hs.liquid.sh.
+      @	60 IN	SOA external-dns-local-k8s-gateway.external-dns.hs.liquid.sh. hostmaster.external-dns-local-k8s-gateway.external-dns.hs.liquid.sh. 12345 7200 1800 86400 60
+
+      homeassistant     IN A    100.79.220.13
+      truenas           IN A    100.83.58.81
+      minio             IN A    100.83.58.81
+      octoprint         IN A    100.68.235.99
 service:
   type: LoadBalancer
   loadBalancerClass: tailscale
