@@ -1,6 +1,37 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: homelab
+  namespace: apps-homelab
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: homelab
+spec:
+  destination:
+    namespace: apps-homelab
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    repoURL: https://github.com/LiquidPL/infra.git
+    targetRevision: master
+    path: k8s/homelab
+    directory:
+      recurse: true
+      include: "**/{application,applicationset}.{yml,yaml}"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: luna
   namespace: apps-luna
   finalizers:
@@ -18,7 +49,7 @@ spec:
     path: k8s/luna
     directory:
       recurse: true
-      include: "**/application.{yml,yaml}"
+      include: "**/{application,applicationset}.{yml,yaml}"
   syncPolicy:
     automated:
       selfHeal: true

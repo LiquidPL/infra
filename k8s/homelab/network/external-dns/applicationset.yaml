@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: external-dns
+  namespace: apps-homelab
+spec:
+  goTemplate: true
+  goTemplateOptions: ['missingkey=error']
+  generators:
+    - list:
+        elements:
+          - name: local
+          - name: tailscale
+  template:
+    metadata:
+      name: external-dns-{{ .name }}
+      namespace: apps-homelab
+      labels:
+        name: external-dns-{{ .name }}
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: homelab
+      destination:
+        server: https://homelab-k8s-operator.lobster-altair.ts.net
+        namespace: external-dns
+      sources:
+        - chart: k8s-gateway
+          repoURL: ghcr.io/k8s-gateway/charts
+          targetRevision: 3.2.7
+          helm:
+            valueFiles:
+              - $values/k8s/homelab/network/external-dns/values-{{ .name }}.yaml
+        - repoURL: https://github.com/LiquidPL/infra.git
+          targetRevision: master
+          ref: values
+      syncPolicy:
+        automated:
+          selfHeal: true
+        retry:
+          limit: 3
+          backoff:
+            duration: 10s
+            factor: 3
+        syncOptions:
+          - CreateNamespace=true
