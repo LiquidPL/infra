@@ -12,7 +12,7 @@ spec:
     size: 1Gi
   postgresql:
     parameters:
-      shared_buffers: '64MB'
+      shared_buffers: '128MB'
       min_wal_size: '10MB' # scaled down from the default of 80 (80 / 8 = 10)
       max_wal_size: '128MB' # scaled down from the default of 1024 (1024 / 8 = 128)
       wal_keep_size: '64MB' # 32 WAL segments * 2MB segment size = 64MB
