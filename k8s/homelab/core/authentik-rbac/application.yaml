@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik-rbac
+  namespace: apps-homelab
+  labels:
+    name: authentik-rbac
+spec:
+  project: homelab
+  destination:
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
+    namespace: authentik
+  sources:
+    - chart: authentik-remote-cluster
+      repoURL: ghcr.io/goauthentik/helm-charts
+      targetRevision: 2.1.0
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
