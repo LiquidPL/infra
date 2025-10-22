@@ -4,7 +4,7 @@ metadata:
   name: postgres-authentik
   namespace: authentik
 spec:
-  instances: 2
+  instances: 3
   storage:
     storageClass: local-path
     size: 512Mi
