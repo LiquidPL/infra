@@ -18,15 +18,11 @@ bot:
     limits:
       memory: 256Mi
 
+  database:
+    host: postgres-dangobot-rw
+    name: app
+    user: app
+    existingSecret: postgres-dangobot-app
+
 postgresql:
-  global:
-    postgresql:
-      auth:
-        existingSecret: postgres-secret
-  primary:
-    resources:
-      requests:
-        cpu: 50m
-        memory: 64Mi
-      limits:
-        memory: 128Mi
+  enabled: false
