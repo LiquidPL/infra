@@ -10,6 +10,8 @@ zoneFiles:
   - filename: homelab.db
     reload: 1m
     domain: hs.liquid.sh
+    fallthrough:
+      enabled: true
     contents: |
       $ORIGIN hs.liquid.sh.
       @	60 IN	SOA external-dns-local-k8s-gateway.external-dns.hs.liquid.sh. hostmaster.external-dns-local-k8s-gateway.external-dns.hs.liquid.sh. 12345 7200 1800 86400 60
