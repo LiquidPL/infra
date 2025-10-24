@@ -166,19 +166,3 @@ resources:
 shmSize: 128Mi
 envFromSecrets:
   - frigate-secrets
-ingress:
-  enabled: true
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-  hosts:
-    - host: frigate.hs.liquid.sh
-      paths:
-          # since the frigate chart doesn't allow to set a Prefix pathType,
-          # the path needs to be specified as a regex
-          # (which is what the cilium ingress treats ImplementationSpecific as)
-        - path: /.*
-          portName: http-auth
-  tls:
-    - hosts:
-        - frigate.hs.liquid.sh
-      secretName: tls-frigate-ingress
