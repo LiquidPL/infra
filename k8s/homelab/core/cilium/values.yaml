@@ -17,6 +17,13 @@ ipv4NativeRoutingCIDR: 10.10.0.0/16
 enableIPv4Masquerade: false
 MTU: 1400
 
+# needed for tailscale service ingress
+# see: https://tailscale.com/kb/1236/kubernetes-operator#cilium-in-kube-proxy-replacement-mode
+#      https://github.com/tailscale/tailscale/issues/11552#issuecomment-2041407250
+#      https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#socket-loadbalancer-bypass-in-pod-namespace
+socketLB:
+  hostNamespaceOnly: true
+
 hubble:
   tls:
     auto:
