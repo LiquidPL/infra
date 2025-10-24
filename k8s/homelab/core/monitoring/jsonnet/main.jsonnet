@@ -79,7 +79,8 @@ local kp =
           'monitoring',
           'navidrome',
           'frigate',
-          'immich'
+          'immich',
+          'authentik',
         ],
       },
       grafana+: {
