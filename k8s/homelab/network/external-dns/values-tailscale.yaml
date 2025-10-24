@@ -21,6 +21,8 @@ zoneFiles:
 service:
   type: LoadBalancer
   loadBalancerClass: tailscale
+  annotations:
+    tailscale.com/hostname: external-dns
 securityContext:
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: true
