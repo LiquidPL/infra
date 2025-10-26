@@ -21,7 +21,8 @@ spec:
           from: All
       tls:
         certificateRefs:
-          - kind: Secret
+          - group: ''
+            kind: Secret
             name: hs-liquid-sh-tls
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -47,5 +48,6 @@ spec:
           from: All
       tls:
         certificateRefs:
-          - kind: Secret
+          - group: ''
+            kind: Secret
             name: hs-liquid-sh-tls
