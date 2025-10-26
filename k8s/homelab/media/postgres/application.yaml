@@ -1,27 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: media
+  name: postgres-media
   namespace: apps-homelab
+  annotations:
+    argocd.argoproj.io/sync-wave: '-100'
+  labels:
+    name: postgres-media
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  labels:
-    name: media
 spec:
   destination:
-    namespace: apps-homelab
-    server: https://kubernetes.default.svc
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
+    namespace: media
   project: homelab
   source:
-    path: k8s/homelab/media
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
+    path: k8s/homelab/media/postgres/resources
   syncPolicy:
     automated:
       selfHeal: true
     retry:
       limit: 3
       backoff:
-        duration: 30s
-        factor: 2
-        maxDuration: 5m
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

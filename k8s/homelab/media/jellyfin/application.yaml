@@ -1,23 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres-media
+  name: jellyfin
   namespace: apps-homelab
-  annotations:
-    argocd.argoproj.io/sync-wave: '-100'
   labels:
-    name: postgres-media
+    name: jellyfin
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://homelab-k8s-operator.lobster-altair.ts.net
-    namespace: media
+    namespace: jellyfin
   project: homelab
   source:
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
-    path: k8s/homelab/media/postgres
+    path: k8s/homelab/media/jellyfin/resources
   syncPolicy:
     automated:
       selfHeal: true
