@@ -22,3 +22,12 @@ persistence:
 defaultBackupStore:
   backupTarget: s3://longhorn-luna@homelab/
   backupTargetCredentialSecret: s3-secret
+
+ingress:
+  enabled: true
+  host: longhorn.luna.liquid.sh
+  tls: true
+  tlsSecret: tls-longhorn
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: authentik@authentik
