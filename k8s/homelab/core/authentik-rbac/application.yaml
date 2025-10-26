@@ -14,6 +14,9 @@ spec:
     - chart: authentik-remote-cluster
       repoURL: ghcr.io/goauthentik/helm-charts
       targetRevision: 2.1.0
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      path: k8s/homelab/core/authentik-rbac/resources
   syncPolicy:
     automated:
       selfHeal: true
