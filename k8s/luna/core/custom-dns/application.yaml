@@ -1,27 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: core
+  name: custom-dns
   namespace: apps-luna
+  labels:
+    name: custom-dns
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  labels:
-    name: core
 spec:
   destination:
-    namespace: apps-luna
     server: https://kubernetes.default.svc
+    namespace: kube-system
   project: luna
   source:
-    path: k8s/luna/core
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
+    path: k8s/luna/core/custom-dns/resources
   syncPolicy:
     automated:
       selfHeal: true
     retry:
       limit: 3
       backoff:
-        duration: 30s
-        factor: 2
-        maxDuration: 5m
+        duration: 10s
+        factor: 3

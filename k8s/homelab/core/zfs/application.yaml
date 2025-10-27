@@ -1,27 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps
+  name: zfs-resources
   namespace: apps-homelab
+  labels:
+    name: zfs-resources
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  labels:
-    name: apps
 spec:
   destination:
-    namespace: apps-homelab
-    server: https://kubernetes.default.svc
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
+    namespace: democratic-csi
   project: homelab
   source:
-    path: k8s/homelab/apps
     repoURL: https://github.com/LiquidPL/infra.git
     targetRevision: master
+    path: k8s/homelab/core/zfs/resources
   syncPolicy:
     automated:
       selfHeal: true
     retry:
       limit: 3
       backoff:
-        duration: 30s
-        factor: 2
-        maxDuration: 5m
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
