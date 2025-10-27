@@ -1,27 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cnpg
+  name: plugin-barman-cloud
   namespace: apps-homelab
   labels:
-    name: cnpg
+    name: plugin-barman-cloud
 spec:
   project: homelab
   destination:
     server: https://homelab-k8s-operator.lobster-altair.ts.net
     namespace: cnpg-system
   sources:
-    - chart: cloudnative-pg
+    - chart: plugin-barman-cloud
       repoURL: https://cloudnative-pg.github.io/charts
-      targetRevision: 0.26.1
+      targetRevision: 0.2.0
       helm:
         valuesObject:
           resources:
             requests:
               cpu: 10m
-              memory: 64Mi
+              memory: 32Mi
             limits:
-              memory: 128Mi
+              memory: 64Mi
   syncPolicy:
     automated:
       selfHeal: true
@@ -31,5 +31,4 @@ spec:
         duration: 10s
         factor: 3
     syncOptions:
-      - ServerSideApply=true
       - CreateNamespace=true
