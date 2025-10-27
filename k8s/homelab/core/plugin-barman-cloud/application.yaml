@@ -16,6 +16,8 @@ spec:
       targetRevision: 0.2.0
       helm:
         valuesObject:
+          certificate:
+            renewBefore: 720h
           resources:
             requests:
               cpu: 10m
