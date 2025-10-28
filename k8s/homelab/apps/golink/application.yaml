@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: golink
+  namespace: apps-homelab
+  labels:
+    name: golink
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
+    namespace: golink
+  project: homelab
+  sources:
+    - chart: golink
+      repoURL: ghcr.io/tiesmaster/golink-helm-chart
+      targetRevision: 0.5.0
+      helm:
+        valueFiles:
+           - $values/k8s/homelab/apps/golink/values.yaml
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      path: k8s/homelab/apps/golink/resources
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true
