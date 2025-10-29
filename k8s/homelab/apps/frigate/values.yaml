@@ -109,7 +109,7 @@ config: |
             - person
             - car
           required_zones:
-            - street
+            - driveway
             - front_yard
             - balcony
     back:
