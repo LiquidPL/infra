@@ -8,9 +8,9 @@ metadata:
     immich-volume: upload
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   capacity:
-    storage: 100Gi
+    storage: 1Ti
   nfs:
     server: truenas.hs.liquid.sh
     path: "/mnt/pool/immich/upload"
