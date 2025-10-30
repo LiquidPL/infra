@@ -39,6 +39,3 @@ server:
       - hosts:
           - auth.liquid.sh
         secretName: tls-authentik-ingress
-
-redis:
-    enabled: true
