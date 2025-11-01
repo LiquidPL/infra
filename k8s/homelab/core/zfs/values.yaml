@@ -1,9 +1,9 @@
 # pod-specific values that are shared between the nfs and iscsi drivers
 controller:
   driver:
-    image:
-      registry: ghcr.io/liquidpl/democratic-csi
-      tag: v1.9.3-liquid
+    image: &image
+      registry: ghcr.io/democratic-csi/democratic-csi
+      tag: next@sha256:2f59d362ffa07a40d51a3e266f02a1688ef354a867c9c7309599f38bc28b7cf1
     extraEnv:
       - name: TRUENAS_API_KEY
         valueFrom:
@@ -13,9 +13,7 @@ controller:
 
 node:
   driver:
-    image:
-      registry: ghcr.io/liquidpl/democratic-csi
-      tag: v1.9.3-liquid
+    image: *image
     extraEnv:
       - name: TRUENAS_API_KEY
         valueFrom:
