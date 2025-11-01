@@ -61,6 +61,8 @@ spec:
                     secretKeyRef:
                       name: offsite-backup-credentials
                       key: assetsRemote
+                - name: RCLONE_S3_CHUNK_SIZE
+                  value: 200Mi
               resources:
                 requests:
                   cpu: 1000m
