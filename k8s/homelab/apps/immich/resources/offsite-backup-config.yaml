@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: offsite-backup-config
+data:
+  rclone.conf: |
+    [minio]
+    type = s3
+    provider = Minio
+    env_auth = true
+    region = homelab
+    endpoint = https://minio.hs.liquid.sh
+
+    [aws]
+    type = s3
+    provider = AWS
+    env_auth = true
+    region = eu-north-1
+    location_constraint = EU
+
+    [postgres]
+    type = crypt
+
+    [assets]
+    type = alias
