@@ -11,6 +11,21 @@ foundryvtt:
   hostname: schlymo.vtt.liquid.sh
   version: *version
 
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
 resources:
   requests:
     cpu: 1000m
