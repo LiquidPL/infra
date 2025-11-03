@@ -15,18 +15,16 @@ metadata:
 spec:
   affinity:
     podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - podAffinityTerm:
-            labelSelector:
-              matchLabels:
-                app.kubernetes.io/component: prometheus
-                app.kubernetes.io/instance: k8s
-                app.kubernetes.io/name: prometheus
-                app.kubernetes.io/part-of: kube-prometheus
-            namespaces:
-              - monitoring
-            topologyKey: kubernetes.io/hostname
-          weight: 100
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: prometheus
+              app.kubernetes.io/instance: k8s
+              app.kubernetes.io/name: prometheus
+              app.kubernetes.io/part-of: kube-prometheus
+          namespaces:
+            - monitoring
+          topologyKey: kubernetes.io/hostname
   alerting:
     alertmanagers:
       - apiVersion: v2
@@ -77,6 +75,6 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 50Gi
-        storageClassName: iscsi-csi
+            storage: 20Gi
+        storageClassName: topolvm-provisioner
   version: 3.4.0

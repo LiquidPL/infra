@@ -68,6 +68,7 @@ local kp =
         baseDomain: 'hs.liquid.sh',
       },
       prometheus+: {
+        podAntiAffinity: 'hard',
         resources: {
           requests: { cpu: '100m', memory: '1024Mi' },
           limits: { memory: '2048Mi' },
@@ -172,9 +173,9 @@ local kp =
               apiVersion: 'v1',
               kind: 'PersistentVolumeClaim',
               spec: {
-                storageClassName: 'iscsi-csi',
+                storageClassName: 'topolvm-provisioner',
                 accessModes: ['ReadWriteOnce'],
-                resources: { requests: { storage: '50Gi' } },
+                resources: { requests: { storage: '20Gi' } },
               },
             },
           },
@@ -206,7 +207,7 @@ local kp =
           namespace: $.grafana.deployment.metadata.namespace,
         },
         spec: {
-          storageClassName: 'nfs-csi',
+          storageClassName: 'longhorn',
           accessModes: ['ReadWriteOnce'],
           resources: { requests: { storage: '60Mi' } },
         },
