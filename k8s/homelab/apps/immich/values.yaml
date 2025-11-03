@@ -21,6 +21,10 @@ controllers:
 
 valkey:
   enabled: true
+  controllers:
+    main:
+      annotations:
+        glance/parent: immich
   persistence:
     data:
       enabled: true
@@ -38,6 +42,11 @@ immich:
 server:
   controllers:
     main:
+      annotations:
+        glance/id: immich
+        glance/name: Immich
+        glance/description: Photo Management
+        glance/icon: di:immich
       containers:
         main:
           image:
@@ -98,6 +107,8 @@ server:
 machine-learning:
   controllers:
     main:
+      annotations:
+        glance/parent: immich
       containers:
         main:
           image:

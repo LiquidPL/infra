@@ -144,6 +144,12 @@ config: |
 image:
   repository: ghcr.io/blakeblackshear/frigate
   tag: 0.16.2
+service:
+  annotations:
+    glance/id: frigate
+    glance/name: Frigate
+    glance/description: Monitoring
+    glance/icon: di:frigate
 persistence:
   media:
     enabled: true
