@@ -1,0 +1,72 @@
+variant: fcos
+version: 1.5.0
+passwd:
+  users:
+    - name: liquid
+      groups:
+        - wheel
+        - sudo
+      ssh_authorized_keys:
+        - {{ node_ssh_key }}
+systemd:
+  units:
+    - name: install-tailscale.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install Tailscale
+        Wants=network-online.target
+        After=network-online.target
+        Before=zincati.service
+        ConditionPathExists=!/var/lib/%N.done
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/bin/rpm-ostree install --idempotent --apply-live tailscale
+        ExecStart=/usr/bin/systemctl enable --now tailscaled
+        ExecStart=/usr/bin/tailscale up --authkey {{ tailscale_auth_key }} --ssh
+        ExecStart=/bin/touch /var/lib/%N.done
+
+        [Install]
+        WantedBy=multi-user.target
+
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: {{ item.hostname }}
+    # prevent NetworkManager from interfering with calico interfaces
+    # see: https://docs.tigera.io/calico/latest/operations/troubleshoot/troubleshooting#configure-networkmanager
+    - path: /etc/NetworkManager/conf.d/99-calico.conf
+      contents:
+        inline: |
+          [keyfile]
+          unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:vxlan-v6.calico;interface-name:wireguard.cali;interface-name:wg-v6.cali
+    # needed for calico
+    # see: https://kubespray.io/#/docs/operating_systems/fcos?id=network
+    - path: /etc/sysctl.d/90-reverse-path-filter.conf
+      contents:
+        inline: |
+          net.ipv4.conf.all.rp_filter=1
+    - path: /etc/sysctl.d/99-inotify.conf
+      contents:
+        inline: |
+          fs.inotify.max_user_instances=512
+          fs.inotify.max_user_watches=262144
+    - path: /etc/yum.repos.d/tailscale.repo
+      contents:
+        inline: |
+          [tailscale-stable]
+          name=Tailscale stable
+          baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
+          enabled=1
+          type=rpm
+          repo_gpgcheck=1
+          gpgcheck=0
+          gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+  links:
+    # some k8s apps break when there is no /etc/localtime symlink set
+    - path: /etc/localtime
+      target: ../usr/share/zoneinfo/UTC

@@ -1,0 +1,133 @@
+variant: flatcar
+version: 1.1.0
+kernel_arguments:
+  should_not_exist:
+    - flatcar.autologin
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - {{ node_ssh_key }}
+systemd:
+  units:
+{% if item.role == 'worker' %}
+    - name: setup-topolvm-vg.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Create LVM Volume Group for TopoLVM
+        ConditionFirstBoot=yes
+        DefaultDependencies=no
+        Wants=local-fs-pre.target
+        After=local-fs-pre.target
+        Before=local-fs.target
+
+        [Service]
+        Type=oneshot
+        Restart=on-failure
+        RemainAfterExit=yes
+        ExecStart=/opt/setup-lvm.sh
+
+        [Install]
+        WantedBy=multi-user.target
+{% endif %}
+    - name: tailscale-auth.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Authenticate to Tailscale
+        Wants=network-online.target
+        After=network-online.target
+        Before=zincati.service
+        ConditionPathExists=!/var/lib/%N.done
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/bin/systemctl enable --now tailscaled
+        ExecStart=/usr/bin/tailscale up --authkey {{ tailscale_auth_key }} --ssh
+        ExecStart=/bin/touch /var/lib/%N.done
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: systemd-sysupdate.timer
+      enabled: true
+    - name: systemd-sysupdate.service
+      dropins:
+        - name: tailscale.conf
+          contents: |
+            [Service]
+            ExecStartPre=/usr/bin/sh -c "readlink --canonicalize /etc/extensions/tailscale.raw > /tmp/tailscale"
+            ExecStartPre=/usr/lib/systemd/systemd-sysupdate -C tailscale update
+            ExecStartPost=/usr/bin/sh -c "readlink --canonicalize /etc/extensions/tailscale.raw > /tmp/tailscale-new"
+            ExecStartPost=/usr/bin/sh -c "if ! cmp --silent /tmp/tailscale /tmp/tailscale-new; then touch /run/reboot-required; fi"
+storage:
+{% if item.role == 'worker' %}
+  disks:
+    - device: /dev/sdb
+      wipe_table: true
+      partitions:
+        - number: 1
+          label: longhorn
+          format: xfs
+          size_mib: 0
+  filesystems:
+    - path: /var/longhorn
+      device: /dev/disk/by-partlabel/longhorn
+      label: longhorn
+      format: xfs
+      with_mount_unit: true
+{% endif %}
+  files:
+{% if item.role == 'worker' %}
+    - path: /opt/setup-lvm.sh
+      mode: 0755
+      contents:
+        inline: |
+          #!/bin/bash
+          set -euo pipefail
+
+          echo "Creating Physical Volume"
+          pvcreate /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2
+
+          echo "Creating Volume Group"
+          vgcreate topolvm /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2
+{% endif %}
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: {{ item.hostname }}
+    # prevent NetworkManager from interfering with calico interfaces
+    # see: https://docs.tigera.io/calico/latest/operations/troubleshoot/troubleshooting#configure-networkmanager
+    - path: /etc/NetworkManager/conf.d/99-calico.conf
+      contents:
+        inline: |
+          [keyfile]
+          unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:vxlan-v6.calico;interface-name:wireguard.cali;interface-name:wg-v6.cali
+    # limits need to be raised from the defaults, k8s would run out of inotify resources/file watches otherwise
+    - path: /etc/sysctl.d/99-inotify.conf
+      contents:
+        inline: |
+          fs.inotify.max_user_instances=512
+          fs.inotify.max_user_watches=262144
+    - path: /opt/extensions/tailscale/tailscale-v1.86.2-x86-64.raw
+      mode: 0644
+      contents:
+        source: https://extensions.flatcar.org/extensions/tailscale-v1.86.2-x86-64.raw
+    - path: /etc/sysupdate.tailscale.d/tailscale.conf
+      contents:
+        source: https://extensions.flatcar.org/extensions/tailscale.conf
+    - path: /etc/sysupdate.d/noop.conf
+      contents:
+        source: https://extensions.flatcar.org/extensions/noop.conf
+  links:
+    # explicitly set UTC timezone, as some k8s apps
+    # would break when there is no /etc/localtime symlink set
+    - path: /etc/localtime
+      target: ../usr/share/zoneinfo/UTC
+    - path: /etc/systemd/system/multi-user.target.wants/tailscaled.service
+      target: /usr/local/lib/systemd/system/tailscaled.service
+      overwrite: true
+    - target: /opt/extensions/tailscale/tailscale-v1.86.2-x86-64.raw
+      path: /etc/extensions/tailscale.raw
+      hard: false
