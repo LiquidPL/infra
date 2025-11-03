@@ -1,9 +1,26 @@
+kube_vip_enabled: true
+kube_vip_controlplane_enabled: true
+kube_vip_address: 10.10.0.215
+kube_vip_arp_enabled: true
+kube_vip_lb_enable: true
+
+apiserver_loadbalancer_domain_name: homelab.liquid.sh
+loadbalancer_apiserver:
+  address: '{{ kube_vip_address }}'
+  port: 6443
+
+loadbalancer_apiserver_localhost: false
+
 kube_network_plugin: cni # calico is managed externally
+kube_proxy_remove: true
+kube_proxy_strict_arp: true
 
 kube_service_addresses: 10.43.0.0/16
 kube_pods_subnet: 10.42.0.0/16
 
-kube_proxy_strict_arp: true # necessary for metallb
+# disabled because it's a hassle to make it work with cilium
+# see: https://docs.cilium.io/en/stable/network/kubernetes/local-redirect-policy/#node-local-dns-cache
+enable_nodelocaldns: false
 
 kubelet_enforce_node_allocatable: pods
 

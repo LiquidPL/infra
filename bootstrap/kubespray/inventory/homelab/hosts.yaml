@@ -1,4 +1,4 @@
-pi:
+ungrouped:
   hosts:
     homelab-control-plane-dnd:
       ansible_host: 10.10.0.212

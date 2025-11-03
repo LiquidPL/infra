@@ -1,4 +1,0 @@
-loadbalancer_apiserver_localhost: true
-loadbalancer_apiserver_type: nginx
-loadbalancer_apiserver_port: 6443
-loadbalancer_apiserver_healthcheck_port: 8081
