@@ -1,0 +1,24 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: ""
+    argocd.argoproj.io/sync-wave: "5"
+  name: forward-auth
+spec:
+  extAuth:
+    headersToExtAuth:
+      - cookie
+    http:
+      backendRefs:
+        - kind: Service
+          name: ak-outpost-homelab
+          namespace: authentik
+          port: 9000
+      headersToBackend:
+        - set-cookie
+      path: /outpost.goauthentik.io/auth/envoy
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: alertmanager-main

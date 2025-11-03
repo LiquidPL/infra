@@ -232,6 +232,43 @@ local kp =
 
     alertmanager+: {
       receiversSecret: (import 'lib/alertmanager/receivers-secret.json'),
+      httpRoute: httpRoute(
+        $.alertmanager.service.metadata,
+        'alertmanager.' + $.values.common.baseDomain,
+        {
+          group: '',
+          kind: 'Service',
+          namespace: $.alertmanager.service.metadata.namespace,
+          name: $.alertmanager.service.metadata.name,
+          port: $.alertmanager.service.spec.ports[0].port,
+        }
+      ),
+      securityPolicy: {
+        apiVersion: 'gateway.envoyproxy.io/v1alpha1',
+        kind: 'SecurityPolicy',
+        metadata: { name: 'forward-auth' },
+        spec: {
+          targetRefs: [{
+              group: 'gateway.networking.k8s.io',
+              kind: 'HTTPRoute',
+              name: $.alertmanager.httpRoute.metadata.name
+            }],
+          extAuth: {
+            headersToExtAuth: ['cookie'],
+            http: {
+              backendRefs: [{
+                kind: 'Service',
+                name: 'ak-outpost-homelab',
+                namespace: 'authentik',
+                port: 9000,
+              }],
+              path: '/outpost.goauthentik.io/auth/envoy',
+              headersToBackend: ['set-cookie'],
+            },
+          },
+        },
+      },
+      networkPolicy+: allowIngressNetworkPolicy($.alertmanager.service.spec.ports[0].port),
     },
 
     other: {

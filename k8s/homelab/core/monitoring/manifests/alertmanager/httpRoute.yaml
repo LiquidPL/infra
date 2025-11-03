@@ -1,0 +1,33 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: ""
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/instance: main
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.28.1
+  name: alertmanager-main
+  namespace: monitoring
+spec:
+  hostnames:
+    - alertmanager.hs.liquid.sh
+  parentRefs:
+    - name: gateway-local
+      namespace: envoy-gateway-system
+    - name: gateway-tailscale
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: alertmanager-main
+          namespace: monitoring
+          port: 9093
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
