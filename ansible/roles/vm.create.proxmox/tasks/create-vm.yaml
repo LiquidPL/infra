@@ -1,0 +1,48 @@
+- name: Set facts [worker]
+  ansible.builtin.set_fact:
+    vm_create_proxmox_tags: ['k8s', 'worker']
+    vm_create_proxmox_scsi:
+      scsi1: 'local-zfs:50,format=raw'
+      scsi2: 'local-zfs:50,format=raw'
+  when: "vm.role == 'worker'"
+
+- name: Set facts [control-plane]
+  ansible.builtin.set_fact:
+    vm_create_proxmox_tags: ['k8s', 'etcd', 'control-plane']
+    vm_create_proxmox_scsi: {}
+  when: "vm.role == 'control-plane'"
+
+- name: Create VM in Proxmox
+  community.general.proxmox_kvm:
+    api_host: '{{ ansible_host }}'
+    api_user: '{{ proxmox_username }}'
+    api_password: '{{ proxmox_password }}'
+    node: '{{ inventory_hostname }}'
+    name: '{{ vm.hostname }}'
+    tags: '{{ vm_create_proxmox_tags }}'
+    machine: q35
+    bios: ovmf
+    ostype: l26
+    kvm: true
+    cpu: host
+    sockets: 1
+    cores: '{{ vm.cores | default(2) }}'
+    memory: '{{ vm.memory | default(4096) }}'
+    scsi: '{{ vm_create_proxmox_scsi }}'
+    ide:
+      ide2: 'local-zfs:cloudinit'
+    cicustom: 'vendor=local:snippets/{{ vm.hostname }}.ign'
+    net:
+      net0: 'virtio={{ vm.mac }},bridge=vmbr0,firewall=1'
+    serial:
+      serial0: socket
+    scsihw: virtio-scsi-single
+    agent: true
+    efidisk0:
+      efitype: 4m
+      format: raw
+      pre_enrolled_keys: true
+      storage: local-zfs
+    onboot: true
+    state: present
+  delegate_to: localhost

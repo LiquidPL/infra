@@ -3,37 +3,10 @@
     name: vm.download_image
 
 - name: Create VM
-  community.general.proxmox_kvm:
-    api_host: '{{ ansible_host }}'
-    api_user: '{{ proxmox_username }}'
-    api_password: '{{ proxmox_password }}'
-    node: '{{ inventory_hostname }}'
-    name: '{{ item.hostname }}'
-    tags: '{{ item.tags }}'
-    machine: q35
-    bios: ovmf
-    ostype: l26
-    kvm: true
-    args: '-fw_cfg name=opt/com.coreos/config,file={{ butane_path }}/{{ item.hostname }}.ign'
-    cpu: host
-    sockets: 1
-    cores: '{{ item.cores | default(2) }}'
-    memory: '{{ item.memory | default(4096) }}'
-    net:
-      net0: 'virtio={{ item.mac }},bridge=vmbr0,firewall=1'
-    serial:
-      serial0: socket
-    scsihw: virtio-scsi-single
-    agent: true
-    efidisk0:
-      efitype: 4m
-      format: raw
-      pre_enrolled_keys: true
-      storage: local-zfs
-    onboot: true
-    state: present
+  ansible.builtin.include_tasks: create-vm.yaml
   loop: '{{ nodes }}'
-  delegate_to: localhost
+  loop_control:
+    loop_var: vm
 
 - name: Import downloaded image into VM
   community.general.proxmox_disk:
@@ -52,6 +25,8 @@
     replicate: true
   loop: '{{ nodes }}'
   delegate_to: localhost
+  retries: 3
+  delay: 5
 
 - name: Resize image
   community.general.proxmox_disk:

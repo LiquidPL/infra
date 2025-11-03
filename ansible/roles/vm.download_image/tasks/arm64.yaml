@@ -1,0 +1,7 @@
+- name: Download image (aarch64)
+  ansible.builtin.get_url:
+    url: '{{ image_downloads.aarch64.url }}'
+    dest: '{{ image_tmp_path }}.xz'
+    checksum: '{{ image_downloads.aarch64.checksum }}'
+    mode: '0664'
+  register: archive

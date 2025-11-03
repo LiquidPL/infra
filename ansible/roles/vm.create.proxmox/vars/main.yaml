@@ -1,2 +1,2 @@
-proxmox_username: "{{ lookup('community.general.onepassword', 'Proxmox', field='username') }}@pam"
-proxmox_password: "{{ lookup('community.general.onepassword', 'Proxmox', field='password') }}"
+proxmox_username: "{{ lookup('community.general.onepassword', 'vkpctqrzenumupwfmpdmmfcow4', field='username') }}@pam"
+proxmox_password: "{{ lookup('community.general.onepassword', 'vkpctqrzenumupwfmpdmmfcow4', field='password') }}"

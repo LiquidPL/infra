@@ -1,9 +1,9 @@
 node_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGyDxmy1/0RfNrOVDeYjL6VypWhDU3cfjIbORDG3MoTW liquid@liquid-desktop
 
-fcos_downloads:
+image_downloads:
   amd64:
-    url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/40.20240906.3.0/x86_64/fedora-coreos-40.20240906.3.0-qemu.x86_64.qcow2.xz
-    checksum: sha256:94d371b8b8ff878b1812690a7b0e0eede964fa2a05e178f5ca2f3537543f37cf
+    url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/42.20250721.3.0/x86_64/fedora-coreos-42.20250721.3.0-proxmoxve.x86_64.qcow2.xz
+    checksum: sha256:80bc3a4b6569ce7c6f9f9f1f5f23fc614813947cc274a3946302541271c88413
   aarch64:
     url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/40.20240906.3.0/aarch64/fedora-coreos-40.20240906.3.0-qemu.aarch64.qcow2.xz
     checksum: sha256:0beea26fd9baef60971fb83eb9ddf8b4c1991448540a5d6bf2fd91a64758d9fa

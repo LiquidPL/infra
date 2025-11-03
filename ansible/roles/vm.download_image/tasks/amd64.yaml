@@ -1,0 +1,7 @@
+- name: Download image (amd64)
+  ansible.builtin.get_url:
+    url: '{{ image_downloads.amd64.url }}'
+    dest: '{{ image_tmp_path }}.xz'
+    checksum: '{{ image_downloads.amd64.checksum }}'
+    mode: '0664'
+  register: archive

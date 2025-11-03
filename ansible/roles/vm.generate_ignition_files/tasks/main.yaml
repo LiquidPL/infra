@@ -17,7 +17,7 @@
 
 - name: Get Butane/Ignition file path
   ansible.builtin.set_fact:
-    butane_path: '{{ (hypervisor == "libvirt") | ansible.builtin.ternary("/var/lib/libvirt/butane", "/var/lib/vz/snippets/butane") }}'
+    butane_path: '{{ (hypervisor == "libvirt") | ansible.builtin.ternary("/var/lib/libvirt/butane", "/var/lib/vz/snippets") }}'
 
 - name: Create Butane config directory
   ansible.builtin.file:
@@ -27,11 +27,12 @@
     group: kvm
     mode: '0770'
   become: true
+  when: hypervisor == 'libvirt'
 
 - name: Generate Butane config
   ansible.builtin.template:
     src: templates/fcos.bu.j2
-    dest: '{{ butane_path }}/{{ item.hostname }}.bu'
+    dest: '/tmp/{{ item.hostname }}.bu'
     mode: '0660'
     owner: root
     group: kvm
@@ -39,7 +40,7 @@
   become: true
 
 - name: Generate Ignition config
-  ansible.builtin.shell: /tmp/butane < {{ item.hostname }}.bu > {{ item.hostname }}.ign
+  ansible.builtin.shell: /tmp/butane < /tmp/{{ item.hostname }}.bu > {{ item.hostname }}.ign
   changed_when: true
   args:
     chdir: '{{ butane_path }}'

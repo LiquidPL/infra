@@ -10,6 +10,27 @@ passwd:
         - {{ node_ssh_key }}
 systemd:
   units:
+{% if item.role == 'worker' %}
+    - name: setup-topolvm-vg.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Create LVM Volume Group for TopoLVM
+        ConditionFirstBoot=yes
+        DefaultDependencies=no
+        Wants=local-fs-pre.target
+        After=local-fs-pre.target
+        Before=local-fs.target
+
+        [Service]
+        Type=oneshot
+        Restart=on-failure
+        RemainAfterExit=yes
+        ExecStart=/usr/local/bin/setup-lvm.sh
+
+        [Install]
+        WantedBy=multi-user.target
+{% endif %}
     - name: ucore-unsigned-autorebase.service
       enabled: true
       contents: |
@@ -69,14 +90,28 @@ systemd:
         WantedBy=multi-user.target
 
 storage:
+{% if item.role == 'worker' %}
+  disks:
+    - device: /dev/sdb
+      wipe_table: true
+      partitions:
+        - number: 1
+          label: longhorn
+          format: xfs
+          size_mib: 0
+  filesystems:
+    - path: /var/longhorn
+      device: /dev/disk/by-partlabel/longhorn
+      label: longhorn
+      format: xfs
+      with_mount_unit: true
+{% endif %}
   directories:
     - path: /etc/ucore-autorebase
       mode: 0754
   files:
-    - path: /etc/hostname
-      mode: 0644
-      contents:
-        inline: {{ item.hostname }}
+    # prevent NetworkManager from interfering with calico interfaces
+    # see: https://docs.tigera.io/calico/latest/operations/troubleshoot/troubleshooting#configure-networkmanager
     - path: /etc/NetworkManager/conf.d/99-calico.conf
       contents:
         inline: |
@@ -88,12 +123,28 @@ storage:
       contents:
         inline: |
           net.ipv4.conf.all.rp_filter=1
+    # limits need to be raised from the defaults, k8s would run out of inotify resources/file watches otherwise
     - path: /etc/sysctl.d/99-inotify.conf
       contents:
         inline: |
           fs.inotify.max_user_instances=512
           fs.inotify.max_user_watches=262144
+{% if item.role == 'worker' %}
+    - path: /usr/local/bin/setup-lvm.sh
+      mode: 0755
+      contents:
+        inline: |
+          #!/bin/bash
+          set -euo pipefail
+
+          echo "Creating Physical Volume"
+          pvcreate /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2
+
+          echo "Creating Volume Group"
+          vgcreate topolvm /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi2
+{% endif %}
   links:
-    # some k8s apps break when there is no /etc/localtime symlink set
+    # explicitly set UTC timezone, as some k8s apps
+    # would break when there is no /etc/localtime symlink set
     - path: /etc/localtime
       target: ../usr/share/zoneinfo/UTC
