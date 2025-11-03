@@ -55,8 +55,7 @@
             #   name         Name of the workload
             #   annotations  Map of annotations
             show-if: |
-              namespace != "kube-system" and
-              any(keys(annotations), # startsWith "glance/")
+              "glance/name" in annotations
 
             # You can also supply multiple expressions, which will evaluate to a logical conjunction (AND).
             # show-if:
