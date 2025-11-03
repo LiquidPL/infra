@@ -16,6 +16,10 @@ spec:
       targetRevision: 0.26.1
       helm:
         valuesObject:
+          config:
+            data:
+              ENABLE_INSTANCE_MANAGER_INPLACE_UPDATES: 'true'
+              INHERITED_ANNOTATIONS: glance/parent
           resources:
             requests:
               cpu: 10m
