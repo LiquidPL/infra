@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - secret.yaml
+  - service.yaml
+  - httproute.yaml
+  - networkpolicy.yaml
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/name: glance
+  - includeTemplates: true
+    pairs:
+      app.kubernetes.io/version: v0.8.4
+images:
+  - name: docker.io/glanceapp/glance
+    newTag: v0.8.4@sha256:6df86a7e8868d1eda21f35205134b1962c422957e42a0c44d4717c8e8f741b1a
+configMapGenerator:
+  - name: glance
+    files:
+      - ./config/glance.yml
+      - ./config/home.yml

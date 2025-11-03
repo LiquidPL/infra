@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: glance
+  namespace: apps-homelab
+  labels:
+    name: glance
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
+    namespace: glance
+  project: homelab
+  source:
+    repoURL: https://github.com/LiquidPL/infra.git
+    targetRevision: master
+    path: k8s/homelab/glance
+    ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3
+    syncOptions:
+      - CreateNamespace=true

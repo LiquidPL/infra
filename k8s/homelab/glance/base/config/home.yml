@@ -1,0 +1,123 @@
+- name: Home
+  # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+  # hide-desktop-navigation: true
+  columns:
+    - size: small
+      widgets:
+        - type: calendar
+          first-day-of-week: monday
+
+        - type: bookmarks
+          groups:
+            - title: DevOps
+              links:
+                - title: Infra
+                  url: https://github.com/LiquidPL/infra
+                - title: ArgoCD
+                  url: https://argocd.luna.liquid.sh
+
+        - type: rss
+          limit: 10
+          collapse-after: 3
+          cache: 12h
+          feeds:
+            - url: https://selfh.st/rss/
+              title: selfh.st
+            - url: https://ciechanow.ski/atom.xml
+            - url: https://www.joshwcomeau.com/rss.xml
+              title: Josh Comeau
+            - url: https://samwho.dev/rss.xml
+            - url: https://ishadeed.com/feed.xml
+              title: Ahmad Shadeed
+
+        - type: twitch-channels
+          channels:
+            $include: secret/twitch-channels.yaml
+
+    - size: full
+      widgets:
+        - type: extension
+          url: http://glance-k8s:8080/extension/apps
+          allow-potentially-dangerous-html: true
+          cache: 1s
+
+          parameters:
+            # Parameters are sent to the extension as query parameters.
+            # Since there is no browser or proxy between glance and glance-k8s there _should_ not be a size limit for the parameters,
+            # apart from default buffer sizes.
+            # But keep that in mind, when supplying large strings.
+
+            # Show only workloads, that match an expression.
+            # See: https://github.com/expr-lang/expr
+            #
+            # Environment:
+            #   namespace    Namespace of the workload
+            #   name         Name of the workload
+            #   annotations  Map of annotations
+            show-if: |
+              namespace != "kube-system" and
+              any(keys(annotations), # startsWith "glance/")
+
+            # You can also supply multiple expressions, which will evaluate to a logical conjunction (AND).
+            # show-if:
+            #   - |
+            #     namespace != "kube-system"
+            #   - |
+            #     ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: selfhosted
+              show-thumbnails: true
+            - type: reddit
+              subreddit: homeassistant
+              show-thumbnails: true
+            - type: reddit
+              subreddit: linux
+              show-thumbnails: true
+            - type: hacker-news
+            - type: lobsters
+
+        - type: videos
+          channels:
+            - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
+            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+            - UCjFaPUcJU1vwk193mnW_w1w # Modern Vintage Gaming
+            - UChIs72whgZI9w6d6FhwGGHA # Gamers Nexus
+            - UCjgirfp1BeeM98AxxyKXolA # arhn.eu
+            - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
+
+    - size: small
+      widgets:
+        - type: weather
+          location: ${WEATHER_LOCATION}
+          units: metric # alternatively "imperial"
+          hour-format: 24h # alternatively "24h"
+          # Optionally hide the location from being displayed in the widget
+          # hide-location: true
+
+        - type: markets
+          markets:
+            - symbol: SPY
+              name: S&P 500
+            - symbol: BTC-USD
+              name: Bitcoin
+            - symbol: NVDA
+              name: NVIDIA
+            - symbol: AAPL
+              name: Apple
+            - symbol: MSFT
+              name: Microsoft
+
+        - type: releases
+          cache: 1d
+          show-source-icon: true
+          # Without authentication the Github API allows for up to 60 requests per hour. You can create a
+          # read-only token from your Github account settings and use it here to increase the limit.
+          token: ${GITHUB_RELEASES_TOKEN}
+          repositories:
+            - immich-app/immich
+            - blakeblackshear/frigate
+            - goauthentik/authentik
+            - element-hq/synapse

@@ -1,0 +1,61 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: glance-k8s
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: glance
+      app.kubernetes.io/name: glance-k8s
+      app.kubernetes.io/part-of: glance
+  ingress:
+    - fromEndpoints:
+        - matchExpressions:
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+                - glance
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - glance
+            - key: app.kubernetes.io/part-of
+              operator: In
+              values:
+                - glance
+      toPorts:
+        - ports:
+            - port: '8080'
+              protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toEntities:
+        - kube-apiserver # need to use the cilium netpol here for the apiserver selector
+    - toEndpoints:
+        - matchExpressions:
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+                - glance
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - glance
+            - key: app.kubernetes.io/part-of
+              operator: In
+              values:
+                - glance
+      toPorts:
+        - ports:
+            - port: '8080'
+              protocol: TCP

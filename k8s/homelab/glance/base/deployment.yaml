@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glance
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: glance
+          image: docker.io/glanceapp/glance
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: glance
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/healthz
+              port: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+            - name: secret-config
+              mountPath: /app/config/secret
+              readOnly: true
+            - name: assets
+              mountPath: /app/assets
+      securityContext:
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: secret-config
+          secret:
+            secretName: glance
+            defaultMode: 0400
+        - name: config
+          configMap:
+            name: glance
+        - name: assets
+          emptyDir:
+            sizeLimit: 50Mi

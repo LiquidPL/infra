@@ -1,0 +1,81 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: glance
+  namespace: glance
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: glance
+      app.kubernetes.io/name: glance
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values: ['envoy-gateway-system']
+          podSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values: ['proxy']
+              - key: app.kubernetes.io/managed-by
+                operator: In
+                values: ['envoy-gateway']
+              - key: app.kubernetes.io/name
+                operator: In
+                values: ['envoy']
+      ports:
+        - port: 8080
+          protocol: TCP
+    - from:
+        - podSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/instance
+                operator: In
+                values: ['glance']
+              - key: app.kubernetes.io/name
+                operator: In
+                values: ['glance-k8s']
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values: ['glance']
+      ports:
+        - port: 8080
+          protocol: TCP
+  egress:
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchExpressions:
+              - key: k8s-app
+                operator: In
+                values: ['kube-dns']
+      ports:
+        - port: 53
+          protocol: UDP
+    - to:
+        - podSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/instance
+                operator: In
+                values: ['glance']
+              - key: app.kubernetes.io/name
+                operator: In
+                values: ['glance-k8s']
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values: ['glance']
+      ports:
+        - port: 8080
+          protocol: TCP
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - port: 443
+        - port: 80
