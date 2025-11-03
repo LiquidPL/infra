@@ -2,6 +2,12 @@ controllers:
   main:
     type: deployment
 
+    annotations:
+      glance/id: linkwarden
+      glance/name: Linkwarden
+      glance/description: Link Management
+      glance/icon: di:linkwarden
+
     pod:
       securityContext:
         runAsUser: 1000

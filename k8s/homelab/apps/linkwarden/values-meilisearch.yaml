@@ -9,6 +9,10 @@ environment:
 auth:
   existingMasterKeySecret: meilisearch-master-key
 
+service:
+  annotations:
+    glance/parent: linkwarden
+
 podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000

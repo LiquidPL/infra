@@ -5,6 +5,7 @@ metadata:
   namespace: linkwarden
   annotations:
     argocd.argoproj.io/sync-wave: '-50'
+    glance/parent: linkwarden
 spec:
   instances: 2
   storage:
