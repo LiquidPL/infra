@@ -25,7 +25,6 @@ controllers:
           FIREWALL_OUTBOUND_SUBNETS: '10.42.0.0/16,10.43.0.0/16'
           DOT: 'off'
         securityContext:
-          privileged: true # TODO: remove once upgraded to runc >=v1.2.4
           capabilities:
             add:
               - NET_ADMIN
