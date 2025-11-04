@@ -1,5 +1,6 @@
 server:
   assets-path: /app/assets
+  proxied: true
 
 theme:
   # Note: assets are cached by the browser, changes to the CSS file
