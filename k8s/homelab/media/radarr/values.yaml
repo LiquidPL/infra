@@ -2,6 +2,13 @@ controllers:
   main:
     type: deployment
 
+    annotations:
+      glance/id: radarr
+      glance/name: Radarr
+      glance/description: Movie manager
+      glance/icon: di:radarr
+      glance/category: media
+
     pod:
       securityContext:
         runAsUser: 1000

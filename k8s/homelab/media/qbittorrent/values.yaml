@@ -3,6 +3,13 @@ controllers:
     type: deployment
     strategy: Recreate
 
+    annotations:
+      glance/id: qbittorrent
+      glance/name: qBittorrent
+      glance/description: Torrent client
+      glance/icon: di:qbittorrent
+      glance/category: media
+
     pod:
       securityContext:
         fsGroup: 1000

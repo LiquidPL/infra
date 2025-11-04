@@ -2,6 +2,13 @@ controllers:
   main:
     type: deployment
 
+    annotations:
+      glance/id: prowlarr
+      glance/name: Prowlarr
+      glance/description: Indexer manager
+      glance/icon: di:prowlarr
+      glance/category: media
+
     pod:
       securityContext:
         runAsUser: 1000

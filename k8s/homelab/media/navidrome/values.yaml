@@ -2,6 +2,14 @@ image:
   repository: deluan/navidrome
   tag: 0.58.0
 
+controller:
+  annotations:
+    glance/id: navidrome
+    glance/name: Navidrome
+    glance/description: Music streaming
+    glance/icon: di:navidrome
+    glance/category: media
+
 env:
   ND_BASEURL: https://navidrome.hs.liquid.sh
   ND_PROMETHEUS_ENABLED: 'true'

@@ -2,6 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jellyfin
+  annotations:
+    glance/id: jellyfin
+    glance/name: Jellyfin
+    glance/description: Video streaming
+    glance/icon: di:jellyfin
+    glance/category: media
+
 spec:
   replicas: 1
   selector:

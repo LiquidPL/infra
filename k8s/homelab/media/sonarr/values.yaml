@@ -2,6 +2,13 @@ controllers:
   main:
     type: deployment
 
+    annotations:
+      glance/id: sonarr
+      glance/name: Sonarr
+      glance/description: TV series manager
+      glance/icon: di:sonarr
+      glance/category: media
+
     pod:
       securityContext:
         runAsUser: 1000
