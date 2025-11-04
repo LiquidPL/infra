@@ -5,7 +5,7 @@ controllers:
     annotations:
       glance/id: linkwarden
       glance/name: Linkwarden
-      glance/description: Link Management
+      glance/description: Link management
       glance/icon: di:linkwarden.png
       glance/category: general
 
