@@ -7,6 +7,7 @@ controllers:
       glance/name: Linkwarden
       glance/description: Link Management
       glance/icon: di:linkwarden.png
+      glance/category: general
 
     pod:
       securityContext:

@@ -150,6 +150,7 @@ service:
     glance/name: Frigate
     glance/description: Monitoring
     glance/icon: di:frigate
+    glance/category: general
 persistence:
   media:
     enabled: true

@@ -45,8 +45,9 @@ server:
       annotations:
         glance/id: immich
         glance/name: Immich
-        glance/description: Photo Management
+        glance/description: Photo management
         glance/icon: di:immich
+        glance/category: general
       containers:
         main:
           image:
