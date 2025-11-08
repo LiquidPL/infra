@@ -16,7 +16,7 @@ data:
     provider = AWS
     env_auth = true
     region = eu-north-1
-    location_constraint = EU
+    location_constraint = eu-north-1
 
     [postgres]
     type = crypt
