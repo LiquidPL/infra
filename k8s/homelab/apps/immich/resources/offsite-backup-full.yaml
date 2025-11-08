@@ -65,6 +65,8 @@ spec:
                   value: 200Mi
                 - name: RCLONE_S3_UPLOAD_CUTOFF
                   value: '0'
+                - name: RCLONE_S3_NO_CHECK_BUCKET
+                  value: 'true'
                 - name: RCLONE_TRANSFERS
                   value: '50'
                 - name: RCLONE_CHECKERS
