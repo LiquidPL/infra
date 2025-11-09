@@ -4,7 +4,7 @@ operatorConfig:
   resources:
     requests:
       cpu: 5m
-      memory: 64Mi
+      memory: 128Mi
 
 apiServerProxyConfig:
   mode: noauth

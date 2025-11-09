@@ -27,6 +27,12 @@ global:
         secretName: secret-key
 
 server:
+  resources:
+    requests:
+      cpu: 200m
+      memory: 1Gi
+    limits:
+      memory: 1Gi
   ingress:
     # Specify kubernetes ingress controller class name
     ingressClassName: traefik
@@ -39,3 +45,11 @@ server:
       - hosts:
           - auth.liquid.sh
         secretName: tls-authentik-ingress
+
+worker:
+  resources:
+    requests:
+      cpu: 400m
+      memory: 1Gi
+    limits:
+      memory: 1Gi
