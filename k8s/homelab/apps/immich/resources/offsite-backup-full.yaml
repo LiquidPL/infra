@@ -18,8 +18,8 @@ spec:
                 - -c
                 - >-
                     rclone sync --fast-list --progress minio:postgres-immich postgres: &&
-                    rclone sync --checksum --fast-list --s3-storage-class DEEP_ARCHIVE --transfers 100 --checkers 100 --progress /data/upload/ assets:upload/ &&
-                    rclone sync --checksum --fast-list --s3-storage-class DEEP_ARCHIVE --transfers 100 --checkers 100 --progress /data/profile/ assets:profile/
+                    rclone sync --checksum --fast-list --s3-storage-class DEEP_ARCHIVE --progress /data/upload/ assets:upload/ &&
+                    rclone sync --checksum --fast-list --s3-storage-class DEEP_ARCHIVE --progress /data/profile/ assets:profile/
               env:
                 - name: RCLONE_CONFIG_MINIO_ACCESS_KEY_ID
                   valueFrom:
@@ -68,15 +68,15 @@ spec:
                 - name: RCLONE_S3_NO_CHECK_BUCKET
                   value: 'true'
                 - name: RCLONE_TRANSFERS
-                  value: '50'
+                  value: '10'
                 - name: RCLONE_CHECKERS
-                  value: '50'
+                  value: '10'
               resources:
                 requests:
                   cpu: 1000m
-                  memory: 1Gi
+                  memory: 4Gi
                 limits:
-                  memory: 2Gi
+                  memory: 4Gi
               securityContext:
                 allowPrivilegeEscalation: false
                 capabilities:
