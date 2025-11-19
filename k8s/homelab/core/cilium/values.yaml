@@ -28,12 +28,8 @@ hubble:
   tls:
     auto:
       enabled: true
-      method: certmanager
+      method: cronJob
       certValidityDuration: 1095
-      certManagerIssuerRef:
-        name: hubble-issuer
-        kind: Issuer
-        group: cert-manager.io
   relay:
     enabled: true
   ui:
