@@ -67,6 +67,12 @@ local kp =
         namespace: 'monitoring',
         baseDomain: 'hs.liquid.sh',
       },
+      prometheusOperator+: {
+        configReloaderResources: {
+          requests: { cpu: '10m', memory: '50Mi' },
+          limits: { cpu: '0', memory: '50Mi' },
+        },
+      },
       prometheus+: {
         podAntiAffinity: 'hard',
         resources: {
