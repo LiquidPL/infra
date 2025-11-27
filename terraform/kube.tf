@@ -648,13 +648,12 @@ module "kube-hetzner" {
   # draining the next node because the lock was released. You may end up with all nodes drained and your cluster completely down.
   # The default options are: `--reboot-command=/usr/bin/systemctl reboot --pre-reboot-node-labels=kured=rebooting --post-reboot-node-labels=kured=done --period=5m`
   # Defaults can be overridden by using the same key.
-  # kured_options = {
-  #   "reboot-days": "su",
-  #   "start-time": "3am",
-  #   "end-time": "8am",
-  #   "time-zone": "Local",
-  #   "lock-ttl" : "30m",
-  # }
+  kured_options = {
+    "start-time": "3am",
+    "end-time": "8am",
+    "time-zone": "UTC",
+    "lock-ttl" : "30m",
+  }
 
   # Allows you to specify the k3s version. If defined, supersedes initial_k3s_channel.
   # See https://github.com/k3s-io/k3s/releases for the available versions.
