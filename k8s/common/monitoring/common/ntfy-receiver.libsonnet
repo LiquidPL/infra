@@ -92,8 +92,6 @@ function(params) {
     },
   },
 
-  secret: (import 'ntfy-receiver/secret.json'),
-
   configMap: {
     apiVersion: 'v1',
     kind: 'ConfigMap',

@@ -46,22 +46,17 @@ local allowIngressNetworkPolicy(port) = {
   },
 };
 
-local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
-local certManagerMixin = addMixin({
-  name: 'cert-manager',
-  mixin: (import 'cert-manager-mixin/mixin.libsonnet'),
-});
-
-local ntfyReceiver = (import 'lib/ntfy-receiver.libsonnet');
+local ntfyReceiver = (import 'common/ntfy-receiver.libsonnet');
 local kubeletMetricsForwarder = (import 'lib/kubelet-metrics-forwarder.libsonnet');
 
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
-  (import 'lib/tolerations.libsonnet') +
   (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
+  (import 'common/defaults.libsonnet') +
+  (import 'common/tolerations.libsonnet') +
   (import 'lib/grafana-oauth.libsonnet') +
   {
-    values+:: {
+    values+: {
       common+: {
         platform: 'kubespray',
         namespace: 'monitoring',
@@ -91,82 +86,13 @@ local kp =
         ],
       },
       grafana+: {
-        config+: {
-          sections+: {
-            server+: {
-              root_url: 'https://grafana.' + $.values.common.baseDomain,
-            },
-            date_formats+: {
-              default_timezone: 'Europe/Warsaw',
-            },
-          },
+        dashboards+: {
+          'navidrome.json': (import 'resources/dashboards/navidrome.json'),
         },
-        dashboards+: certManagerMixin.grafanaDashboards + {
-          'navidrome.json': (import 'dashboards/navidrome.json'),
-        },
-      },
-      ntfyReceiver+: {
-        namespace: $.values.common.namespace,
-        version: '0.4.0',
-        image: 'xenrox/ntfy-alertmanager:' + self.version,
       },
       kubeletMetricsForwarder+: {
         namespace: 'kube-system',
         image: 'alpine/socat:1.8.0.3@sha256:67f2f93884c21216776aeeb1bc5326d8302f80e585e13ee1e0a6d8bb08e45436',
-      },
-      alertmanager+: {
-        secrets+: [$.alertmanager.receiversSecret.metadata.name],
-        config+: {
-          route+: {
-            group_by: ['namespace', 'job'],
-            receiver: 'ntfy',
-            routes: [
-              {
-                matchers: ['alertname = Watchdog'],
-                receiver: 'healthchecks.io',
-                repeat_interval: '2m',
-                group_interval: '2m',
-              },
-              {
-                matchers: ['alertname = InfoInhibitor'],
-                receiver: 'null',
-              },
-            ],
-          },
-          receivers: [
-            {
-              name: 'ntfy',
-              webhook_configs: [{
-                url: 'http://' + $.ntfyReceiver.service.metadata.name + '.' + $.ntfyReceiver.service.metadata.namespace + '.svc:' + $.ntfyReceiver.service.spec.ports[0].port,
-              }],
-            },
-            {
-              name: 'healthchecks.io',
-              webhook_configs: [{
-                send_resolved: false,
-                url_file: '/etc/alertmanager/secrets/' + $.alertmanager.receiversSecret.metadata.name + '/healthchecks-io-url',
-              }],
-            },
-            {
-              name: 'null',
-            },
-          ],
-        },
-      },
-    },
-
-    kubePrometheus+: {
-      namespace+: {
-        metadata+: {
-          labels+: {
-            'pod-security.kubernetes.io/enforce': 'privileged',
-            'pod-security.kubernetes.io/enforce-version': 'latest',
-            'pod-security.kubernetes.io/audit': 'privileged',
-            'pod-security.kubernetes.io/audit-version': 'latest',
-            'pod-security.kubernetes.io/warn': 'privileged',
-            'pod-security.kubernetes.io/warn-version': 'latest',
-          },
-        },
       },
     },
 
@@ -233,11 +159,13 @@ local kp =
       networkPolicy+: allowIngressNetworkPolicy($.grafana.service.spec.ports[0].port),
     },
 
-    ntfyReceiver: ntfyReceiver($.values.ntfyReceiver),
+    ntfyReceiver: ntfyReceiver($.values.ntfyReceiver) + {
+      secret: (import 'resources/ntfy-receiver/secret.json'),
+    },
     kubeletMetricsForwarder: kubeletMetricsForwarder($.values.kubeletMetricsForwarder),
 
     alertmanager+: {
-      receiversSecret: (import 'lib/alertmanager/receivers-secret.json'),
+      receiversSecret: (import 'resources/alertmanager/receivers-secret.json'),
       httpRoute: httpRoute(
         $.alertmanager.service.metadata,
         'alertmanager.' + $.values.common.baseDomain,
@@ -275,10 +203,6 @@ local kp =
         },
       },
       networkPolicy+: allowIngressNetworkPolicy($.alertmanager.service.spec.ports[0].port),
-    },
-
-    other: {
-      certManagerPrometheusRules: certManagerMixin.prometheusRules,
     },
   };
 
