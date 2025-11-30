@@ -84,6 +84,7 @@ local kp =
           'immich',
           'authentik',
         ],
+        externalLabels: { cluster: 'homelab' },
       },
       grafana+: {
         dashboards+: {

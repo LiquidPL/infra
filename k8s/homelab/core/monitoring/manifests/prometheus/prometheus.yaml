@@ -32,7 +32,8 @@ spec:
         namespace: monitoring
         port: web
   enableFeatures: []
-  externalLabels: {}
+  externalLabels:
+    cluster: homelab
   image: quay.io/prometheus/prometheus:v3.4.0
   nodeSelector:
     kubernetes.io/os: linux
