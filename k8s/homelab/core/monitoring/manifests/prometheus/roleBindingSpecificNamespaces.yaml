@@ -8,7 +8,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: default
     roleRef:
@@ -27,7 +27,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: kube-system
     roleRef:
@@ -46,7 +46,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: cert-manager
     roleRef:
@@ -65,7 +65,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: monitoring
     roleRef:
@@ -84,7 +84,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: navidrome
     roleRef:
@@ -103,7 +103,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: frigate
     roleRef:
@@ -122,7 +122,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: immich
     roleRef:
@@ -141,7 +141,7 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: authentik
     roleRef:

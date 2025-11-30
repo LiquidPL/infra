@@ -8,15 +8,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: default
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
@@ -46,15 +53,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: kube-system
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
@@ -84,15 +98,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: cert-manager
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
@@ -122,15 +143,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: monitoring
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
@@ -160,15 +188,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: navidrome
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
@@ -198,15 +233,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: frigate
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
@@ -236,15 +278,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: immich
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
@@ -274,15 +323,22 @@ items:
         app.kubernetes.io/instance: k8s
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 3.4.0
+        app.kubernetes.io/version: 3.7.3
       name: prometheus-k8s
       namespace: authentik
     rules:
       - apiGroups:
+          - discovery.k8s.io
+        resources:
+          - endpointslices
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
           - ""
         resources:
           - services
-          - endpoints
           - pods
         verbs:
           - get
