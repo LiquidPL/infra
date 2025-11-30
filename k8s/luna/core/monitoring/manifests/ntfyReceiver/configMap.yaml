@@ -1,0 +1,49 @@
+apiVersion: v1
+data:
+  config: |
+    http-address :8080
+    log-level info
+    log-format text
+    alert-mode multi
+
+    include /etc/ntfy-alertmanager/secrets/auth
+
+    labels {
+        order "severity"
+
+        severity "critical" {
+            priority 4
+            tags "rotating_light"
+        }
+
+        severity "warning" {
+            priority 3
+            tags "warning"
+        }
+
+        severity "info" {
+            priority 1
+        }
+    }
+
+    resolved {
+        tags "resolved,partying_face"
+        priority 1
+    }
+
+    ntfy {
+        server https://ntfy.liquid.sh
+        topic infra-alerts
+    }
+kind: ConfigMap
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: ""
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/component: alertmanager-webhook-receiver
+    app.kubernetes.io/name: ntfy-receiver
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.4.0
+  name: ntfy-receiver-config
+  namespace: monitoring
