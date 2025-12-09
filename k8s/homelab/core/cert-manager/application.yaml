@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: cert-manager
       repoURL: quay.io/jetstack/charts
-      targetRevision: v1.19.1
+      targetRevision: v1.19.2
       helm:
         valueFiles:
           - $values/k8s/homelab/core/cert-manager/values.yaml
