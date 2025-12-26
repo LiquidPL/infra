@@ -121,6 +121,11 @@ persistence:
     type: emptyDir
     globalMounts:
       - path: /home/node
+  node-cache2:
+    enabled: true
+    type: emptyDir
+    globalMounts:
+      - path: /home/node/.cache
   playwright-cache:
     enabled: true
     storageClass: nfs-csi
