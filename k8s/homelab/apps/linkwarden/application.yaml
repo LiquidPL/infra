@@ -21,7 +21,7 @@ spec:
           - $values/k8s/homelab/apps/linkwarden/values.yaml
     - chart: meilisearch
       repoURL: https://meilisearch.github.io/meilisearch-kubernetes
-      targetRevision: 0.19.0
+      targetRevision: 0.20.0
       helm:
         releaseName: meilisearch
         valueFiles:
