@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prominence2
+  namespace: apps-homelab
+  labels:
+    name: prominence2
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://homelab-k8s-operator.lobster-altair.ts.net
+    namespace: minecraft
+  project: homelab
+  sources:
+    - chart: minecraft
+      repoURL: ghcr.io/itzg/minecraft-server-charts
+      targetRevision: 5.0.0
+      helm:
+        valueFiles:
+          - $values/k8s/homelab/gameservers/minecraft/prominence2/values.yaml
+    - repoURL: https://github.com/LiquidPL/infra.git
+      targetRevision: master
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 3

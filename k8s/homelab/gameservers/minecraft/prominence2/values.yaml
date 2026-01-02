@@ -1,0 +1,27 @@
+image:
+  repository: itzg/minecraft-server
+  tag: 2025.12-1-java25@sha256:a8541ced5cd5ef37b07c0daed4a3e590c71455099f2384cdf9f0d59906de1e1e
+
+resources:
+  requests:
+    cpu: 1500m
+    memory: 6Gi
+  limits:
+    memory: 6Gi
+
+persistence:
+  storageClass: longhorn
+  dataDir:
+    enabled: true
+    Size: 20Gi
+
+minecraftServer:
+  type: AUTO_CURSEFORGE
+
+  eula: true
+  memory: 6144M
+
+  autoCurseForge:
+    apiKey:
+      existingSecret: curseforge-api
+    slug: prominence-2-hasturian-era
