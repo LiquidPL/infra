@@ -33,7 +33,7 @@ spec:
           ref: values
         - chart: democratic-csi
           repoURL: ghcr.io/democratic-csi/charts
-          targetRevision: 0.15.0
+          targetRevision: 0.15.1
           helm:
             valueFiles:
               - $values/k8s/homelab/core/zfs/values.yaml
