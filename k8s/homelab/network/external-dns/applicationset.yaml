@@ -27,7 +27,7 @@ spec:
       sources:
         - chart: k8s-gateway
           repoURL: ghcr.io/k8s-gateway/charts
-          targetRevision: 3.4.0
+          targetRevision: 3.4.1
           helm:
             valueFiles:
               - $values/k8s/homelab/network/external-dns/values-{{ .name }}.yaml
