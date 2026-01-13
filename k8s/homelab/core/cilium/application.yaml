@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: cilium
       repoURL: https://helm.cilium.io/
-      targetRevision: 1.18.5
+      targetRevision: 1.18.6
       helm:
         valueFiles:
           - $values/k8s/homelab/core/cilium/values.yaml
