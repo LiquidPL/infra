@@ -14,7 +14,7 @@ spec:
     namespace: kube-system
   sources:
     - chart: cilium
-      repoURL: https://helm.cilium.io/
+      repoURL: quay.io/cilium/charts
       targetRevision: 1.18.6
       helm:
         valueFiles:
