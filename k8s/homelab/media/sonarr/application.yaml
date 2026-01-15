@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: app-template
       repoURL: ghcr.io/bjw-s-labs/helm
-      targetRevision: 4.6.0
+      targetRevision: 4.6.1
       helm:
         valueFiles:
           - $values/k8s/homelab/media/sonarr/values.yaml
