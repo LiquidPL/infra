@@ -13,7 +13,7 @@ spec:
   sources:
     - chart: app-template
       repoURL: ghcr.io/bjw-s-labs/helm
-      targetRevision: 4.6.1
+      targetRevision: 4.6.2
       helm:
         valueFiles:
           - $values/k8s/luna/general/ntfy/values.yaml
