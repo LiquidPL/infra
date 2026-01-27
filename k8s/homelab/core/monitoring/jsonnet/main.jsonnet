@@ -142,7 +142,7 @@ local kp =
         spec: {
           storageClassName: 'longhorn',
           accessModes: ['ReadWriteOnce'],
-          resources: { requests: { storage: '60Mi' } },
+          resources: { requests: { storage: '100Mi' } },
         },
       },
 
