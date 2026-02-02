@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: authentik
       repoURL: ghcr.io/goauthentik/helm-charts
-      targetRevision: 2025.12.2
+      targetRevision: 2025.12.3
       helm:
         valueFiles:
           - $values/k8s/luna/authentik/values.yaml
