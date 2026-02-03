@@ -13,7 +13,7 @@ spec:
   sources:
     - chart: argo-cd
       repoURL: ghcr.io/argoproj/argo-helm
-      targetRevision: 9.3.7
+      targetRevision: 9.4.0
       helm:
         valueFiles:
           - $values/k8s/luna/core/argocd/values.yaml
@@ -28,3 +28,5 @@ spec:
       backoff:
         duration: 10s
         factor: 3
+    syncOptions:
+      - ServerSideApply=true
