@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: gateway-helm
       repoURL: docker.io/envoyproxy
-      targetRevision: 1.6.3
+      targetRevision: 1.7.0
     - repoURL: https://github.com/LiquidPL/infra.git
       path: k8s/homelab/network/envoy-gateway/resources
       targetRevision: master
