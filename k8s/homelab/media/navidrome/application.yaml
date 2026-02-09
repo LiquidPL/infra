@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: navidrome
       repoURL: https://djjudas21.github.io/charts/
-      targetRevision: 6.7.6
+      targetRevision: 6.8.0
       helm:
         valueFiles:
           - $values/k8s/homelab/media/navidrome/values.yaml
