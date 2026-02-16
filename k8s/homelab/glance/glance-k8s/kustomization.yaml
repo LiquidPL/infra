@@ -15,4 +15,4 @@ labels:
       app.kubernetes.io/version: v0.4.0
 images:
   - name: ghcr.io/lukasdietrich/glance-k8s/glance-k8s
-    newTag: v0.4.4@sha256:b5423dc3cd0efde78f86532e0eb58f97baffbb5303fadd53d899005d50252e51
+    newTag: v0.4.5@sha256:73e173eefd02f543bcd1641c7c61910fb55d1fa0202cd89f7bf3336a1b4910e9
