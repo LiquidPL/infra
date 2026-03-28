@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: golink
       repoURL: ghcr.io/tiesmaster
-      targetRevision: 0.7.0
+      targetRevision: 0.8.0
       helm:
         valueFiles:
            - $values/k8s/homelab/apps/golink/values.yaml
