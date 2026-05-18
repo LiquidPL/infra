@@ -13,7 +13,7 @@ controllers:
       main:
         image:
           repository: binwiederhier/ntfy
-          tag: v2.17.0@sha256:4768ca4ed07bf5ba0331f333bfccc541ba1594ed7fa5a7b0245763a581809344
+          tag: v2.23.0@sha256:b32b4221a64ec2e7c000f0782b2feef24022e1a09a24e531640f4cbba6cfa1e6
           pullPolicy: IfNotPresent
         args:
           - serve
