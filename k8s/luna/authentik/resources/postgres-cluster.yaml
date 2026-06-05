@@ -5,6 +5,7 @@ metadata:
   namespace: authentik
 spec:
   instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie@sha256:0baa26adbbc96de14aa2db976b04e4eaebf568b8541d7bd5f08c223f82980430
   storage:
     storageClass: local-path
     size: 512Mi
