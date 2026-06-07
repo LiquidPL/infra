@@ -20,7 +20,7 @@
     {
       "matchDatasources": "docker",
       "matchPackageNames": [
-        "/^ghcr\\.io/immich-app/immich-(.+)$/"
+        "/^ghcr\\.io/immich-app/immich-(?!charts).*$/"
       ],
       "groupName": "immich"
     }
