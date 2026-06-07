@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: admin-token
+  namespace: vaultwarden
+spec:
+  encryptedData:
+    ADMIN_TOKEN: AgAINo0px6KJguIoszoCtiNq8gPuLUDyhcteHeoMtxtc+rxtOLnIIflUxC4ag2opDLs7rQBakS4uRSW3tNGOYrOZXdx7j0flkH0lufWPBaX5zZ+bPRf6oSrVEVmW/nDNPY23sOg/2ycGb3gc4+9+H8I3ogMxFNQ9GOKglxWej6boUDl2fjYnfsEBt+txnPQHOg6GYDzpTBMxpwhsBjuTYX+0XxIWgn+0EUjSbx/HB/zRe9zpz5MBf9WcgggOIA7U1HIXsjGW8/Tc3ssKMEiXEYVnYk8MuL0Th1dPQVS1dF3jwamIV8QhyA325dKAOM5tzPcbDQymheEZU7nbpa4vspbudA6JMNnaFtNGMR5BVX2uBcZiUZ5/NVBKwPEPasK8eIevRIN7em11fKIZ7bkfg8vb373M5JMPwWhtUfqfjm5fisjwmIuIroKYA6c9PlnozA4JXFaZSdn+2lQj5lBEAPktwUidI+QRye7++Ry+q9xZ9Gwt8FmjXQaED+LGGbTsbg7PPFkvFIIvL/nXON++IeI2N7YThz0Z6mfsajl+hdaatvAP87ie6k9JThaJiUFscRAlakmp9ujrQUek9a8NefYEIKjJoz4LFwLQvgUgDZJ74ec5CkJcBSTyFwu0TZUoiAGcZdbYfTkW1i6cJ/Y7Q/LJRvpm6i6A2JkL0qud18pJMKleAEVaLr1QJ4BckyuvTpgG9czuw+np5n/rysx3d3imGUAP1LLEQKRU/Ha8mBBQ6PAXrEzPEdo2esK23w==
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+      name: admin-token
+      namespace: vaultwarden
+    type: Opaque

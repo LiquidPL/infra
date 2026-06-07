@@ -1,0 +1,46 @@
+adminToken:
+  existingSecret: admin-token
+  existingSecretKey: ADMIN_TOKEN
+
+resourceType: Deployment
+
+storage:
+  data:
+    name: data
+    size: 1Gi
+    class: longhorn
+    accessMode: ReadWriteOnce
+
+httpRoute:
+  enabled: true
+  parentRefs:
+    - namespace: envoy-gateway-system
+      name: gateway-local
+    - namespace: envoy-gateway-system
+      name: gateway-tailscale
+  hostnames:
+    - vaultwarden.hs.liquid.sh
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+  limits:
+    cpu: 150m
+
+podSecurityContext:
+  runAsUser: 65532
+  runAsGroup: 65532
+  runAsNonRoot: true
+  fsGroup: 65532
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
