@@ -20,7 +20,8 @@
     {
       "matchDatasources": "docker",
       "matchPackageNames": [
-        "/^ghcr\\.io/immich-app/immich-(?!charts).*$/"
+        "ghcr.io/immich-app/immich-server",
+        "ghcr.io/immich-app/immich-machine-learning"
       ],
       "groupName": "immich"
     }
