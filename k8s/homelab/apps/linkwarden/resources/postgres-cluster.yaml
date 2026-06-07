@@ -8,6 +8,7 @@ metadata:
     glance/parent: linkwarden
 spec:
   instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10-standard-trixie@sha256:0672b63296ff64d0911598ae0680d433ebbffd17d22c3bd04cb5b383fb808d0d
   storage:
     storageClass: topolvm-provisioner
     size: 1Gi
