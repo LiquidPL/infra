@@ -1,6 +1,6 @@
 image:
   repository: deluan/navidrome
-  tag: 0.61.2
+  tag: 0.62.0
 
 controller:
   annotations:
