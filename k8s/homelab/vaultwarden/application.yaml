@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: vaultwarden
       repoURL: https://guerzon.github.io/vaultwarden
-      targetRevision: 0.40.1
+      targetRevision: 0.40.3
       helm:
         valueFiles:
            - $values/k8s/homelab/vaultwarden/values.yaml
