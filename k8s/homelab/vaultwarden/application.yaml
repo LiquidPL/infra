@@ -14,7 +14,7 @@ spec:
   project: homelab
   sources:
     - chart: vaultwarden
-      repoURL: https://guerzon.github.io/vaultwarden
+      repoURL: ghcr.io/guerzon/vaultwarden
       targetRevision: 0.43.0
       helm:
         valueFiles:
