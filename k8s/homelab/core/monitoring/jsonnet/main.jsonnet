@@ -88,8 +88,8 @@ local kp =
       },
       grafana+: {
         resources: {
-          requests: { cpu: '100m', memory: '300Mi' },
-          limits: { memory: '300Mi' },
+          requests: { cpu: '100m', memory: '512Mi' },
+          limits: { memory: '512Mi' },
         },
         dashboards+: {
           'navidrome.json': (import 'resources/dashboards/navidrome.json'),
