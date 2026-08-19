@@ -21,5 +21,4 @@ clean:
 .PHONY: update
 update:
 	cd jsonnet && jb update
-	rm -rf $(VENDOR_DIR)
-	$(MAKE) generate
+	$(MAKE)
