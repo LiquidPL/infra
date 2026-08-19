@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.17.0
+    app.kubernetes.io/version: 2.19.1
   name: kube-state-metrics
 rules:
   - apiGroups:
@@ -99,7 +99,11 @@ rules:
   - apiGroups:
       - admissionregistration.k8s.io
     resources:
+      - mutatingadmissionpolicies
+      - mutatingadmissionpolicybindings
       - mutatingwebhookconfigurations
+      - validatingadmissionpolicies
+      - validatingadmissionpolicybindings
       - validatingwebhookconfigurations
     verbs:
       - list

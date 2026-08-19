@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 3.7.3
+    app.kubernetes.io/version: 3.13.2
   name: k8s
   namespace: monitoring
 spec:
@@ -34,7 +34,7 @@ spec:
   enableFeatures: []
   externalLabels:
     cluster: homelab
-  image: quay.io/prometheus/prometheus:v3.7.3
+  image: quay.io/prometheus/prometheus:v3.13.2
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
@@ -43,7 +43,7 @@ spec:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 3.7.3
+      app.kubernetes.io/version: 3.13.2
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
   probeNamespaceSelector: {}
@@ -79,4 +79,4 @@ spec:
           requests:
             storage: 20Gi
         storageClassName: topolvm-provisioner
-  version: 3.7.3
+  version: 3.13.2

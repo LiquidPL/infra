@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: main
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.29.0
+    app.kubernetes.io/version: 0.33.1
   name: main
   namespace: monitoring
 spec:
@@ -28,7 +28,7 @@ spec:
             topologyKey: kubernetes.io/hostname
           weight: 100
   alertmanagerConfigSelector: {}
-  image: quay.io/prometheus/alertmanager:v0.29.0
+  image: quay.io/prometheus/alertmanager:v0.33.1
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
@@ -37,7 +37,7 @@ spec:
       app.kubernetes.io/instance: main
       app.kubernetes.io/name: alertmanager
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 0.29.0
+      app.kubernetes.io/version: 0.33.1
   replicas: 3
   resources:
     limits:
@@ -57,4 +57,4 @@ spec:
     - effect: NoSchedule
       key: node-role.kubernetes.io/control-plane
       operator: Exists
-  version: 0.29.0
+  version: 0.33.1
