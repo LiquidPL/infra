@@ -87,6 +87,10 @@ local kp =
         externalLabels: { cluster: 'homelab' },
       },
       grafana+: {
+        resources: {
+          requests: { cpu: '100m', memory: '300Mi' },
+          limits: { memory: '300Mi' },
+        },
         dashboards+: {
           'navidrome.json': (import 'resources/dashboards/navidrome.json'),
         },

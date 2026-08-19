@@ -44,11 +44,10 @@ spec:
               port: http
           resources:
             limits:
-              cpu: 200m
-              memory: 200Mi
+              memory: 300Mi
             requests:
               cpu: 100m
-              memory: 100Mi
+              memory: 300Mi
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
