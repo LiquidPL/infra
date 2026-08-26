@@ -13,7 +13,7 @@ spec:
   sources:
     - chart: sealed-secrets
       repoURL: docker.io/bitnamicharts
-      targetRevision: 2.19.1
+      targetRevision: 2.19.3
       helm:
         valuesObject:
           fullnameOverride: sealed-secrets-controller
