@@ -31,6 +31,7 @@ valkey:
       size: 256Mi
       type: persistentVolumeClaim
       storageClass: longhorn
+      accessMode: ReadWriteOnce
 
 immich:
   persistence:
@@ -86,7 +87,6 @@ server:
     external:
       enabled: true
       existingClaim: immich-external
-      readOnly: true
 
   route:
     main:
@@ -128,6 +128,7 @@ machine-learning:
       size: 10Gi
       type: persistentVolumeClaim
       storageClass: nfs-csi
+      accessMode: ReadWriteMany
     config:
       enabled: true
       type: emptyDir
