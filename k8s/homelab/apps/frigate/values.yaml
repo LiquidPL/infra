@@ -165,10 +165,6 @@ persistence:
     storageClass: longhorn
     skipuninstall: true
     ephemeralWritableConfigYaml: true
-securityContext:
-  capabilities:
-    add:
-      - PERFMON
 resources:
   limits:
     gpu.intel.com/i915: 1
