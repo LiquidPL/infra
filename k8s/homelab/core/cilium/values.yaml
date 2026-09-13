@@ -29,7 +29,6 @@ hubble:
     auto:
       enabled: true
       method: cronJob
-      certValidityDuration: 1095
   relay:
     enabled: true
   ui:
