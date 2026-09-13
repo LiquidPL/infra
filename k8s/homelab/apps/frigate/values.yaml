@@ -44,6 +44,8 @@ config: |
     path: /config/models/yolo_nas_s.onnx
     labelmap_path: /labelmap/coco-80.txt
   go2rtc:
+    ffmpeg:
+      global: -vaapi_device /dev/dri/renderD128
     streams:
       front:
         - rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.10.10.11:554/cam/realmonitor?channel=1&subtype=0
