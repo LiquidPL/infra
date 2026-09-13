@@ -1,3 +1,4 @@
+policy: upsert-only
 provider:
   name: cloudflare
 env:
