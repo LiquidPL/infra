@@ -2,7 +2,7 @@ nameOverride: foundryvtt
 
 image:
   repository: felddy/foundryvtt
-  tag: &version '13.350'
+  tag: &version '14.368'
 
 foundryvtt:
   existingUserSecret: foundryvtt-schlymo
@@ -33,13 +33,6 @@ resources:
   limits:
     cpu: ~
     memory: 2048Mi
-
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1000
-  fsGroup: 1000
-  fsGroupChangePolicy: OnRootMismatch
 
 persistence:
   enabled: true
