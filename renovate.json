@@ -24,6 +24,11 @@
         "ghcr.io/immich-app/immich-machine-learning"
       ],
       "groupName": "immich"
+    },
+    {
+      "matchDatasources": "docker",
+      "matchPackageNames": "docker.io/felddy/foundryvtt",
+      "additionalBranchPrefix": "{{parentDir}}-"
     }
   ],
   "ignorePaths": [
