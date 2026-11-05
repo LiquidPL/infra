@@ -49,7 +49,7 @@ persistence:
   config:
     enabled: true
     storageClass: longhorn
-    size: 250Mi
+    size: 400Mi
   music:
     enabled: true
     existingClaim: navidrome-media
