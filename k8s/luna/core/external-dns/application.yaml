@@ -14,7 +14,7 @@ spec:
     namespace: external-dns
   sources:
     - chart: external-dns
-      repoURL: https://kubernetes-sigs.github.io/external-dns
+      repoURL: registry.k8s.io/external-dns/charts
       targetRevision: 1.23.0
       helm:
         valueFiles:
