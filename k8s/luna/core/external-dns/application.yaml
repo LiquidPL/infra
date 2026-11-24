@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: external-dns
       repoURL: registry.k8s.io/external-dns/charts
-      targetRevision: 1.23.0
+      targetRevision: 1.24.0
       helm:
         valueFiles:
           - $values/k8s/luna/core/external-dns/values.yaml
